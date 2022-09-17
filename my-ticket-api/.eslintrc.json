@@ -15,7 +15,7 @@
 		"SharedArrayBuffer": "readonly"
 	},
 	"parserOptions": {
-		"ecmaVersion": 2021,
+		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
 	"plugins": [
@@ -38,5 +38,6 @@
 		"@typescript-eslint/no-explicit-any": 0,
 		"@typescript-eslint/no-empty-function": ["warn"],
 		"prettier/prettier": ["error", {}, { "usePrettierrc": true }]
+//		"no-useless-constructor": "off"
 	}
 }
