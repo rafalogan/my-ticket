@@ -1,6 +1,6 @@
 import { IEvent } from '../types';
 
-export class Event {
+export class EventEntity {
 	private _id: number;
 	private _categoryId: number;
 	private _title: string;
