@@ -13,8 +13,6 @@ describe('#User entity', () => {
 			email: faker.internet.email(),
 			profileId: faker.datatype.number(),
 		};
-
-		console.log('data', mockUser);
 	});
 
 	test('Create instace of User', () => {
