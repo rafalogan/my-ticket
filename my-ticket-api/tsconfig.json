@@ -47,6 +47,7 @@
 		"strictFunctionTypes": true,
 		"noImplicitThis": true,
 		"declaration": false,
+		"strictPropertyInitialization": false,
 		"resolveJsonModule": true,
 		"alwaysStrict": true,
 		"removeComments": false,
