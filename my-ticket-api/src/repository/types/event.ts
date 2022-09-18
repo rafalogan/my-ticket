@@ -3,7 +3,7 @@ export interface IEvent {
 	categoryId: number;
 	title: string;
 	subTitle?: string;
-	content: string;
+	content: string | Blob;
 	type: string;
 	userId: number;
 }
