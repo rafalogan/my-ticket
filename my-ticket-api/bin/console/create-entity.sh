@@ -28,6 +28,11 @@ fi
 
 touch "$ENTITIES_DIR/$1.entity.ts" "$ENTITIES_DIR/$1.entity.spec.ts" "$TYPES_DIR/$1.ts" &&
 
+
+echo "export interface I$1 {}" >> "$TYPES_DIR/$1.ts" &&
+echo "export class $1 {}" >> "$ENTITIES_DIR/$1.entity.ts" &&
+echo "import { describe, expect, it, vitest, beforeEach } from 'vitest';
+import { faker } from '@faker-js/faker';" >> "$ENTITIES_DIR/$1.entity.spec.ts" &&
 echo "export * from './$1.entity';" >> "$ENTITIES_DIR/index.ts" &&
 echo "export * from './$1';" >> "$TYPES_DIR/index.ts" &&
 echo "Entity file $1 is created"

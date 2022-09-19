@@ -8,3 +8,5 @@ export * from './place';
 export * from './adress';
 export * from './palce-contact';
 export * from './theater';
+export * from './capacity';
+export * from './capacity';
