@@ -7,3 +7,4 @@ export * from './file';
 export * from './place';
 export * from './adress';
 export * from './palce-contact';
+export * from './theater';
