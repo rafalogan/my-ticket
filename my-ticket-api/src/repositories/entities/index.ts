@@ -10,3 +10,4 @@ export * from './theater.entity';
 export * from './capacity.entity';
 export * from './capacity.entity';
 export * from './duration.entity';
+export * from './ticket.entity';

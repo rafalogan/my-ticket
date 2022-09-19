@@ -11,8 +11,6 @@ export class Duration {
 		Object.assign(this, data);
 
 		if (id) this.id = id;
-
-		if (this.startDate < this.endDate) throw new Error();
 	}
 
 	get id() {
