@@ -24,7 +24,7 @@ describe('#Place Entity', () => {
 	});
 
 	it('Should be able to create a instance of Place with id', () => {
-		const id = faker.datatype.number(1);
+		const id = 1;
 		const place = new Place(placeMock, id);
 
 		expect(place.id).toBeDefined();
