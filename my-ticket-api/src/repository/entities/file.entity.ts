@@ -11,8 +11,10 @@ export class FileEntity {
 	private _fileType: string;
 	private _url: string;
 
-	constructor(data: IFile) {
+	constructor(data: IFile, id?: number) {
 		Object.assign(this, data);
+
+		if (id) this.id = id;
 	}
 
 	get id() {
