@@ -1,3 +1,4 @@
+export * from './shared';
 export * from './user';
 export * from './profile';
 export * from './category';
@@ -5,3 +6,4 @@ export * from './event';
 export * from './file';
 export * from './place';
 export * from './adress';
+export * from './palce-contact';

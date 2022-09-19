@@ -5,3 +5,4 @@ export * from './event.entity';
 export * from './file.entity';
 export * from './place.entity';
 export * from './adress.entity';
+export * from './palce-contact.entity';
