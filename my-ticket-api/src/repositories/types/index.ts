@@ -12,3 +12,4 @@ export * from './capacity';
 export * from './capacity';
 export * from './duration';
 export * from './ticket';
+export * from './newsletter';

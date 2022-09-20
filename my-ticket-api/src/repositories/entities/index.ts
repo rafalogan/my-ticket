@@ -11,3 +11,4 @@ export * from './capacity.entity';
 export * from './capacity.entity';
 export * from './duration.entity';
 export * from './ticket.entity';
+export * from './newsletter.entity';
