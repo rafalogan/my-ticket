@@ -16,3 +16,4 @@ export * from './newsletter';
 export * from './events-per-places';
 export * from './contact';
 export * from './sale';
+export * from './environment';
