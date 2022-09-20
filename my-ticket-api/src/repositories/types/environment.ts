@@ -5,7 +5,9 @@ export interface IEnvironment {
   storage: string;
   timezone?: string;
   database: IDatabase;
+  corsOptions: ICorsOptions;
   cache: ICache;
+  aws: IAWS;
   https: IHttps;
   security: ISecurity;
 }
@@ -16,7 +18,13 @@ export interface IDatabase {
   name: string;
   password: string;
   port: number;
-  aws: IAWS;
+}
+
+export interface ICorsOptions {
+  origin: string;
+  methods: string | string[];
+  preflightContinue: boolean;
+  optionsSuccessStatus: number;
 }
 
 export interface ICache {

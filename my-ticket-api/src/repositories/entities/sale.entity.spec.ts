@@ -4,7 +4,6 @@ import { faker } from '@faker-js/faker';
 import { ISale } from '../types';
 import { getRandom } from '../../../test/utils';
 import { Sale } from './sale.entity';
-import { get } from 'http';
 
 describe('#Sale Entity', () => {
   let mockSale: ISale;
