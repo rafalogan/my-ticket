@@ -1,4 +1,4 @@
-import { IUser } from 'src/repository/types';
+import { IUser } from 'src/repositories/types';
 
 export class User {
 	private _id: number;
