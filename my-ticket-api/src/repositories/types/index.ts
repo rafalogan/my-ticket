@@ -15,3 +15,4 @@ export * from './ticket';
 export * from './newsletter';
 export * from './events-per-places';
 export * from './contact';
+export * from './sale';
