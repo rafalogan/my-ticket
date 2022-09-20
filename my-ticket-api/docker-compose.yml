@@ -1,0 +1,30 @@
+version: "3.1"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root@100
+      POSTGRES_DB: "athon_db"
+      TZ: "America/Sao_Paulo"
+    volumes:
+      - ./database/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - ./database/redis:/usr/local/etc/redis/
+      - ./database/redis/data:/var/lib/postgresql/data
+    ports:
+      - 6379:6379
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    depends_on:
+      - postgres
