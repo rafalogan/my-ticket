@@ -28,7 +28,6 @@ fi
 
 touch "$ENTITIES_DIR/$1.entity.ts" "$ENTITIES_DIR/$1.entity.spec.ts" "$TYPES_DIR/$1.ts" &&
 
-
 echo "export interface I$1 {}" >> "$TYPES_DIR/$1.ts" &&
 echo "export class $1 {}" >> "$ENTITIES_DIR/$1.entity.ts" &&
 echo "import { describe, expect, it, vitest, beforeEach } from 'vitest';
