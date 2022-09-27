@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
 	return knex.schema.createTable('phones', (table: TableBuilder) => {
 		table.increments('id').primary();
 		table.string('type', 50).notNullable();
-		table.string('number').notNullable();
+		table.string('number', 50).notNullable();
 		table.integer('user_id').unsigned().references('id').inTable('users').nullable();
 		table.integer('place_id').unsigned().references('id').inTable('places').nullable();
 	});
