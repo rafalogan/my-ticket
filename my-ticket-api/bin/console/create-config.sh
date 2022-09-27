@@ -12,5 +12,5 @@ fi
 touch "$DEFAULT_DIR_NAME/$1.config.ts" &&
 
 echo "export * from './$1.config';" >> "$DEFAULT_DIR_NAME/index.ts" &&
-echo "export class $1 {}" >> "$DEFAULT_DIR_NAME/$1.config.ts" &&
+echo "export class $1Config {}" >> "$DEFAULT_DIR_NAME/$1.config.ts" &&
 echo "Config file $1.config.ts is created with success"
