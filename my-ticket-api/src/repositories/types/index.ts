@@ -18,3 +18,4 @@ export * from './contact';
 export * from './sale';
 export * from './environment';
 export * from './response';
+export * from './knex';

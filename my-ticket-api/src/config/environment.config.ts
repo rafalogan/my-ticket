@@ -20,7 +20,7 @@ export class Environment {
 		this._storage = process.env.STORAGE_TYPE || '';
 		this._timezone = process.env.TIMEZONE || '';
 		this._database = this.setDatabase();
-		this._corsOptions = this.setCorsOptios();
+		this._corsOptions = this.setCoresOptions();
 		this._cache = this.setCache();
 		this._aws = this.setAWS();
 		this._https = this.setHttp();
@@ -64,14 +64,15 @@ export class Environment {
 	private setDatabase(): IDatabase {
 		const client = process.env.DB_CLIENT || '';
 		const host = process.env.DB_HOST || '';
-		const name = process.env.DB_NAME || '';
+		const database = process.env.DB_NAME || '';
+		const user = process.env.DB_USER || '';
 		const password = process.env.DB_PASSWORD || '';
 		const port = Number(process.env.DB_PORT);
 
-		return { client, host, name, password, port };
+		return { client, host, database, password, port, user };
 	}
 
-	private setCorsOptios(): ICorsOptions {
+	private setCoresOptions(): ICorsOptions {
 		const origin = process.env.CORS_ORIGIN || '*';
 		const methods = process.env.CORS_METHOD || 'GET,HEAD,PUT,PATCH,POST,DELETE';
 		const preflightContinue = process.env.CORS_PREFLIGHTCONTIME === 'true';
