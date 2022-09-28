@@ -32,6 +32,4 @@ config.migrations = {
 	directory: './database/migrations',
 };
 
-console.log('config', config);
-
 module.exports = config;
