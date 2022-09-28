@@ -27,7 +27,7 @@ services:
       - ./database/redis:/data
     ports:
       - 6379:6379
-      - 9091:8001
+      - 9080:8001
   adminer:
     image: adminer
     restart: always
