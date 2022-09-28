@@ -22,7 +22,7 @@
 		],
 		"outDir": "dist",
 		"paths": {
-			"migrations": [
+			"migrations/*": [
 				"./database/migrations/*"
 			],
 			"src/*": [
@@ -39,7 +39,7 @@
 			"./node_modules/@types"
 		],
 		"types": [
-			"jest",
+			"vitest",
 			"node"
 		],
 		"noImplicitAny": true,
