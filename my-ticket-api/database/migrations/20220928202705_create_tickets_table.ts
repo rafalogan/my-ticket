@@ -6,7 +6,6 @@ export async function up(knex: Knex): Promise<void> {
 		table.increments('id').primary();
 		table.string('code').notNullable();
 		table.integer('amount').notNullable();
-		table.integer('unitary_value').notNullable();
 		table.integer('event_id').unsigned().references('id').inTable('events').notNullable();
 		table.integer('place_id').unsigned().references('id').inTable('places').notNullable();
 		table.integer('theater_id').unsigned().references('id').inTable('theaters').notNullable();
