@@ -3,7 +3,7 @@ import { createClient, RedisClientType } from 'redis';
 import { ICache } from 'src/repositories/types';
 import { onError, onInfo } from 'src/core/handlers';
 
-export class CacheConnectionController {
+export class CacheService {
 	private readonly _connection: RedisClientType;
 	connectonUp = false;
 
