@@ -24,4 +24,4 @@ const server = new ServerController(express, env, initService);
 const database = new DatabaseService(knexfile);
 const cache = new CacheService(env.cache);
 
-export const app = new App(server);
+export const app = new App(server, database, cache);

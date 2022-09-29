@@ -22,23 +22,21 @@ export class DatabaseService {
 	isConnected() {
 		return this.connection
 			.raw('SELECT 1+1 AS result')
-			.then(result =>
-				onInfo(`${greenBg + black}SUCCESS:${reset} Relational Database is Connected Active: ${result ? cyan : red}${!!result}${reset}`)
-			)
-			.catch((err: Error) => onError('FAIL: Relational Database is not Connected', err));
+			.then(result => onInfo(`${greenBg + black}SUCCESS:${reset} Database is Connected Active: ${result ? cyan : red}${!!result}${reset}`))
+			.catch((err: Error) => onError('FAIL Database is not Connected', err));
 	}
 
 	latest() {
 		return this.connection.migrate
 			.latest(this.knexfile as MigratorConfig)
 			.then(() => onInfo('Database is updated!'))
-			.catch(err => onError('Erro on updated Database.', err));
+			.catch(err => onError('FAIL on updated Database.', err));
 	}
 
 	rollback() {
 		return this.connection.migrate
 			.rollback(this.knexfile as MigratorConfig)
 			.then(() => onInfo('Database is clear.'))
-			.catch(err => onError('Error on clear database.', err));
+			.catch(err => onError('FAIL on clear database.', err));
 	}
 }
