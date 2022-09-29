@@ -16,10 +16,7 @@ export class ResponseHandle {
 		const status = options && options.status ? options.status : this.status.INTERNAL_SERVER_ERROR;
 
 		this.setLog(status, message, options?.err);
-		return res.status(status).send({
-			status,
-			message,
-		});
+		return res.status(status).send({ status, message });
 	}
 
 	static setLog(status: number, message: string, error?: Error) {

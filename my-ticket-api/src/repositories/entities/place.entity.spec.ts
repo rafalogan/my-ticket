@@ -9,7 +9,7 @@ describe('#Place Entity', () => {
 	beforeEach(() => {
 		placeMock = {
 			name: faker.datatype.string(45),
-			adressId: faker.datatype.number(1),
+			addressId: faker.datatype.number(1),
 			userId: faker.datatype.number(11),
 		};
 		vitest.resetAllMocks().clearAllMocks();

@@ -1,6 +1,6 @@
 export interface IPlace {
 	id?: number;
 	name: string;
-	adressId: number;
+	addressId: number;
 	userId: number;
 }
