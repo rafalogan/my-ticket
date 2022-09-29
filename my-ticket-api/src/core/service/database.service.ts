@@ -8,7 +8,7 @@ import { TERMINAL_COLORS } from 'src/utils';
 
 const { greenBg, black, reset, red, cyan } = TERMINAL_COLORS;
 
-export class DatabaseController {
+export class DatabaseService {
 	private readonly _connection: Knex;
 
 	constructor(private knexfile: Config | KnexConfig) {
