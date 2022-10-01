@@ -5,8 +5,7 @@ import { execDotenv, getKnexProps } from 'src/utils';
 import { AppConfig, Environment, KnexConfig, LoggerConfig } from 'src/config';
 import { App, ServerController } from 'src/core/controllers';
 import { InitService } from './services';
-import { DatabaseService } from 'src/core/service';
-import { CacheService } from 'src/core/service/cache.service';
+import { CacheService, DatabaseService } from 'src/core/service';
 
 execDotenv();
 
