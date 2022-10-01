@@ -21,3 +21,4 @@ export * from './response';
 export * from './knex';
 export * from './base';
 export * from './pagination';
+export * from './auth';

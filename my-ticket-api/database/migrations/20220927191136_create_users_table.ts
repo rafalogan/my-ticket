@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.string('last_name', 50).nullable();
 		table.string('cpf').notNullable().unique();
 		table.string('email', 1000).notNullable().unique();
+		table.string('password', 1000).notNullable();
 		table.integer('profile_id').unsigned().references('id').inTable('profiles').notNullable();
 		table.timestamp('deleted_at').nullable();
 	});

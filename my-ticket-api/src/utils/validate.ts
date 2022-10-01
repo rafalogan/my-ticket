@@ -2,6 +2,9 @@ import isEmpty from 'is-empty';
 import bcrypt from 'bcrypt';
 
 import { ResponseException } from 'src/utils/exceptions';
+import { Credentials, UserModel } from 'src/repositories/models';
+import { IsMachValidateOptions } from 'src/repositories/types';
+import { User } from 'src/repositories/entities';
 
 export const existsOrError = (value: any, message: string): void | ResponseException => {
 	if (isEmpty(value)) throw new ResponseException(message);
@@ -25,4 +28,8 @@ export const equalsOrError = (valueA: any, valueB: any, message: string) => {
 	if (valueA !== valueB) throw new ResponseException(message);
 };
 
-// export const isMatch = (credentials: CredentialsDomain, user: UserModel) => bcrypt.compareSync(credentials.password, user.password);
+export const isMatchOrError = (data: IsMachValidateOptions) => {
+	if (!isMatch(data.credentials, data.user)) throw new ResponseException(data.message);
+};
+
+export const isMatch = (credentials: Credentials, user: UserModel | User) => bcrypt.compareSync(credentials.password, user.password);

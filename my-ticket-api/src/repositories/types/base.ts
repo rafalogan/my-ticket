@@ -27,3 +27,7 @@ export interface OrderOptions {
 	by: string;
 	type: string;
 }
+
+export interface CustomQueryOptions extends ReadOptions {
+	query: string;
+}

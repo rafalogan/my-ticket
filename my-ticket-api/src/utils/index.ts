@@ -6,3 +6,4 @@ export * from './module-alias';
 export * from './queries';
 export * from './validate';
 export * from './utils';
+export * from './messages';
