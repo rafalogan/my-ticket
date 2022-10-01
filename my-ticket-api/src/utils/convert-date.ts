@@ -41,3 +41,11 @@ const convertCompleteStringToDate = (value: string) => {
 };
 
 const returnDate = (value: string) => new Date(value);
+
+export const upperCaseFirstLetter = (value: string) => {
+	const [firstWrod, ...restWords] = value.split(' ');
+	const [firstLetter, ...rest] = firstWrod;
+	const resultWord = `${firstLetter.toLocaleUpperCase()}${rest.join('')}`;
+
+	return `${resultWord} ${restWords.join(' ')}`.trim();
+};

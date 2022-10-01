@@ -1,4 +1,5 @@
 import { IUser } from 'src/repositories/types';
+import { hashString } from 'src/utils';
 
 export class User {
 	private _id: number;
@@ -6,6 +7,7 @@ export class User {
 	private _lastName: string;
 	private _cpf: string;
 	private _email: string;
+	private _password: string;
 	private _profileId: number;
 	private _deletedAt?: Date;
 
@@ -53,6 +55,14 @@ export class User {
 
 	set email(value: string) {
 		this._email = value;
+	}
+
+	get password(): string {
+		return this._password;
+	}
+
+	set password(value: string) {
+		this._password = value;
 	}
 
 	get profileId() {
