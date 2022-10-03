@@ -7,3 +7,4 @@ export * from './queries';
 export * from './validate';
 export * from './utils';
 export * from './messages';
+export * from './fields';

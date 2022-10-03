@@ -5,16 +5,16 @@ import bodyParser from 'body-parser';
 import { Logger } from 'winston';
 
 import { ICorsOptions } from 'src/repositories/types';
-import { ModulesController } from 'src/core/controllers';
 import { AuthConfig } from 'src/config/auth.config';
+import { ModulesFactory } from 'src/core/factories';
 
 export class AppConfig {
 	private readonly _express: Application;
-	private modules: ModulesController;
+	private modules: ModulesFactory;
 
 	constructor(private env: string, private corsOptions: ICorsOptions, private logger: Logger, private auth: AuthConfig) {
 		this._express = express();
-		this.modules = new ModulesController(this.express, this.auth);
+		this.modules = new ModulesFactory(this.express, this.auth);
 		this.configExpress();
 	}
 

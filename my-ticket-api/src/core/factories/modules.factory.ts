@@ -2,7 +2,7 @@ import { Application } from 'express';
 import { AuthConfig } from 'src/config';
 import { notfoundRoute } from 'src/core/routes/notfound.route';
 
-export class ModulesController {
+export class ModulesFactory {
 	constructor(private app: Application, private auth: AuthConfig) {}
 
 	exec() {
