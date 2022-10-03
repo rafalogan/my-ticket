@@ -5,13 +5,16 @@ import bodyParser from 'body-parser';
 import { Logger } from 'winston';
 
 import { ICorsOptions } from 'src/repositories/types';
+import { ModulesController } from 'src/core/controllers';
+import { AuthConfig } from 'src/config/auth.config';
 
 export class AppConfig {
 	private readonly _express: Application;
+	private modules: ModulesController;
 
-	constructor(private env: string, private corsOptions: ICorsOptions, private logger: Logger) {
+	constructor(private env: string, private corsOptions: ICorsOptions, private logger: Logger, private auth: AuthConfig) {
 		this._express = express();
-
+		this.modules = new ModulesController(this.express, this.auth);
 		this.configExpress();
 	}
 
@@ -24,7 +27,7 @@ export class AppConfig {
 		this.express.use(this.morganConfig());
 		this.express.use(bodyParser.urlencoded({ extended: false }));
 		this.express.use(bodyParser.json());
-		this.initApi();
+		this.modules.exec();
 	}
 
 	private morganConfig() {
@@ -35,6 +38,4 @@ export class AppConfig {
 
 		return morgan(format, { stream });
 	}
-
-	private initApi() {}
 }
