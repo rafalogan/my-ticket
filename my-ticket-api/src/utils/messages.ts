@@ -2,6 +2,7 @@ import { User } from 'src/repositories/entities';
 import { upperCaseFirstLetter } from 'src/utils/convert-date';
 
 const alreadyExists = 'já existe';
+const requires = (field: string) => `${field} é um campo obrigatório.`;
 
 const user = {
 	alreadyExists: (email: string) => `${upperCaseFirstLetter(alreadyExists)} usuário resistrado com eses e-mail: ${email}`,
@@ -20,7 +21,30 @@ const user = {
 	},
 };
 
+const profile = {
+	success: {
+		create: `Novo perfil criado com sucesso.`,
+		update: (id: number) => `Perfil nº: ${id} atualizado com sucesso!`,
+	},
+	error: {
+		alreadyExists: `${upperCaseFirstLetter(alreadyExists)} um perfil com esse nome!`,
+	},
+};
+
+const auth = {
+	success: {
+		singnup: 'Novo ',
+	},
+
+	error: {
+		requires: 'Os campos e-mail e senha são obrigatórios, verifique se ambos estão preenchidos corretamente.',
+	},
+};
+
 export const messages = {
 	alreadyExists,
+	requires,
 	user,
+	profile,
+	auth,
 };

@@ -10,6 +10,7 @@ export class Profile {
 		Object.assign(this, data);
 
 		if (id) this.id = id;
+		this.active = data.active || true;
 	}
 
 	get id() {

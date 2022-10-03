@@ -11,10 +11,16 @@ export class UserService extends BaseService {
 		this.salt = data.salt;
 	}
 
-	set(data: IUser, id?: number) {
+	async set(data: IUser, id?: number) {
 		if (id) return new User(data, id);
 
-		return this.validateNewUser(data);
+		try {
+			await this.validateNewUser(data);
+		} catch (error) {
+			return error;
+		}
+
+		return new User(data);
 	}
 
 	save(user: User) {
@@ -52,7 +58,7 @@ export class UserService extends BaseService {
 
 	findUserByEmail(email: string) {
 		return this.conn(this.table)
-			.select('*')
+			.select(...this.fields)
 			.where({ email })
 			.join('profiles', function () {
 				this.on('proeiles.id', '=', 'users.profile_id');
@@ -60,6 +66,14 @@ export class UserService extends BaseService {
 			.as('profile')
 			.first()
 			.then((user: IUserModel) => new UserModel(user))
+			.catch(err => err);
+	}
+
+	findUsersByProfileId(profileId: number) {
+		return this.conn(this.table)
+			.select(...this.fields)
+			.where({ profile_id: profileId })
+			.then((result: IUser[]) => result.map(user => new User(user)))
 			.catch(err => err);
 	}
 
@@ -93,14 +107,10 @@ export class UserService extends BaseService {
 			notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
 
 			data.password = hashString(data.password, this.salt);
-
-			return new User(data);
 		} catch (err) {
 			return err;
 		}
 	}
-
-	private async validatePassword(data: UpdatePasswordOptions) {}
 
 	private userNoPassword(user: User) {
 		const data = Object.create(user);
