@@ -12,14 +12,16 @@ import { ProfileService } from './profile.service';
 export class AuthService {
 	constructor(private authsecret: string, private userService: UserService, private profileService: ProfileService) {}
 
-	setCredentials(credentials: ICredentials) {
+	validateCredentials(credentials: ICredentials) {
 		try {
 			existsOrError(credentials.email, messages.auth.error.requires);
 			existsOrError(credentials.password, messages.auth.error.requires);
 		} catch (err) {
 			return err;
 		}
+	}
 
+	setCredentials(credentials: ICredentials) {
 		return new Credentials(credentials);
 	}
 
@@ -58,7 +60,9 @@ export class AuthService {
 		existsOrError(token, 'Token is not valid or not found.');
 		existsOrError(payload, 'Payload is not found.');
 
-		return valid ? { valid, status, message: 'Token is valid', token } : { valid, status, message: 'token expired', token };
+		return valid
+			? { valid, status, message: messages.auth.success.tokenIsValid, token }
+			: { valid, status, message: messages.auth.error.tokenNoValid, token };
 	}
 
 	private extractToken(req: Request) {

@@ -33,11 +33,14 @@ const profile = {
 
 const auth = {
 	success: {
-		singnup: 'Novo ',
+		signup: 'Novo usuário cadastrado com sucesso.',
+		tokenIsValid: 'Token Valido.',
 	},
 
 	error: {
 		requires: 'Os campos e-mail e senha são obrigatórios, verifique se ambos estão preenchidos corretamente.',
+		Unauthorized: 'Login não autorizado! Verrifique seu  e-maul e /ou senha.',
+		tokenNoValid: 'Token Invalido.',
 	},
 };
 

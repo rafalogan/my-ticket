@@ -1,7 +1,10 @@
 import { Knex } from 'knex';
 import QueryBuilder = Knex.QueryBuilder;
+import { Response } from 'express';
 
 export interface ErrorResponseParams {
+	res: Response;
+	message: string;
 	err?: Error;
 	status?: number;
 	dirname?: string;
@@ -9,6 +12,8 @@ export interface ErrorResponseParams {
 }
 
 export interface SucessResponseParams {
+	res: Response;
+	data: any;
 	status?: number;
 	message?: string;
 	stack?: string;
