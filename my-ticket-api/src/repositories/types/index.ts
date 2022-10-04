@@ -22,3 +22,4 @@ export * from './knex';
 export * from './base';
 export * from './pagination';
 export * from './auth';
+export * from './route';

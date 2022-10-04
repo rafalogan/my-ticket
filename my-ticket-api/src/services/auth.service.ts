@@ -3,30 +3,35 @@ import jwt from 'jwt-simple';
 import httpStatus from 'http-status';
 
 import { UserService } from './user.service';
-import { ICredentials, ValidateTokenResponse } from 'src/repositories/types';
+import { ICredentials, IUser, ValidateTokenResponse } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, Payload } from 'src/repositories/models';
-import { existsOrError, isMatch, messages } from 'src/utils';
+import { existsOrError, isMatch, messages, ResponseException } from 'src/utils';
 import { ProfileService } from './profile.service';
+import { onLog } from 'src/core/handlers';
+import { error } from 'winston';
 
 export class AuthService {
 	constructor(private authsecret: string, private userService: UserService, private profileService: ProfileService) {}
 
-	setCredentials(credentials: ICredentials) {
+	validateCredentials(credentials: ICredentials) {
 		try {
 			existsOrError(credentials.email, messages.auth.error.requires);
 			existsOrError(credentials.password, messages.auth.error.requires);
 		} catch (err) {
 			return err;
 		}
+	}
 
+	setCredentials(credentials: ICredentials) {
 		return new Credentials(credentials);
 	}
 
 	async verifyCredentials(credentials: Credentials) {
 		const findDB = await this.userService.findUserByEmail(credentials.email);
+
+		existsOrError(findDB, 'User not found');
 		const user = new User(findDB);
-		existsOrError(user, 'User not found');
 
 		if (isMatch(credentials, user)) {
 			const payload = new Payload(user);
@@ -34,13 +39,25 @@ export class AuthService {
 		}
 	}
 
-	async signupOnApp(user: User) {
-		const profile = await this.profileService.findProfileByName('client');
-		user.profileId = profile.id;
+	async signupOnApp(user: IUser, profile?: string) {
+		try {
+			const profileToId = await this.profileService.findProfileByName(profile?.toLowerCase() || 'cliente');
+
+			onLog('perfil', profileToId);
+			existsOrError(profileToId, messages.profile.error.notFound(profile?.toUpperCase() || 'cliente'));
+			await this.userService.validateNewUser(user);
+
+			user.profileId = profileToId.id;
+		} catch (err) {
+			return err;
+		}
+
+		const userToSave = this.userService.set(user);
+		onLog('User to save:', user);
 
 		return this.userService
-			.save(user)
-			.then(result => result)
+			.save(userToSave)
+			.then(result => (result.result.rowCount && result.result.rowCount !== 0 ? result : new ResponseException(messages.user.error.noSave)))
 			.catch(err => err);
 	}
 
@@ -55,10 +72,12 @@ export class AuthService {
 		const valid = payload?.exp ? new Date(payload.exp * 1000) > new Date() : false;
 		const status = valid ? httpStatus.OK : httpStatus.UNAUTHORIZED;
 
-		existsOrError(token, 'Token is not valid or not found.');
-		existsOrError(payload, 'Payload is not found.');
+		existsOrError(token, messages.auth.error.notFoundToken);
+		existsOrError(payload, messages.auth.error.notFoundPayload);
 
-		return valid ? { valid, status, message: 'Token is valid', token } : { valid, status, message: 'token expired', token };
+		return valid
+			? { valid, status, message: messages.auth.success.tokenIsValid, token }
+			: { valid, status, message: messages.auth.error.tokenNoValid, token };
 	}
 
 	private extractToken(req: Request) {

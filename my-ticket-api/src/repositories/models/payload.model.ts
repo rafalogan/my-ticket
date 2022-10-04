@@ -11,7 +11,10 @@ export class Payload {
 	exp: number;
 
 	constructor(data: User | IPayload) {
-		Object.assign(this, data);
+		this.id = data.id;
+		this.firstName = data.firstName;
+		this.lastName = data.lastName;
+		this.email = data.email;
 		this.iat = !(data instanceof User) && data.iat ? data.iat : this.now();
 		this.exp = !(data instanceof User) && data.exp ? data.exp : this.expires();
 	}

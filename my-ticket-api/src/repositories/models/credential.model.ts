@@ -5,6 +5,7 @@ export class Credentials {
 	password: string;
 
 	constructor(data: ICredentials) {
-		Object.assign(this, data);
+		this.email = data.email;
+		this.password = data.password;
 	}
 }

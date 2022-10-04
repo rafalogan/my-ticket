@@ -1,5 +1,5 @@
-import { Response } from 'express';
 import httpStatus from 'http-status';
+
 import { onError, onWarn } from 'src/core/handlers/log.handler';
 import { ErrorResponseParams, SucessResponseParams } from 'src/repositories/types';
 
@@ -8,15 +8,18 @@ export class ResponseHandle {
 
 	constructor() {}
 
-	static onSuccess(res: Response, data: any, options?: SucessResponseParams) {
-		return res.status(options?.status || this.status.OK).json(data);
+	static onSuccess(options: SucessResponseParams) {
+		const { res, data, status, message, stack } = options;
+
+		if (message) return res.status(status || this.status.OK).json({ data, status: status || this.status.OK, message });
+		return res.status(status || this.status.OK).json(data);
 	}
 
-	static onError(res: Response, message: string, options?: ErrorResponseParams) {
-		const status = options && options.status ? options.status : this.status.INTERNAL_SERVER_ERROR;
+	static onError(options: ErrorResponseParams) {
+		const { res, message, err, status } = options;
 
-		this.setLog(status, message, options?.err);
-		return res.status(status).send({ status, message });
+		this.setLog(status || httpStatus.INTERNAL_SERVER_ERROR, message, options?.err);
+		return res.status(status || httpStatus.INTERNAL_SERVER_ERROR).send({ status, message });
 	}
 
 	static setLog(status: number, message: string, error?: Error) {

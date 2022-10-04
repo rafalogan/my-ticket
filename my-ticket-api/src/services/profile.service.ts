@@ -1,8 +1,9 @@
-import { BaseService } from 'src/core/service';
 import { BaseServiceOptions, IProfile } from 'src/repositories/types';
 import { Profile, User } from 'src/repositories/entities';
 import { existsOrError, messages, notExistisOrError } from 'src/utils';
 import { UserService } from 'src/services/user.service';
+import { BaseService } from 'src/core/abstracts';
+import { onLog } from 'src/core/handlers';
 
 export class ProfileService extends BaseService {
 	constructor(data: BaseServiceOptions, private userService: UserService) {
@@ -22,12 +23,13 @@ export class ProfileService extends BaseService {
 	}
 
 	save(data: Profile) {
-		if (data.id)
+		if (data.id) {
 			return this.update(data.id, data).then(result => ({
 				result,
-				message: messages.profile.success.update(data.id),
+				message: messages.profile.success.update(Number(data.id)),
 				profile: data,
 			}));
+		}
 
 		return this.create(data).then(result => ({
 			result,
@@ -55,10 +57,10 @@ export class ProfileService extends BaseService {
 
 	findProfileByName(name: string) {
 		return this.conn(this.table)
-			.select()
+			.select(...this.fields)
 			.where({ name })
 			.first()
-			.then((result: IProfile) => new Profile(result))
+			.then((result: IProfile) => (result ? new Profile(result) : {}))
 			.catch(err => err);
 	}
 

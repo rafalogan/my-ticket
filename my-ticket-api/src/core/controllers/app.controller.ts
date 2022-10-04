@@ -1,7 +1,7 @@
 import { ServerController } from 'src/core/controllers/server.controller';
-import { DatabaseService } from 'src/core/service';
-import { CacheService } from 'src/core/service/cache.service';
+
 import { onError } from 'src/core/handlers';
+import { CacheService, DatabaseService } from 'src/core/service';
 
 export class App {
 	constructor(private server: ServerController, private databaseService: DatabaseService, private cacheService: CacheService) {}

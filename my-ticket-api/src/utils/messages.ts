@@ -18,6 +18,7 @@ const user = {
 		noMatchCredentials: `Falha na autenticação verifique suas credenciais!`,
 		noMatchPasswords: `Falha a senha e a confirmação de senha devem ser iguais!`,
 		requires: (field: string) => `${field} é um campo obrigatório.`,
+		noSave: 'Não foi possivel criar o novo usuario!\nVerifique seus dados e tente novamente!',
 	},
 };
 
@@ -28,16 +29,24 @@ const profile = {
 	},
 	error: {
 		alreadyExists: `${upperCaseFirstLetter(alreadyExists)} um perfil com esse nome!`,
+		notFound: (value: number | string) => {
+			return typeof value === 'string' ? `Perfil ${value} não encontrado!` : `Perfil nº:${value} não encontrado!`;
+		},
 	},
 };
 
 const auth = {
 	success: {
-		singnup: 'Novo ',
+		signup: 'Novo usuário cadastrado com sucesso.',
+		tokenIsValid: 'Token Valido.',
 	},
 
 	error: {
 		requires: 'Os campos e-mail e senha são obrigatórios, verifique se ambos estão preenchidos corretamente.',
+		Unauthorized: 'Login não autorizado! Verrifique seu  e-maul e /ou senha.',
+		tokenNoValid: 'Token Invalido.',
+		notFoundToken: 'Token não encontrado!',
+		notFoundPayload: 'Payload não encontrado!',
 	},
 };
 
