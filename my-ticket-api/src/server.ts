@@ -22,7 +22,7 @@ const services = new ServicesFactory(env, database.connection, cache.connection)
 
 const auth = new AuthConfig(env.security.authsecret, services.userService);
 
-const express = new AppConfig(env.nodeEnv, env.corsOptions, logger, auth).express;
+const express = new AppConfig(env.nodeEnv, env.corsOptions, logger, auth, services).express;
 const server = new ServerController(express, env, services.initService);
 
 export const app = new App(server, database, cache);

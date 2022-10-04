@@ -7,14 +7,21 @@ import { Logger } from 'winston';
 import { ICorsOptions } from 'src/repositories/types';
 import { AuthConfig } from 'src/config/auth.config';
 import { ModulesFactory } from 'src/core/factories';
+import { ServicesFactory } from 'src/core/factories/services.factory';
 
 export class AppConfig {
 	private readonly _express: Application;
 	private modules: ModulesFactory;
 
-	constructor(private env: string, private corsOptions: ICorsOptions, private logger: Logger, private auth: AuthConfig) {
+	constructor(
+		private env: string,
+		private corsOptions: ICorsOptions,
+		private logger: Logger,
+		private auth: AuthConfig,
+		private services: ServicesFactory
+	) {
 		this._express = express();
-		this.modules = new ModulesFactory(this.express, this.auth);
+		this.modules = new ModulesFactory(this.express, this.auth, this.services);
 		this.configExpress();
 	}
 

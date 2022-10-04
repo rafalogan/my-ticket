@@ -1,0 +1,38 @@
+[
+	{
+		"id": 1,
+		"first_name": "User",
+		"last_name": "Root",
+		"cpf": "00000000000",
+		"email": "root@root.com",
+		"passport": "@Root#1000",
+		"profile_id": 1
+	},
+	{
+		"id": 2,
+		"first_name": "User",
+		"last_name": "admin",
+		"cpf": "00000000000",
+		"email": "admin@admin.com",
+		"passport": "@Admin#4dm",
+		"profile_id": 2
+	},
+	{
+		"id": 3,
+		"first_name": "User",
+		"last_name": "Vendedor",
+		"cpf": "00000000000",
+		"email": "vend@vend.com",
+		"passport": "@Ven#5vm",
+		"profile_id": 3
+	},
+	{
+		"id": 4,
+		"first_name": "User",
+		"last_name": "Cliente",
+		"cpf": "00000000000",
+		"email": "client@c.com",
+		"passport": "@client#5CL",
+		"profile_id": 4
+	}
+]

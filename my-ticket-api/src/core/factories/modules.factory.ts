@@ -7,7 +7,7 @@ import { AuthModule } from 'src/modules/auth';
 export class ModulesFactory {
 	private authModule: AuthModule;
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
-		this.authModule = new AuthModule({ service: services.authService, app, auth });
+		this.authModule = new AuthModule({ service: services.authService, app: this.app, auth: this.auth });
 	}
 
 	exec() {
