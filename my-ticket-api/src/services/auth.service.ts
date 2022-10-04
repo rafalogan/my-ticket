@@ -28,11 +28,9 @@ export class AuthService {
 
 	async verifyCredentials(credentials: Credentials) {
 		const findDB = await this.userService.findUserByEmail(credentials.email);
-		onLog('user From Database: ', findDB);
 
 		existsOrError(findDB, 'User not found');
 		const user = new User(findDB);
-		onLog('user Entity: ', user);
 
 		if (isMatch(credentials, user)) {
 			const payload = new Payload(user);
