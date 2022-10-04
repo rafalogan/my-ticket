@@ -3,12 +3,13 @@ import jwt from 'jwt-simple';
 import httpStatus from 'http-status';
 
 import { UserService } from './user.service';
-import { ICredentials, ValidateTokenResponse } from 'src/repositories/types';
+import { ICredentials, IUser, ValidateTokenResponse } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, Payload } from 'src/repositories/models';
-import { existsOrError, isMatch, messages } from 'src/utils';
+import { existsOrError, isMatch, messages, ResponseException } from 'src/utils';
 import { ProfileService } from './profile.service';
 import { onLog } from 'src/core/handlers';
+import { error } from 'winston';
 
 export class AuthService {
 	constructor(private authsecret: string, private userService: UserService, private profileService: ProfileService) {}
@@ -38,13 +39,25 @@ export class AuthService {
 		}
 	}
 
-	async signupOnApp(user: User) {
-		const profile = await this.profileService.findProfileByName('client');
-		user.profileId = profile.id;
+	async signupOnApp(user: IUser, profile?: string) {
+		try {
+			const profileToId = await this.profileService.findProfileByName(profile?.toLowerCase() || 'cliente');
+
+			onLog('perfil', profileToId);
+			existsOrError(profileToId, messages.profile.error.notFound(profile?.toUpperCase() || 'cliente'));
+			await this.userService.validateNewUser(user);
+
+			user.profileId = profileToId.id;
+		} catch (err) {
+			return err;
+		}
+
+		const userToSave = this.userService.set(user);
+		onLog('User to save:', user);
 
 		return this.userService
-			.save(user)
-			.then(result => result)
+			.save(userToSave)
+			.then(result => (result.result.rowCount && result.result.rowCount !== 0 ? result : new ResponseException(messages.user.error.noSave)))
 			.catch(err => err);
 	}
 

@@ -12,15 +12,10 @@ export class UserService extends BaseService {
 		this.salt = data.salt;
 	}
 
-	async set(data: IUser, id?: number) {
+	set(data: IUser, id?: number) {
 		if (id) return new User(data, id);
 
-		try {
-			await this.validateNewUser(data);
-		} catch (error) {
-			return error;
-		}
-
+		data.password = hashString(data.password, this.salt);
 		return new User(data);
 	}
 
@@ -92,10 +87,10 @@ export class UserService extends BaseService {
 			.catch(err => err);
 	}
 
-	private async validateNewUser(data: IUser) {
-		const userFromDB = await this.findUserByEmail(data.email);
-
+	async validateNewUser(data: IUser) {
 		try {
+			const userFromDB = await this.findUserByEmail(data.email);
+
 			existsOrError(data.firstName, messages.user.error.requires('Nome'));
 			existsOrError(data.lastName, messages.user.error.requires('Sobrenome'));
 			existsOrError(data.email, messages.user.error.requires('E-mail'));
@@ -103,8 +98,6 @@ export class UserService extends BaseService {
 			existsOrError(data.confirmPassword, messages.user.error.requires('Confirmação de Senha'));
 			equalsOrError(data.password, data.confirmPassword, messages.user.error.noMatchPasswords);
 			notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
-
-			data.password = hashString(data.password, this.salt);
 		} catch (err) {
 			return err;
 		}

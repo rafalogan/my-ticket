@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError } from 'src/core/handlers';
-import { convertDataValues, DatabaseException, existsOrError } from 'src/utils';
+import { convertDataValues, DatabaseException, deleteField, existsOrError } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
 export abstract class BaseService extends CacheBaseService {
@@ -19,12 +19,11 @@ export abstract class BaseService extends CacheBaseService {
 	}
 
 	create(item: any) {
-		item.createdAt = new Date();
+		deleteField(item, 'id');
 		const data = convertDataValues(item);
-
 		return this.conn(this.table)
 			.insert(data)
-			.then((result: any) => ({ create: result.rowCount > 0, data, result }))
+			.then(result => result)
 			.catch(err => err);
 	}
 

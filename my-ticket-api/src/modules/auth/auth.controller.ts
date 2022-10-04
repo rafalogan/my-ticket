@@ -1,10 +1,9 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 
-import { User } from 'src/repositories/entities';
 import { AuthService } from 'src/services';
 import { onLog, ResponseHandle } from 'src/core/handlers';
-import { messages } from 'src/utils';
+import { messages, ResponseException } from 'src/utils';
 
 export class AuthController {
 	constructor(private authService: AuthService) {}
@@ -33,11 +32,14 @@ export class AuthController {
 	}
 
 	async signup(req: Request, res: Response) {
-		const user = new User(req.body);
-
+		const profile = req.query.profile as string;
 		this.authService
-			.signupOnApp(user)
-			.then(data => ResponseHandle.onSuccess({ res, data, message: messages.auth.success.signup }))
+			.signupOnApp(req.body, profile)
+			.then(data => {
+				return data instanceof ResponseException
+					? ResponseHandle.onError({ res, message: data.message, err: data, status: httpStatus.INTERNAL_SERVER_ERROR })
+					: ResponseHandle.onSuccess({ res, data, message: messages.auth.success.signup });
+			})
 			.catch(err => ResponseHandle.onError({ res, message: err.message, err, status: httpStatus.UNAUTHORIZED }));
 	}
 

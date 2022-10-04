@@ -1,6 +1,5 @@
 [
 	{
-		"id": 1,
 		"first_name": "User",
 		"last_name": "Root",
 		"cpf": "00000000000",
@@ -9,7 +8,6 @@
 		"profile_id": 1
 	},
 	{
-		"id": 2,
 		"first_name": "User",
 		"last_name": "admin",
 		"cpf": "111111111111",
@@ -18,7 +16,6 @@
 		"profile_id": 2
 	},
 	{
-		"id": 3,
 		"first_name": "User",
 		"last_name": "Vendedor",
 		"cpf": "222222222222",
@@ -27,7 +24,6 @@
 		"profile_id": 3
 	},
 	{
-		"id": 4,
 		"first_name": "User",
 		"last_name": "Cliente",
 		"cpf": "33333333333",

@@ -18,6 +18,7 @@ const user = {
 		noMatchCredentials: `Falha na autenticação verifique suas credenciais!`,
 		noMatchPasswords: `Falha a senha e a confirmação de senha devem ser iguais!`,
 		requires: (field: string) => `${field} é um campo obrigatório.`,
+		noSave: 'Não foi possivel criar o novo usuario!\nVerifique seus dados e tente novamente!',
 	},
 };
 
@@ -28,6 +29,9 @@ const profile = {
 	},
 	error: {
 		alreadyExists: `${upperCaseFirstLetter(alreadyExists)} um perfil com esse nome!`,
+		notFound: (value: number | string) => {
+			return typeof value === 'string' ? `Perfil ${value} não encontrado!` : `Perfil nº:${value} não encontrado!`;
+		},
 	},
 };
 
