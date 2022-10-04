@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import DefaultProfiles from 'database/assets/default-profiles.json';
+import DefaultProfiles from '../assets/default-profiles.json';
 
 export async function up(knex: Knex): Promise<void> {
 	return knex.batchInsert('profiles', DefaultProfiles);

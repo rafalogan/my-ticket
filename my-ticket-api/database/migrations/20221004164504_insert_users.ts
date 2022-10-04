@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-import DefaultUsers from 'database/assets/default-users.json';
+import DefaultUsers from '../assets/default-users.json';
 import { hashString } from 'src/utils';
 
 export async function up(knex: Knex): Promise<void> {

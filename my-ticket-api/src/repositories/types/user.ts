@@ -1,5 +1,5 @@
 import { BaseServiceOptions } from 'src/repositories/types/base';
-import { IProfile } from './profile';
+import { CustomProfile, IProfile } from './profile';
 
 export interface IUser {
 	id?: number;
@@ -18,7 +18,7 @@ export interface UserServiceOptions extends BaseServiceOptions {
 }
 
 export interface IUserModel extends IUser {
-	profile: IProfile;
+	profile: CustomProfile;
 }
 
 export interface UpdatePasswordOptions {
@@ -26,4 +26,17 @@ export interface UpdatePasswordOptions {
 	oldPassword: string;
 	password: string;
 	confirmPassword: string;
+}
+
+export interface CustomUserModel {
+	id: number;
+	firstName: string;
+	lastName: string;
+	cpf: string;
+	email: string;
+	password: string;
+	profileId: number;
+	deletedAt?: Date;
+	profileName: string;
+	profileDescription: string;
 }

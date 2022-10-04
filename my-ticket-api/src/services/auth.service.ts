@@ -8,6 +8,7 @@ import { User } from 'src/repositories/entities';
 import { Credentials, Payload } from 'src/repositories/models';
 import { existsOrError, isMatch, messages } from 'src/utils';
 import { ProfileService } from './profile.service';
+import { onLog } from 'src/core/handlers';
 
 export class AuthService {
 	constructor(private authsecret: string, private userService: UserService, private profileService: ProfileService) {}
@@ -27,8 +28,11 @@ export class AuthService {
 
 	async verifyCredentials(credentials: Credentials) {
 		const findDB = await this.userService.findUserByEmail(credentials.email);
+		onLog('user From Database: ', findDB);
+
+		existsOrError(findDB, 'User not found');
 		const user = new User(findDB);
-		existsOrError(user, 'User not found');
+		onLog('user Entity: ', user);
 
 		if (isMatch(credentials, user)) {
 			const payload = new Payload(user);

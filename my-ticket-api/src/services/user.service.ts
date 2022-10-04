@@ -1,8 +1,9 @@
-import { IUser, IUserModel, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
+import { CustomUserModel, IUser, IUserModel, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import { deleteField, equalsOrError, existsOrError, hashString, isMatchOrError, messages, notExistisOrError } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
+import { onLog } from 'src/core/handlers';
 
 export class UserService extends BaseService {
 	salt: number;
@@ -57,15 +58,12 @@ export class UserService extends BaseService {
 	}
 
 	findUserByEmail(email: string) {
-		return this.conn(this.table)
-			.select(...this.fields)
-			.where({ email })
-			.join('profiles', function () {
-				this.on('proeiles.id', '=', 'users.profile_id');
-			})
-			.as('profile')
+		return this.conn({ u: this.table, p: 'profiles' })
+			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+			.whereRaw('u.email = ?', [email])
+			.andWhereRaw('p.id = u.profile_id')
 			.first()
-			.then((user: IUserModel) => new UserModel(user))
+			.then((user: CustomUserModel) => new UserModel(user))
 			.catch(err => err);
 	}
 
