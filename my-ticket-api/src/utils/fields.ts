@@ -8,3 +8,5 @@ export const userFields = [
 	'profile_id as profileId',
 	'deleted_at as deletedAt',
 ];
+
+export const profileFields = ['id', 'name', 'description', 'active'];
