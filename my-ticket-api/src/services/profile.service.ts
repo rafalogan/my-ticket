@@ -1,8 +1,8 @@
-import { BaseService } from 'src/core/service';
 import { BaseServiceOptions, IProfile } from 'src/repositories/types';
 import { Profile, User } from 'src/repositories/entities';
 import { existsOrError, messages, notExistisOrError } from 'src/utils';
 import { UserService } from 'src/services/user.service';
+import { BaseService } from 'src/core/abstracts';
 
 export class ProfileService extends BaseService {
 	constructor(data: BaseServiceOptions, private userService: UserService) {

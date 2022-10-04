@@ -9,7 +9,7 @@ import { messages } from 'src/utils';
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
-	async signing(req: Request, res: Response) {
+	async signin(req: Request, res: Response) {
 		try {
 			this.authService.validateCredentials(req.body);
 		} catch (err: any) {

@@ -1,6 +1,8 @@
 import { Credentials, UserModel } from 'src/repositories/models';
 import { Profile, User } from '../entities';
 import { IProfile } from 'src/repositories/types/profile';
+import { RouteOptions } from 'src/repositories/types/route';
+import { AuthService } from 'src/services';
 
 export interface ICredentials {
 	email: string;
@@ -25,4 +27,8 @@ export interface IPayload {
 	profile: IProfile | Profile;
 	iat: number;
 	exp: number;
+}
+
+export interface AuthModuleOptions extends RouteOptions {
+	service: AuthService;
 }

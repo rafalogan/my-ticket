@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-import { CacheBaseService } from 'src/core/service/cache-base.service';
+import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError } from 'src/core/handlers';
 import { convertDataValues, DatabaseException, existsOrError } from 'src/utils';

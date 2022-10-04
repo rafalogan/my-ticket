@@ -1,8 +1,8 @@
-import { BaseService } from 'src/core/service';
 import { IUser, IUserModel, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import { deleteField, equalsOrError, existsOrError, hashString, isMatchOrError, messages, notExistisOrError } from 'src/utils';
+import { BaseService } from 'src/core/abstracts';
 
 export class UserService extends BaseService {
 	salt: number;
