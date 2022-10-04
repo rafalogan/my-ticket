@@ -10,7 +10,8 @@ export class ResponseHandle {
 
 	static onSuccess(options: SucessResponseParams) {
 		const { res, data, status, message, stack } = options;
-		if (message) res.status(status || this.status.OK).json({ data, status: status || this.status.OK, message });
+
+		if (message) return res.status(status || this.status.OK).json({ data, status: status || this.status.OK, message });
 		return res.status(status || this.status.OK).json(data);
 	}
 

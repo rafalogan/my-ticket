@@ -8,6 +8,7 @@ import { User } from 'src/repositories/entities';
 import { Credentials, Payload } from 'src/repositories/models';
 import { existsOrError, isMatch, messages } from 'src/utils';
 import { ProfileService } from './profile.service';
+import { onLog } from 'src/core/handlers';
 
 export class AuthService {
 	constructor(private authsecret: string, private userService: UserService, private profileService: ProfileService) {}
@@ -58,8 +59,8 @@ export class AuthService {
 		const valid = payload?.exp ? new Date(payload.exp * 1000) > new Date() : false;
 		const status = valid ? httpStatus.OK : httpStatus.UNAUTHORIZED;
 
-		existsOrError(token, 'Token is not valid or not found.');
-		existsOrError(payload, 'Payload is not found.');
+		existsOrError(token, messages.auth.error.notFoundToken);
+		existsOrError(payload, messages.auth.error.notFoundPayload);
 
 		return valid
 			? { valid, status, message: messages.auth.success.tokenIsValid, token }

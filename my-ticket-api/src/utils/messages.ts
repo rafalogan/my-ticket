@@ -41,6 +41,8 @@ const auth = {
 		requires: 'Os campos e-mail e senha são obrigatórios, verifique se ambos estão preenchidos corretamente.',
 		Unauthorized: 'Login não autorizado! Verrifique seu  e-maul e /ou senha.',
 		tokenNoValid: 'Token Invalido.',
+		notFoundToken: 'Token não encontrado!',
+		notFoundPayload: 'Payload não encontrado!',
 	},
 };
 

@@ -44,7 +44,7 @@ export class AuthController {
 	validateToken(req: Request, res: Response) {
 		this.authService
 			.tokenIsValid(req)
-			.then(result => ResponseHandle.onSuccess({ res, data: result, message: result.message, status: result.status }))
+			.then(result => ResponseHandle.onSuccess({ res, data: result }))
 			.catch(err => ResponseHandle.onError({ res, message: err.message, err, status: httpStatus.UNAUTHORIZED }));
 	}
 }
