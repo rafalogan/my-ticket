@@ -2,6 +2,8 @@ import { BaseServiceOptions } from 'src/repositories/types/base';
 import { CustomProfile, IProfile } from './profile';
 import { RouteOptions } from './route';
 import { UserService } from 'src/services';
+import { User } from '../entities';
+import { Pagination } from 'src/repositories/models';
 
 export interface IUser {
 	id?: number;
@@ -45,4 +47,9 @@ export interface CustomUserModel {
 
 export interface UserModuleOptions extends RouteOptions {
 	service: UserService;
+}
+
+export interface Users {
+	data: IUser[] | User[];
+	pagination: Pagination;
 }

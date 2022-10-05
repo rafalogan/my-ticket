@@ -4,5 +4,5 @@ import { IAuthConfig } from 'src/repositories/types/auth';
 
 export interface RouteOptions {
 	app: Application;
-	auth?: IAuthConfig;
+	auth?: AuthConfig;
 }

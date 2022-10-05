@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { onError } from 'src/core/handlers';
+import { onError, onLog } from 'src/core/handlers';
 import { convertDataValues, DatabaseException, deleteField, existsOrError } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
@@ -89,10 +89,12 @@ export abstract class BaseService extends CacheBaseService {
 	}
 
 	protected async findAll(options?: ReadOptions): Promise<any> {
-		const page = options?.page ?? 1;
-		const limit = options?.limit ?? 10;
+		const page = options?.page || 1;
+		const limit = options?.limit || 10;
 		const count = await this.countById();
 		const pagination = new Pagination({ page, count, limit });
+
+		onLog('offset', page * limit - limit);
 
 		return this.conn(this.table)
 			.select(...(options?.fields ?? this.fields))

@@ -17,11 +17,11 @@ export class AppConfig {
 		private env: string,
 		private corsOptions: ICorsOptions,
 		private logger: Logger,
-		private auth: AuthConfig,
+		private authConfig: AuthConfig,
 		private services: ServicesFactory
 	) {
 		this._express = express();
-		this.modules = new ModulesFactory(this.express, this.auth, this.services);
+		this.modules = new ModulesFactory(this.express, this.authConfig, this.services);
 		this.configExpress();
 	}
 

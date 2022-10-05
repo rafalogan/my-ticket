@@ -4,9 +4,9 @@ import { IAuthConfig } from 'src/repositories/types';
 
 export abstract class Routes {
 	protected app: Application;
-	protected auth?: IAuthConfig;
+	protected auth?: AuthConfig;
 
-	protected constructor(app: Application, auth?: IAuthConfig) {
+	protected constructor(app: Application, auth?: AuthConfig) {
 		this.app = app;
 		this.auth = auth;
 	}

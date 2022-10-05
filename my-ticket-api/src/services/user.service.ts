@@ -1,4 +1,4 @@
-import { CustomUserModel, IUser, IUserModel, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
+import { CustomUserModel, IUser, IUserModel, ReadOptions, UpdatePasswordOptions, Users, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
@@ -13,6 +13,7 @@ import {
 } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
 import { onLog } from 'src/core/handlers';
+import { read } from 'fs';
 
 export class UserService extends BaseService {
 	salt: number;
@@ -24,7 +25,7 @@ export class UserService extends BaseService {
 	set(data: IUser, id?: number) {
 		if (id) return new User(data, id);
 
-		data.password = hashString(data.password, this.salt);
+		if (data.password) data.password = hashString(data.password, this.salt);
 		return new User(data);
 	}
 
@@ -41,6 +42,27 @@ export class UserService extends BaseService {
 				if (result.severity === 'ERROR') return new ResponseException(messages.user.error.noSave, result);
 				return { result, message: messages.user.success.save(user), user: this.userNoPassword(user) };
 			})
+			.catch(err => err);
+	}
+
+	read(options?: ReadOptions) {
+		const id = Number(options?.id);
+
+		if (this.activeCache) return this.checkUserCache(options);
+		return id
+			? this.findUserById(id)
+			: this.findAll(options)
+					.then((value: Users) => this.setUsers(value))
+					.catch(err => err);
+	}
+
+	findUserById(id: number) {
+		return this.conn({ u: this.table, p: 'profiles' })
+			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+			.whereRaw('u.id = ?', [id])
+			.andWhereRaw('p.id = u.profile_id')
+			.first()
+			.then((user: CustomUserModel) => new UserModel(user))
 			.catch(err => err);
 	}
 
@@ -117,8 +139,32 @@ export class UserService extends BaseService {
 	}
 
 	private userNoPassword(user: User) {
-		const data = Object.create(user);
+		deleteField(user, 'password');
 
-		return deleteField(data, 'password');
+		return user;
+	}
+
+	private checkUserCache(options?: ReadOptions) {
+		const id = Number(options?.id);
+
+		return id
+			? this.findCache([`GET:content`, this.read.name, `${id}`], () => this.findUserById(id), options?.cacheTime || this.defaultTime)
+					.then((value: CustomUserModel) => new UserModel(value))
+					.catch(err => err)
+			: this.findCache(['GET:allContent', this.read.name], () => this.findAll(options), options?.cacheTime || this.defaultTime)
+					.then((value: IUser[]) =>
+						value
+							.map(u => new User(u))
+							.map(u => {
+								deleteField(u, 'password');
+								return u;
+							})
+					)
+					.catch(err => err);
+	}
+
+	private setUsers(users: Users) {
+		users.data = users.data.map(user => new User(user)).map(this.userNoPassword);
+		return users;
 	}
 }
