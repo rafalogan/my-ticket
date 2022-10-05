@@ -10,7 +10,7 @@ export class ProfileModule extends CommonModule {
 	constructor(options: ProfileModuleOptions) {
 		super();
 
-		this.profileController = new ProfileController(options.services);
+		this.profileController = new ProfileController(options.service);
 		this.profileRoute = new ProfileRoute({ ...options }, this.profileController);
 	}
 

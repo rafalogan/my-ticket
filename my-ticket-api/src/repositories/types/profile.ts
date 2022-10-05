@@ -16,5 +16,5 @@ export interface CustomProfile {
 }
 
 export interface ProfileModuleOptions extends RouteOptions {
-	services: ProfileService;
+	service: ProfileService;
 }
