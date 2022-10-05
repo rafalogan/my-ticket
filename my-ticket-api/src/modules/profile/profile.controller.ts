@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { Controller } from 'src/core/abstracts';
 import { ProfileService } from 'src/services';
 import { messages, ResponseException, setReadOptions } from 'src/utils';
-import { ResponseHandle } from 'src/core/handlers';
+import { onLog, ResponseHandle } from 'src/core/handlers';
 
 export class ProfileController extends Controller {
 	constructor(private profileService: ProfileService) {
@@ -37,6 +37,7 @@ export class ProfileController extends Controller {
 
 	list(req: Request, res: Response) {
 		const options = setReadOptions(req);
+		onLog('options', options);
 
 		this.profileService
 			.read(options)
