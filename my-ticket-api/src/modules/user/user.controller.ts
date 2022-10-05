@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { UserService } from 'src/services';
-import { ResponseHandle } from 'src/core/handlers';
-import { messages, ResponseException, setReadOptions } from 'src/utils';
+import { onLog, ResponseHandle } from 'src/core/handlers';
+import { deleteField, messages, ResponseException, setReadOptions } from 'src/utils';
 
 export class UserController extends Controller {
 	constructor(private userService: UserService) {
@@ -19,6 +19,7 @@ export class UserController extends Controller {
 		}
 
 		const user = this.userService.set(req.body);
+		onLog('user to save', user);
 
 		this.userService
 			.save(user)
@@ -54,6 +55,7 @@ export class UserController extends Controller {
 	}
 
 	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
+		if (data.password) deleteField(data, 'password');
 		if (data instanceof ResponseException) return ResponseHandle.onError({ res, message: data.message, err: data, status });
 
 		return ResponseHandle.onSuccess({ res, data });

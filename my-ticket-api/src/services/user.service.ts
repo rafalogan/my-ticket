@@ -37,11 +37,16 @@ export class UserService extends BaseService {
 		}
 
 		return this.create(user)
-			.then(result => {
-				onLog('result', result);
-				if (result.severity === 'ERROR') return new ResponseException(messages.user.error.noSave, result);
-				return { result, message: messages.user.success.save(user), user: this.userNoPassword(user) };
-			})
+			.then(result =>
+				result.severity === 'ERROR'
+					? new ResponseException(messages.user.error.noSave, result)
+					: {
+							commad: result.command,
+							rowCount: result.rowCount,
+							message: messages.user.success.save(user),
+							user: this.userNoPassword(user),
+					  }
+			)
 			.catch(err => err);
 	}
 

@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { OrderOptions, ReadOptions } from 'src/repositories/types';
+import { OrderOptions, ReadOptions, Users } from 'src/repositories/types';
+import { User } from 'src/repositories/entities';
+import { UserModel } from 'src/repositories/models';
 // import { FileEntity } from 'src/repositories/types';
 // import { FileMedia } from 'src/repositories/entities';
 
