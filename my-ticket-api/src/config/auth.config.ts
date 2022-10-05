@@ -23,10 +23,7 @@ export class AuthConfig {
 
 		passport.use(strategy);
 		return {
-			authenticate: () => {
-				onLog('authenticate');
-				return passport.authenticate('jwt', { session });
-			},
+			authenticate: () => passport.authenticate('jwt', { session }),
 		};
 	}
 
