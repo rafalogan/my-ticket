@@ -94,8 +94,6 @@ export abstract class BaseService extends CacheBaseService {
 		const count = await this.countById();
 		const pagination = new Pagination({ page, count, limit });
 
-		onLog('offset', page * limit - limit);
-
 		return this.conn(this.table)
 			.select(...(options?.fields ?? this.fields))
 			.limit(limit)

@@ -32,8 +32,6 @@ export class AuthConfig {
 
 	verify(payload: Payload, done: VerifiedCallback) {
 		const id = Number(payload.id);
-
-		onLog('id to verify', id);
 		this.userService
 			.read({ id })
 			.then(data => done(null, data instanceof UserModel ? this.setUserNoPass(data) : false))

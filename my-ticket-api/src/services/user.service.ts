@@ -24,8 +24,8 @@ export class UserService extends BaseService {
 
 	set(data: IUser, id?: number) {
 		if (id) return new User(data, id);
-
 		if (data.password) data.password = hashString(data.password, this.salt);
+
 		return new User(data);
 	}
 
