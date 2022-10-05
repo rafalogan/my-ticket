@@ -1,3 +1,6 @@
+import { ProfileService } from 'src/services';
+import { RouteOptions } from 'src/repositories/types/route';
+
 export interface IProfile {
 	id?: number;
 	name: string;
@@ -10,4 +13,8 @@ export interface CustomProfile {
 	name: string;
 	description: string;
 	active?: boolean;
+}
+
+export interface ProfileModuleOptions extends RouteOptions {
+	services: ProfileService;
 }
