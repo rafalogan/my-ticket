@@ -1,7 +1,16 @@
 import { CustomUserModel, IUser, IUserModel, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
-import { deleteField, equalsOrError, existsOrError, hashString, isMatchOrError, messages, notExistisOrError } from 'src/utils';
+import {
+	deleteField,
+	equalsOrError,
+	existsOrError,
+	hashString,
+	isMatchOrError,
+	messages,
+	notExistisOrError,
+	ResponseException,
+} from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
 import { onLog } from 'src/core/handlers';
 
@@ -27,7 +36,11 @@ export class UserService extends BaseService {
 		}
 
 		return this.create(user)
-			.then(result => ({ result, message: messages.user.success.save(user), user: this.userNoPassword(user) }))
+			.then(result => {
+				onLog('result', result);
+				if (result.severity === 'ERROR') return new ResponseException(messages.user.error.noSave, result);
+				return { result, message: messages.user.success.save(user), user: this.userNoPassword(user) };
+			})
 			.catch(err => err);
 	}
 

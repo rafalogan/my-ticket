@@ -1,6 +1,8 @@
+import { Request, Response } from 'express';
+
 export abstract class Controller {
-	abstract save?(): void;
-	abstract edit?(): void;
-	abstract list?(): void;
-	abstract remove?(): void;
+	abstract save(req: Request, res: Response): void;
+	abstract edit(req: Request, res: Response): void;
+	abstract list(req: Request, res: Response): void;
+	abstract remove(req: Request, res: Response): void;
 }

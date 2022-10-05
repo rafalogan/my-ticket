@@ -18,7 +18,9 @@ const user = {
 		noMatchCredentials: `Falha na autenticação verifique suas credenciais!`,
 		noMatchPasswords: `Falha a senha e a confirmação de senha devem ser iguais!`,
 		requires: (field: string) => `${field} é um campo obrigatório.`,
-		noSave: 'Não foi possivel criar o novo usuario!\nVerifique seus dados e tente novamente!',
+		noSave: 'Não foi possivel criar o novo usuário!\nVerifique seus dados e tente novamente!',
+		notFound: 'Usuário(s) não encontrado(s).',
+		noDelete: (id: number) => `Não foi possivel deletar o usuário nº:${id}!`,
 	},
 };
 
@@ -43,7 +45,7 @@ const auth = {
 
 	error: {
 		requires: 'Os campos e-mail e senha são obrigatórios, verifique se ambos estão preenchidos corretamente.',
-		Unauthorized: 'Login não autorizado! Verrifique seu  e-maul e /ou senha.',
+		Unauthorized: 'Login não autorizado! Verrifique seu e-maul e /ou senha.',
 		tokenNoValid: 'Token Invalido.',
 		notFoundToken: 'Token não encontrado!',
 		notFoundPayload: 'Payload não encontrado!',

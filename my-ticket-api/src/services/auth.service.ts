@@ -44,7 +44,7 @@ export class AuthService {
 			const profileToId = await this.profileService.findProfileByName(profile?.toLowerCase() || 'cliente');
 
 			onLog('perfil', profileToId);
-			existsOrError(profileToId, messages.profile.error.notFound(profile?.toUpperCase() || 'cliente'));
+			existsOrError(profileToId, messages.profile.error.notFound(profile?.toLowerCase() || 'cliente'));
 			await this.userService.validateNewUser(user);
 
 			user.profileId = profileToId.id;
@@ -57,7 +57,7 @@ export class AuthService {
 
 		return this.userService
 			.save(userToSave)
-			.then(result => (result.result.rowCount && result.result.rowCount !== 0 ? result : new ResponseException(messages.user.error.noSave)))
+			.then(result => result)
 			.catch(err => err);
 	}
 

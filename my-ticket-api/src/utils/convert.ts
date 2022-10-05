@@ -1,4 +1,6 @@
 import bcrypt from 'bcrypt';
+import { Request } from 'express';
+import { OrderOptions, ReadOptions } from 'src/repositories/types';
 // import { FileEntity } from 'src/repositories/types';
 // import { FileMedia } from 'src/repositories/entities';
 
@@ -43,6 +45,15 @@ export const clearTimestampFields = (data: any) => {
 	Reflect.deleteProperty(data, 'updatedAt');
 
 	return data;
+};
+
+export const setReadOptions = (req: Request, cacheTime?: number, fields?: string[]): ReadOptions => {
+	const id = Number(req.params.id);
+	const page = Number(req.query.page);
+	const limit = Number(req.query.limit);
+	const order: OrderOptions = { by: req.query.order as string, type: req.query.orderBy as string };
+
+	return { id, page, limit, order, cacheTime, fields };
 };
 
 export const setFieldToDate = (field?: string | Date | number) => (field ? new Date(field) : undefined);

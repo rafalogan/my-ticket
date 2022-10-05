@@ -1,5 +1,7 @@
 import { BaseServiceOptions } from 'src/repositories/types/base';
 import { CustomProfile, IProfile } from './profile';
+import { RouteOptions } from './route';
+import { UserService } from 'src/services';
 
 export interface IUser {
 	id?: number;
@@ -39,4 +41,8 @@ export interface CustomUserModel {
 	deletedAt?: Date;
 	profileName: string;
 	profileDescription: string;
+}
+
+export interface UserModuleOptions extends RouteOptions {
+	service: UserService;
 }

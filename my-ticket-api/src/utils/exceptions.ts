@@ -8,8 +8,9 @@ export class DatabaseException extends Error {
 
 export class ResponseException extends Error {
 	name = 'ResponseException';
+	error: any;
 
-	constructor(message: string) {
+	constructor(message: string, error?: any) {
 		super(message);
 	}
 }
