@@ -56,7 +56,7 @@ export class UserController extends Controller {
 
 	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
 		if (data.password) deleteField(data, 'password');
-		if (data instanceof ResponseException) return ResponseHandle.onError({ res, message: data.message, err: data, status });
+		if (data instanceof ResponseException) return ResponseHandle.onError({ res, message: data.message, err: data.error, status });
 
 		return ResponseHandle.onSuccess({ res, data });
 	}

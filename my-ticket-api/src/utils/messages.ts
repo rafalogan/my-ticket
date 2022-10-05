@@ -19,6 +19,7 @@ const user = {
 		noMatchPasswords: `Falha a senha e a confirmação de senha devem ser iguais!`,
 		requires: (field: string) => `${field} é um campo obrigatório.`,
 		noSave: 'Não foi possivel criar o novo usuário!\nVerifique seus dados e tente novamente!',
+		noEdit: 'Desculpe, mas as suas alterações não foram salvas.\nTente novamente mais tarde!',
 		notFound: 'Usuário(s) não encontrado(s).',
 		noDelete: (id: number) => `Não foi possivel deletar o usuário nº:${id}!`,
 	},

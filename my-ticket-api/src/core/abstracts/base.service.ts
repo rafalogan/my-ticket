@@ -33,7 +33,6 @@ export abstract class BaseService extends CacheBaseService {
 	}
 
 	async update(id: number, values: any): Promise<any> {
-		values.updatedAt = new Date();
 		const data = convertDataValues(values);
 
 		if (this.activeCache) await this.clearCache(id);

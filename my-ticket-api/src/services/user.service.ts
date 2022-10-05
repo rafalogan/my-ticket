@@ -32,7 +32,16 @@ export class UserService extends BaseService {
 	save(user: User) {
 		if (user.id) {
 			return this.update(user.id, user)
-				.then(result => ({ result, id: user.id, message: messages.user.success.update(user), user }))
+				.then(result =>
+					result.severity === 'ERROR'
+						? new ResponseException(messages.user.error.noEdit, result)
+						: {
+								id: user.id,
+								edit: result === 1,
+								message: messages.user.success.update(user),
+								user,
+						  }
+				)
 				.catch(err => err);
 		}
 

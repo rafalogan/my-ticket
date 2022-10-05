@@ -12,6 +12,8 @@ export class ResponseException extends Error {
 
 	constructor(message: string, error?: any) {
 		super(message);
+
+		this.error = error;
 	}
 }
 
