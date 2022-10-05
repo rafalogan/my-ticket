@@ -3,22 +3,14 @@ import { Profile, User } from 'src/repositories/entities';
 import { existsOrError, messages, notExistisOrError } from 'src/utils';
 import { UserService } from 'src/services/user.service';
 import { BaseService } from 'src/core/abstracts';
-import { onLog } from 'src/core/handlers';
 
 export class ProfileService extends BaseService {
 	constructor(data: BaseServiceOptions, private userService: UserService) {
 		super(data);
 	}
 
-	async set(data: IProfile, id?: number) {
+	set(data: IProfile, id?: number) {
 		if (id) return new Profile(data, id);
-
-		try {
-			await this.profileValidate(data);
-		} catch (err) {
-			return err;
-		}
-
 		return new Profile(data);
 	}
 
@@ -64,7 +56,7 @@ export class ProfileService extends BaseService {
 			.catch(err => err);
 	}
 
-	private async profileValidate(data: IProfile) {
+	async profileValidate(data: IProfile) {
 		try {
 			const profileFromDb = await this.findProfileByName(data.name);
 
