@@ -66,7 +66,7 @@ export class UserService extends BaseService {
 		return id
 			? this.findUserById(id)
 			: this.findAll(options)
-					.then((value: Users) => this.setUsers(value))
+					.then((value: Users | DatabaseException) => (value instanceof DatabaseException ? value : this.setUsers(value)))
 					.catch(err => err);
 	}
 
@@ -76,7 +76,9 @@ export class UserService extends BaseService {
 			.whereRaw('u.id = ?', [id])
 			.andWhereRaw('p.id = u.profile_id')
 			.first()
-			.then((user: CustomUserModel) => new UserModel(user))
+			.then((user: CustomUserModel | any) =>
+				!('id' in user) ? new DatabaseException(messages.user.error.notFound, user) : new UserModel(user)
+			)
 			.catch(err => err);
 	}
 
