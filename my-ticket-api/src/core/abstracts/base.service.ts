@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError, onLog } from 'src/core/handlers';
-import { convertDataValues, DatabaseException, deleteField, existsOrError } from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
 export abstract class BaseService extends CacheBaseService {
@@ -40,17 +40,19 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.update(data)
 			.where({ id })
-			.then(result => result)
+			.then((result: any) =>
+				result !== 1 ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
+			)
 			.catch(err => err);
 	}
 
-	async delete(id: any): Promise<any> {
+	async delete(id: number): Promise<any> {
 		const element = await this.findOneById(id);
 
 		try {
 			existsOrError(element, `The register nº ${id} not find in table: ${this.table}`);
 		} catch (error: any) {
-			throw new DatabaseException(error.message);
+			throw new DatabaseException(error.message, element);
 		}
 
 		if (this.activeCache) await this.clearCache(id);
@@ -58,7 +60,9 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.where({ id })
 			.del()
-			.then(async result => ({ deleted: result > 0, element }))
+			.then(result =>
+				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel)
+			)
 			.catch(err => err);
 	}
 
@@ -83,8 +87,8 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
 			.first()
-			.then(item => item)
-			.catch(err => onError(`Find register failed in ${this.table}`, err));
+			.then(item => (item.severity === 'ERROR' ? new DatabaseException(messages.noRead, item) : item))
+			.catch(err => err);
 	}
 
 	protected async findAll(options?: ReadOptions): Promise<any> {
@@ -98,8 +102,8 @@ export abstract class BaseService extends CacheBaseService {
 			.limit(limit)
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
-			.then((data: any[]) => ({ data, pagination }))
-			.catch(err => onError(`Find register fail in table: ${this.table}`, err));
+			.then(data => (!Array.isArray(data) ? new DatabaseException(messages.noRead, data) : { data, pagination }))
+			.catch(err => err);
 	}
 
 	protected checkCache(options?: ReadOptions) {

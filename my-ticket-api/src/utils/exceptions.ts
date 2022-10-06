@@ -1,8 +1,11 @@
 export class DatabaseException extends Error {
 	name = 'DatabaseException';
+	error: any;
 
-	constructor(message: string) {
+	constructor(message: string, error?: any) {
 		super(`${message}: in Database`);
+
+		this.error = error;
 	}
 }
 

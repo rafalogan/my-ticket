@@ -3,6 +3,13 @@ import { upperCaseFirstLetter } from 'src/utils/convert-date';
 
 const alreadyExists = 'já existe';
 const requires = (field: string) => `${field} é um campo obrigatório.`;
+const noSave = `Não foi possivel criar novo registro.`;
+const noEdit = `Não foi possivel editar registro.`;
+const noRead = `Não foi possivel encontar registro(s).`;
+const noDel = `Não foi possivel apagar registro.`;
+const successSave = `Novo Registro Criado com sucesso.`;
+const successEdit = `Registro Editado com sucesso.`;
+const successDel = `Registro Apagado com sucesso.`;
 
 const user = {
 	alreadyExists: (email: string) => `${upperCaseFirstLetter(alreadyExists)} usuário resistrado com eses e-mail: ${email}`,
@@ -35,6 +42,10 @@ const profile = {
 		notFound: (value: number | string) => {
 			return typeof value === 'string' ? `Perfil ${value} não encontrado!` : `Perfil nº:${value} não encontrado!`;
 		},
+		noSave: (value: string) => `Perfil ${value} não pode ser salvo!`,
+		noEdit: (id: number) => `Não foi possivel editar nº:${id}!`,
+		notList: 'Não foi possivel encontar Perfil(is) não encontado(os)!',
+		noDel: (id: number) => `Não foi possivel apagar o perfil nº:${id}!`,
 	},
 };
 
@@ -55,6 +66,13 @@ const auth = {
 
 export const messages = {
 	alreadyExists,
+	noSave,
+	noEdit,
+	noRead,
+	noDel,
+	successSave,
+	successEdit,
+	successDel,
 	requires,
 	user,
 	profile,
