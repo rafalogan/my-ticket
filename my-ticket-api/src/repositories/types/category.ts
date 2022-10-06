@@ -1,3 +1,5 @@
+import { CategoryModel } from 'src/repositories/models';
+
 export interface ICategory {
 	id?: number;
 	name: string;
@@ -6,6 +8,6 @@ export interface ICategory {
 	parentId?: number;
 }
 
-export interface CategoryModel extends ICategory {
-	subCategories: CategoryModel[];
+export interface ICategoryModel extends ICategory {
+	subCategories: ICategoryModel[] | CategoryModel[];
 }

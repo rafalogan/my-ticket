@@ -1,7 +1,8 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, CategoryModel, ICategory, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, ICategory, ReadOptions } from 'src/repositories/types';
 import { Category } from 'src/repositories/entities';
 import { categoryWithChildren, DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate } from 'src/utils';
+import { CategoryModel } from 'src/repositories/models';
 
 export class CategoryService extends BaseService {
 	constructor(data: BaseServiceOptions) {
@@ -30,7 +31,7 @@ export class CategoryService extends BaseService {
 	findOneById(id: number) {
 		return this.conn
 			.raw(categoryWithChildren, [id])
-			.then(result => result[0] as CategoryModel)
+			.then(result => new CategoryModel(result[0]) || {})
 			.catch(err => err);
 	}
 
