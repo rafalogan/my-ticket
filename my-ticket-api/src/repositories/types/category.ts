@@ -5,3 +5,7 @@ export interface ICategory {
 	url?: string;
 	parentId?: number;
 }
+
+export interface CategoryModel extends ICategory {
+	subCategories: CategoryModel[];
+}

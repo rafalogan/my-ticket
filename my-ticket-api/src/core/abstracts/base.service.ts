@@ -1,10 +1,11 @@
 import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
-import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, IProfile, ReadOptions } from 'src/repositories/types';
 import { onError, onLog } from 'src/core/handlers';
 import { convertDataValues, deleteField, existsOrError, messages, DatabaseException } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
+import { Profile } from 'src/repositories/entities';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -32,7 +33,7 @@ export abstract class BaseService extends CacheBaseService {
 		return options?.id ? this.findOneById(Number(options.id), options) : this.findAll(options);
 	}
 
-	async update(id: number, values: any): Promise<any> {
+	async update(id: number, values: any) {
 		const data = convertDataValues(values);
 
 		if (this.activeCache) await this.clearCache(id);
@@ -66,6 +67,15 @@ export abstract class BaseService extends CacheBaseService {
 			.catch(err => err);
 	}
 
+	protected findOneByWhere(column: string, value: any) {
+		return this.conn(this.table)
+			.select(...this.fields)
+			.where(column, value)
+			.first()
+			.then(result => (result ? result : {}))
+			.catch(err => err);
+	}
+
 	protected async countById() {
 		return this.conn(this.table)
 			.count({ count: 'id' })
@@ -82,7 +92,7 @@ export abstract class BaseService extends CacheBaseService {
 		return this.deleteCache(['GET:allContent', this.read.name]);
 	}
 
-	protected findOneById(id: number, options?: ReadOptions) {
+	findOneById(id: number, options?: ReadOptions) {
 		return this.conn(this.table)
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
@@ -91,7 +101,7 @@ export abstract class BaseService extends CacheBaseService {
 			.catch(err => err);
 	}
 
-	protected async findAll(options?: ReadOptions): Promise<any> {
+	async findAll(options?: ReadOptions): Promise<any> {
 		const page = options?.page || 1;
 		const limit = options?.limit || 10;
 		const count = await this.countById();

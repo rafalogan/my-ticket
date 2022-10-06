@@ -4,7 +4,7 @@ import TableBuilder = Knex.TableBuilder;
 export async function up(knex: Knex): Promise<void> {
 	return knex.schema.createTable('categories', (table: TableBuilder) => {
 		table.increments('id').primary();
-		table.string('name', 50).notNullable();
+		table.string('name', 50).notNullable().unique();
 		table.string('description', 1000).nullable();
 		table.string('url').nullable();
 		table.boolean('status').notNullable().defaultTo(true);
