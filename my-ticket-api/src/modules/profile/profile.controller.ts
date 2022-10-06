@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { ProfileService } from 'src/services';
-import { DatabaseException, messages, ResponseException, setReadOptions } from 'src/utils';
-import { onLog, ResponseHandle } from 'src/core/handlers';
+import { messages, responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
+import { onLog } from 'src/core/handlers';
 
 export class ProfileController extends Controller {
 	constructor(private profileService: ProfileService) {
@@ -14,6 +14,7 @@ export class ProfileController extends Controller {
 	async save(req: Request, res: Response) {
 		try {
 			await this.profileService.profileValidate(req.body);
+			onLog('validate', await this.profileService.profileValidate(req.body));
 		} catch (err) {
 			return this.response(res, err, httpStatus.BAD_REQUEST);
 		}
@@ -23,7 +24,7 @@ export class ProfileController extends Controller {
 		this.profileService
 			.save(profile)
 			.then(result => this.response(res, result))
-			.catch(err => ResponseHandle.onError({ res, err, message: messages.profile.error.noSave(profile.name) }));
+			.catch(err => responseApiError({ res, err, message: messages.profile.error.noSave(profile.name) }));
 	}
 
 	async edit(req: Request, res: Response) {
@@ -32,7 +33,7 @@ export class ProfileController extends Controller {
 		this.profileService
 			.save(profile)
 			.then(result => this.response(res, result))
-			.catch(err => ResponseHandle.onError({ res, err, message: messages.profile.error.noEdit(Number(profile.id)) }));
+			.catch(err => responseApiError({ res, err, message: messages.profile.error.noEdit(Number(profile.id)) }));
 	}
 
 	list(req: Request, res: Response) {
@@ -41,12 +42,12 @@ export class ProfileController extends Controller {
 		this.profileService
 			.read(options)
 			.then(data => this.response(res, data))
-			.catch(err => ResponseHandle.onError({ res, err, message: messages.profile.error.notList }));
+			.catch(err => responseApiError({ res, err, message: messages.profile.error.notList }));
 	}
 
 	remove(req: Request, res: Response) {
 		const id = Number(req.params.id);
-		const toReplace = Number(req.query.toMove);
+		const toReplace = Number(req.query.moveTo);
 
 		if (!toReplace) {
 			const exception = new ResponseException(messages.requires('Novo Perfil'));
@@ -57,14 +58,10 @@ export class ProfileController extends Controller {
 		this.profileService
 			.remove(id, toReplace)
 			.then(result => this.response(res, result))
-			.catch(err => ResponseHandle.onError({ res, message: messages.profile.error.noDel(id), err }));
+			.catch(err => responseApiError({ res, message: messages.profile.error.noDel(id), err }));
 	}
 
 	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
-		if (data instanceof ResponseException || data instanceof DatabaseException) {
-			return ResponseHandle.onError({ res, message: data.message, err: data.error, status });
-		}
-
-		return ResponseHandle.onSuccess({ res, data });
+		return responseApi(res, data, status);
 	}
 }

@@ -1,6 +1,6 @@
 import { BaseServiceOptions, IProfile, Profiles, ReadOptions } from 'src/repositories/types';
 import { Profile, User } from 'src/repositories/entities';
-import { existsOrError, messages, notExistisOrError, ResponseException } from 'src/utils';
+import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate, ResponseException } from 'src/utils';
 import { UserService } from 'src/services/user.service';
 import { BaseService } from 'src/core/abstracts';
 
@@ -16,29 +16,22 @@ export class ProfileService extends BaseService {
 
 	save(data: Profile) {
 		if (data.id) {
-			return this.update(data.id, data).then(result =>
-				result.severity === 'ERROR'
-					? new ResponseException(messages.profile.error.noEdit(Number(data.id)), result)
-					: {
-							id: data.id,
-							edit: result === 1,
-							message: messages.profile.success.update(Number(data.id)),
-							profile: data,
-					  }
-			);
+			return this.update(data.id, data)
+				.then(result => (result instanceof DatabaseException ? result : { ...result, data }))
+				.catch(err => err);
 		}
 
-		return this.create(data).then(result => ({
-			result,
-			message: messages.profile.success.create,
-			profile: data,
-		}));
+		return this.create(data)
+			.then(result => responseDataBaseCriate(result, data))
+			.catch(err => err);
 	}
 
 	read(options?: ReadOptions): Promise<any> {
 		return super
 			.read(options)
-			.then((result: IProfile | Profiles) => ('data' in result ? this.setProfiles(result) : new Profile(result)))
+			.then((result: IProfile | Profiles | DatabaseException) =>
+				result instanceof DatabaseException ? result : 'data' in result ? this.setProfiles(result) : new Profile(result)
+			)
 			.catch(err => err);
 	}
 
@@ -69,15 +62,10 @@ export class ProfileService extends BaseService {
 	}
 
 	async profileValidate(data: IProfile) {
-		try {
-			const profileFromDb = await this.findProfileByName(data.name);
+		const profileFromDb = await this.findProfileByName(data.name);
 
-			existsOrError(data.name, messages.requires('Nome'));
-			notExistisOrError(profileFromDb, messages.profile.error.alreadyExists);
-			return;
-		} catch (err) {
-			return err;
-		}
+		existsOrError(data.name, messages.requires('Nome'));
+		notExistisOrError(profileFromDb, messages.profile.error.alreadyExists);
 	}
 
 	private setProfiles(value: Profiles) {

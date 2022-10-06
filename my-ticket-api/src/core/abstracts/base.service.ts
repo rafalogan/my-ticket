@@ -3,9 +3,8 @@ import { Knex } from 'knex';
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError, onLog } from 'src/core/handlers';
-import { convertDataValues, DatabaseException, deleteField, existsOrError, messages } from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
-import { error } from 'winston';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -24,11 +23,7 @@ export abstract class BaseService extends CacheBaseService {
 		const data = convertDataValues(item);
 		return this.conn(this.table)
 			.insert(data)
-			.then((result: any) =>
-				result.severity === 'ERROR'
-					? new DatabaseException(messages.noSave)
-					: { commad: result.command, rowCount: result.rowCount, message: messages.successSave }
-			)
+			.then(result => result)
 			.catch(err => err);
 	}
 
@@ -46,9 +41,7 @@ export abstract class BaseService extends CacheBaseService {
 			.update(data)
 			.where({ id })
 			.then((result: any) =>
-				result.severity === 'ERROR'
-					? new DatabaseException(messages.noEdit, result)
-					: { id, edit: result === 1, message: messages.successEdit }
+				result !== 1 ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
 			)
 			.catch(err => err);
 	}

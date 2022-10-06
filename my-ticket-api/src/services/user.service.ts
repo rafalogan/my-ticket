@@ -1,9 +1,7 @@
 import {
 	CustomUserModel,
 	IUser,
-	IUserModel,
 	ReadOptions,
-	ResultCreate,
 	ResultUpdate,
 	UpdatePasswordOptions,
 	Users,
@@ -12,7 +10,6 @@ import {
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
-	DatabaseException,
 	deleteField,
 	equalsOrError,
 	existsOrError,
@@ -20,11 +17,11 @@ import {
 	isMatchOrError,
 	messages,
 	notExistisOrError,
-	ResponseException,
+	responseDataBaseCriate,
+	DatabaseException,
 } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
 import { onLog } from 'src/core/handlers';
-import { read } from 'fs';
 
 export class UserService extends BaseService {
 	salt: number;
@@ -41,21 +38,16 @@ export class UserService extends BaseService {
 	}
 
 	save(user: User) {
+		onLog('user to seave or update: ', user);
+
 		if (user.id) {
 			return this.update(user.id, user)
-				.then((result: DatabaseException | ResultCreate) => (result instanceof DatabaseException ? result : { ...result, user }))
+				.then(result => (result instanceof DatabaseException ? result : { ...result, user }))
 				.catch(err => err);
 		}
 
 		return this.create(user)
-			.then(result =>
-				result instanceof DatabaseException
-					? result
-					: {
-							...result,
-							user: this.userNoPassword(user),
-					  }
-			)
+			.then(result => responseDataBaseCriate(result, user))
 			.catch(err => err);
 	}
 
@@ -141,19 +133,15 @@ export class UserService extends BaseService {
 	}
 
 	async validateNewUser(data: IUser) {
-		try {
-			const userFromDB = await this.findUserByEmail(data.email);
+		const userFromDB = await this.findUserByEmail(data.email);
 
-			existsOrError(data.firstName, messages.user.error.requires('Nome'));
-			existsOrError(data.lastName, messages.user.error.requires('Sobrenome'));
-			existsOrError(data.email, messages.user.error.requires('E-mail'));
-			existsOrError(data.password, messages.user.error.requires('Senha'));
-			existsOrError(data.confirmPassword, messages.user.error.requires('Confirmação de Senha'));
-			equalsOrError(data.password, data.confirmPassword, messages.user.error.noMatchPasswords);
-			notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
-		} catch (err) {
-			return err;
-		}
+		existsOrError(data.firstName, messages.user.error.requires('Nome'));
+		existsOrError(data.lastName, messages.user.error.requires('Sobrenome'));
+		existsOrError(data.email, messages.user.error.requires('E-mail'));
+		existsOrError(data.password, messages.user.error.requires('Senha'));
+		existsOrError(data.confirmPassword, messages.user.error.requires('Confirmação de Senha'));
+		equalsOrError(data.password, data.confirmPassword, messages.user.error.noMatchPasswords);
+		notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
 	}
 
 	private userNoPassword(user: User) {
