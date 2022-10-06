@@ -6,5 +6,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-	return DefaultProfiles.forEach((profile: any) => knex('profiles').where('id', profile.id).del());
+	return DefaultProfiles.forEach((profile: any) => knex('profiles').where('name', profile.name).del());
 }
