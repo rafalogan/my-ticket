@@ -52,14 +52,14 @@ export class CategoryService extends BaseService {
 	}
 
 	async delete(id: number): Promise<any> {
-		const elemnet = await this.getCategoryRaw(id);
+		const elemnet = (await this.getCategoryRaw(id)) as Category;
 
 		existsOrError(elemnet, messages.notFoundRegister);
 
 		const subCategories = (await this.getSubCategories(id)) as Category[];
 		const prepareData = subCategories
 			.map(c => {
-				c.patentId = elemnet.patentId || undefined;
+				c.parentId = elemnet.parentId || undefined;
 				return c;
 			})
 			.map(item => this.save(item));

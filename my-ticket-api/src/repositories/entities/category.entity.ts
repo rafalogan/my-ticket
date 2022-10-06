@@ -5,7 +5,7 @@ export class Category {
 	name: string;
 	description: string;
 	url: string;
-	parentId: number;
+	parentId?: number;
 
 	constructor(data: ICategory, id?: number) {
 		Object.assign(this, data);
