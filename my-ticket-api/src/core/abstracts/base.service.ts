@@ -5,6 +5,7 @@ import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError, onLog } from 'src/core/handlers';
 import { convertDataValues, DatabaseException, deleteField, existsOrError, messages } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
+import { error } from 'winston';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -93,8 +94,8 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
 			.first()
-			.then(item => item)
-			.catch(err => onError(`Find register failed in ${this.table}`, err));
+			.then(item => (item.severity === 'ERROR' ? new DatabaseException(messages.noRead, item) : item))
+			.catch(err => err);
 	}
 
 	protected async findAll(options?: ReadOptions): Promise<any> {
@@ -108,8 +109,8 @@ export abstract class BaseService extends CacheBaseService {
 			.limit(limit)
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
-			.then((data: any[]) => ({ data, pagination }))
-			.catch(err => onError(`Find register fail in table: ${this.table}`, err));
+			.then(data => (!Array.isArray(data) ? new DatabaseException(messages.noRead, data) : { data, pagination }))
+			.catch(err => err);
 	}
 
 	protected checkCache(options?: ReadOptions) {
