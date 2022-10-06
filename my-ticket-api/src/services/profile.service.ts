@@ -1,6 +1,6 @@
-import { BaseServiceOptions, IProfile } from 'src/repositories/types';
+import { BaseServiceOptions, IProfile, Profiles, ReadOptions } from 'src/repositories/types';
 import { Profile, User } from 'src/repositories/entities';
-import { existsOrError, messages, notExistisOrError } from 'src/utils';
+import { existsOrError, messages, notExistisOrError, ResponseException } from 'src/utils';
 import { UserService } from 'src/services/user.service';
 import { BaseService } from 'src/core/abstracts';
 
@@ -16,11 +16,16 @@ export class ProfileService extends BaseService {
 
 	save(data: Profile) {
 		if (data.id) {
-			return this.update(data.id, data).then(result => ({
-				result,
-				message: messages.profile.success.update(Number(data.id)),
-				profile: data,
-			}));
+			return this.update(data.id, data).then(result =>
+				result.severity === 'ERROR'
+					? new ResponseException(messages.profile.error.noEdit(Number(data.id)), result)
+					: {
+							id: data.id,
+							edit: result === 1,
+							message: messages.profile.success.update(Number(data.id)),
+							profile: data,
+					  }
+			);
 		}
 
 		return this.create(data).then(result => ({
@@ -28,6 +33,13 @@ export class ProfileService extends BaseService {
 			message: messages.profile.success.create,
 			profile: data,
 		}));
+	}
+
+	read(options?: ReadOptions): Promise<any> {
+		return super
+			.read(options)
+			.then((result: IProfile | Profiles) => ('data' in result ? this.setProfiles(result) : new Profile(result)))
+			.catch(err => err);
 	}
 
 	async remove(idToDelete: number, idToMigrate: number) {
@@ -66,5 +78,10 @@ export class ProfileService extends BaseService {
 		} catch (err) {
 			return err;
 		}
+	}
+
+	private setProfiles(value: Profiles) {
+		value.data = value.data.map(profile => new Profile(profile));
+		return value;
 	}
 }

@@ -1,5 +1,7 @@
 import { Knex } from 'knex';
 import { RedisClientType } from 'redis';
+import { messages } from 'src/utils';
+import { Pagination } from '../models';
 
 export interface BaseServiceOptions extends CacheBaseServiceOptions {
 	conn: Knex;
@@ -30,4 +32,28 @@ export interface OrderOptions {
 
 export interface CustomQueryOptions extends ReadOptions {
 	query: string;
+}
+
+export interface ResultCreate {
+	commad: string;
+	rowCount: number;
+	message: string;
+}
+
+export interface ResultUpdate {
+	id: number;
+	edit: boolean;
+	message: string;
+}
+
+export interface ResultList<T> {
+	data: Array<T>;
+	pagination: Pagination;
+}
+
+export interface ReulstDelete<T> {
+	id: number;
+	deleted: boolean;
+	message: string;
+	element: T;
 }

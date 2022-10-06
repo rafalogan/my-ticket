@@ -1,7 +1,18 @@
-import { CustomUserModel, IUser, IUserModel, ReadOptions, UpdatePasswordOptions, Users, UserServiceOptions } from 'src/repositories/types';
+import {
+	CustomUserModel,
+	IUser,
+	IUserModel,
+	ReadOptions,
+	ResultCreate,
+	ResultUpdate,
+	UpdatePasswordOptions,
+	Users,
+	UserServiceOptions,
+} from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
+	DatabaseException,
 	deleteField,
 	equalsOrError,
 	existsOrError,
@@ -32,27 +43,16 @@ export class UserService extends BaseService {
 	save(user: User) {
 		if (user.id) {
 			return this.update(user.id, user)
-				.then(result =>
-					result.severity === 'ERROR'
-						? new ResponseException(messages.user.error.noEdit, result)
-						: {
-								id: user.id,
-								edit: result === 1,
-								message: messages.user.success.update(user),
-								user,
-						  }
-				)
+				.then((result: DatabaseException | ResultCreate) => (result instanceof DatabaseException ? result : { ...result, user }))
 				.catch(err => err);
 		}
 
 		return this.create(user)
 			.then(result =>
-				result.severity === 'ERROR'
-					? new ResponseException(messages.user.error.noSave, result)
+				result instanceof DatabaseException
+					? result
 					: {
-							commad: result.command,
-							rowCount: result.rowCount,
-							message: messages.user.success.save(user),
+							...result,
 							user: this.userNoPassword(user),
 					  }
 			)
@@ -132,7 +132,9 @@ export class UserService extends BaseService {
 		user.deletedAt = new Date();
 
 		return this.update(id, user)
-			.then(result => ({ result, message: messages.user.success.cancel(user), user: this.userNoPassword(user) }))
+			.then((result: DatabaseException | ResultUpdate) =>
+				result instanceof DatabaseException ? result : { id, message: messages.successDel, element }
+			)
 			.catch(err => err);
 	}
 

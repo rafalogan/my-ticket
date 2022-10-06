@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { onError, onLog } from 'src/core/handlers';
-import { convertDataValues, DatabaseException, deleteField, existsOrError } from 'src/utils';
+import { convertDataValues, DatabaseException, deleteField, existsOrError, messages } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
 export abstract class BaseService extends CacheBaseService {
@@ -23,7 +23,11 @@ export abstract class BaseService extends CacheBaseService {
 		const data = convertDataValues(item);
 		return this.conn(this.table)
 			.insert(data)
-			.then(result => result)
+			.then((result: any) =>
+				result.severity === 'ERROR'
+					? new DatabaseException(messages.noSave)
+					: { commad: result.command, rowCount: result.rowCount, message: messages.successSave }
+			)
 			.catch(err => err);
 	}
 
@@ -40,17 +44,21 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.update(data)
 			.where({ id })
-			.then(result => result)
+			.then((result: any) =>
+				result.severity === 'ERROR'
+					? new DatabaseException(messages.noEdit, result)
+					: { id, edit: result === 1, message: messages.successEdit }
+			)
 			.catch(err => err);
 	}
 
-	async delete(id: any): Promise<any> {
+	async delete(id: number): Promise<any> {
 		const element = await this.findOneById(id);
 
 		try {
 			existsOrError(element, `The register nº ${id} not find in table: ${this.table}`);
 		} catch (error: any) {
-			throw new DatabaseException(error.message);
+			throw new DatabaseException(error.message, element);
 		}
 
 		if (this.activeCache) await this.clearCache(id);
@@ -58,7 +66,9 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.where({ id })
 			.del()
-			.then(async result => ({ deleted: result > 0, element }))
+			.then(result =>
+				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel)
+			)
 			.catch(err => err);
 	}
 

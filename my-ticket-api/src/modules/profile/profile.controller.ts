@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { ProfileService } from 'src/services';
-import { messages, ResponseException, setReadOptions } from 'src/utils';
+import { DatabaseException, messages, ResponseException, setReadOptions } from 'src/utils';
 import { onLog, ResponseHandle } from 'src/core/handlers';
 
 export class ProfileController extends Controller {
@@ -37,7 +37,6 @@ export class ProfileController extends Controller {
 
 	list(req: Request, res: Response) {
 		const options = setReadOptions(req);
-		onLog('options', options);
 
 		this.profileService
 			.read(options)
@@ -62,7 +61,9 @@ export class ProfileController extends Controller {
 	}
 
 	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
-		if (data instanceof ResponseException) return ResponseHandle.onError({ res, message: data.message, err: data.error, status });
+		if (data instanceof ResponseException || data instanceof DatabaseException) {
+			return ResponseHandle.onError({ res, message: data.message, err: data.error, status });
+		}
 
 		return ResponseHandle.onSuccess({ res, data });
 	}
