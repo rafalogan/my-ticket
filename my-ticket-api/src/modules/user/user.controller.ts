@@ -3,8 +3,7 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { UserService } from 'src/services';
-import { onLog, ResponseHandle } from 'src/core/handlers';
-import { DatabaseException, deleteField, messages, responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
+import { deleteField, messages, responseApi, responseApiError, setReadOptions } from 'src/utils';
 
 export class UserController extends Controller {
 	constructor(private userService: UserService) {
@@ -19,7 +18,6 @@ export class UserController extends Controller {
 		}
 
 		const user = this.userService.set(req.body);
-		onLog('user to save', user);
 
 		this.userService
 			.save(user)

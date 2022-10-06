@@ -10,3 +10,5 @@ export const userFields = [
 ];
 
 export const profileFields = ['id', 'name', 'description', 'active'];
+
+export const categoryFields = ['id', 'name', 'description', 'url', 'status', 'parent_id as parentId', 'user_id as userId'];
