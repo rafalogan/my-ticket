@@ -20,8 +20,6 @@ export const getKnexProps = (env: Environment, props?: Knexfile) => {
 };
 
 export const responseApi = (res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) => {
-	onLog('REsponse Api Data', data);
-
 	if (data instanceof ResponseException || data instanceof DatabaseException) {
 		return responseApiError({ res, message: data.message, err: data.error, status });
 	}

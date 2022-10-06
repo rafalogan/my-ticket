@@ -1,0 +1,14 @@
+[
+	{
+		"name": "Filmes",
+		"description": "Os filmes que fazem sucesso nos cinemas você encontra seu ingresso aqui."
+	},
+	{
+		"name": "Eventos",
+		"description": "Os melhores lugares para os melhores eventos."
+	},
+	{
+		"name": "Esportes",
+		"description": "Todo grande torcedor tem lugar garantido aqui."
+	}
+]
