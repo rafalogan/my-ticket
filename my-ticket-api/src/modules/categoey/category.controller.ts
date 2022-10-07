@@ -1,12 +1,12 @@
 import httpStatus from 'http-status';
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { CategoryService } from 'src/services';
 import { responseApi, responseApiError, setReadOptions } from 'src/utils';
 import { Category } from 'src/repositories/entities';
 
-export class CategoeyController extends Controller {
+export class CategoryController extends Controller {
 	constructor(private categoryService: CategoryService) {
 		super();
 	}
