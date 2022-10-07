@@ -25,6 +25,7 @@ export class ModulesFactory {
 		this.authModule.exec();
 		this.userModule.exec();
 		this.profileModule.exec();
+		this.categoryModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

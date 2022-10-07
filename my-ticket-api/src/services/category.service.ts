@@ -1,8 +1,9 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, ICategory, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, ICategory, ICategoryModel, ReadOptions } from 'src/repositories/types';
 import { Category } from 'src/repositories/entities';
-import { categoryWithChildren, DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate } from 'src/utils';
+import { categoryWithChildrens, DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate } from 'src/utils';
 import { CategoryModel } from 'src/repositories/models';
+import { onLog } from 'src/core/handlers';
 
 export class CategoryService extends BaseService {
 	constructor(data: BaseServiceOptions) {
@@ -28,10 +29,17 @@ export class CategoryService extends BaseService {
 			.catch(err => err);
 	}
 
-	findOneById(id: number) {
+	findOneById(id: number, options?: ReadOptions) {
+		onLog('category id', id);
+		const query = categoryWithChildrens(options?.fields || this.fields);
+
 		return this.conn
-			.raw(categoryWithChildren, [id])
-			.then(result => new CategoryModel(result[0]) || {})
+			.raw(query, [id])
+			.then(res =>
+				res.severity === 'ERROR'
+					? new DatabaseException(messages.noRead, res)
+					: this.setCategoriesAndSubcategories(res.rows)?.find(i => i.id === id)
+			)
 			.catch(err => err);
 	}
 
@@ -68,5 +76,28 @@ export class CategoryService extends BaseService {
 		return Promise.all(prepareData)
 			.then(() => super.delete(id))
 			.catch(err => err);
+	}
+
+	private setCategoriesAndSubcategories(value: ICategoryModel[], id?: number) {
+		if (!value || !value.length) return undefined;
+		value = value.map(this.parseValues);
+		const roots = id ? value.filter(item => item.parentId === id) : value.filter(root => !root.parentId);
+
+		return roots
+			.map(root => {
+				root.subCategories = this.setCategoriesAndSubcategories(value, root.id);
+				return root;
+			})
+			.map(i => new CategoryModel(i));
+	}
+
+	private parseValues(value: any): ICategoryModel {
+		return {
+			id: Number(value.id),
+			name: value.name,
+			description: value.description,
+			parentId: Number(value.parentId || value.parentid),
+			userId: Number(value.userId || value.userid),
+		};
 	}
 }

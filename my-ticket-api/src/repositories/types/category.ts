@@ -6,8 +6,9 @@ export interface ICategory {
 	description?: string;
 	url?: string;
 	parentId?: number;
+	userId?: number;
 }
 
 export interface ICategoryModel extends ICategory {
-	subCategories: ICategoryModel[] | CategoryModel[];
+	subCategories?: ICategoryModel[] | CategoryModel[];
 }
