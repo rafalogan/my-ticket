@@ -23,3 +23,4 @@ export * from './base';
 export * from './pagination';
 export * from './auth';
 export * from './route';
+export * from './module';

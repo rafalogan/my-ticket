@@ -10,6 +10,10 @@ const noDel = `Não foi possivel apagar registro.`;
 const successSave = `Novo Registro Criado com sucesso.`;
 const successEdit = `Registro Editado com sucesso.`;
 const successDel = `Registro Apagado com sucesso.`;
+const notFoundRegister = 'Registo Não encontrado';
+const notFound = 'Não encontrado.';
+const categoryWithChildrenNoDelete = (name: string) =>
+	`Não foi possivel apagar a categoria ${name.toUpperCase()}.\n Pois ela tem subcategorias, por favor mova ou apague as subcategorias antes de apagar essa categoria.`;
 
 const user = {
 	alreadyExists: (email: string) => `${upperCaseFirstLetter(alreadyExists)} usuário resistrado com eses e-mail: ${email}`,
@@ -77,4 +81,7 @@ export const messages = {
 	user,
 	profile,
 	auth,
+	notFoundRegister,
+	notFound,
+	categoryWithChildrenNoDelete,
 };
