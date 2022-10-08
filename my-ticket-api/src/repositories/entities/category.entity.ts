@@ -6,6 +6,7 @@ export class Category {
 	description?: string;
 	url?: string;
 	parentId?: number;
+	userId?: number;
 
 	constructor(data: ICategory, id?: number) {
 		this.id = Number(id || data.id);
@@ -13,5 +14,6 @@ export class Category {
 		this.description = data.description;
 		this.url = data.url;
 		this.parentId = Number(data.parentId);
+		this.userId = Number(data.userId);
 	}
 }

@@ -1,11 +1,9 @@
 import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
-import { BaseServiceOptions, IProfile, ReadOptions } from 'src/repositories/types';
-import { onError, onLog } from 'src/core/handlers';
+import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { convertDataValues, deleteField, existsOrError, messages, DatabaseException } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
-import { Profile } from 'src/repositories/entities';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -81,10 +79,7 @@ export abstract class BaseService extends CacheBaseService {
 			.count({ count: 'id' })
 			.first()
 			.then(result => Number(result?.count))
-			.catch(err => {
-				onError(`Count by id in table: ${this.table}`, err);
-				return 0;
-			});
+			.catch(err => err);
 	}
 
 	protected async clearCache(id?: number) {

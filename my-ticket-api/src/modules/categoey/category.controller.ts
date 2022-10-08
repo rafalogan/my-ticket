@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { CategoryService } from 'src/services';
-import { responseApi, responseApiError, setReadOptions } from 'src/utils';
+import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { Category } from 'src/repositories/entities';
 
 export class CategoryController extends Controller {
@@ -50,7 +50,7 @@ export class CategoryController extends Controller {
 
 		this.categoryService
 			.delete(id)
-			.then(result => responseApi(res, result))
+			.then(result => responseApi(res, result, result instanceof ResponseException ? httpStatus.FORBIDDEN : httpStatus.OK))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 }
