@@ -70,7 +70,7 @@ export class CategoryService extends BaseService {
 			return err;
 		}
 
-		if (element.subCategories.length) return new ResponseException(messages.categoryWithChildrenNoDelete(element.name));
+		if (element.subCategories.length) return new ResponseException(messages.categoryWithChildrenNoDelete(element.name), element);
 
 		return super.delete(id);
 	}
