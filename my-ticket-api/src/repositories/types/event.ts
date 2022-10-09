@@ -1,9 +1,17 @@
+import { EventEntity } from 'src/repositories/entities';
+import { Pagination } from 'src/repositories/models';
+
 export interface IEvent {
 	id?: number;
-	categoryId: number;
 	title: string;
-	subTitle?: string;
+	subtitle?: string;
 	content: string | Blob;
 	type: string;
-	userId: number;
+	categoryId: number;
+	userId?: number;
+}
+
+export interface Events {
+	data: IEvent[] | EventEntity[];
+	pagination: Pagination;
 }

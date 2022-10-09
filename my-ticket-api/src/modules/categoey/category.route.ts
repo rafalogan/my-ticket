@@ -11,15 +11,15 @@ export class CategoryRoute extends Routes {
 	exec() {
 		this.app
 			.route('/categories')
-			.all(this.auth?.exec().authenticate())
 			.get(this.categoryController.list.bind(this.categoryController))
+			.all(this.auth?.exec().authenticate())
 			.post(this.categoryController.save.bind(this.categoryController))
 			.all(methodNotAllowed);
 
 		this.app
 			.route('/categories/:id')
-			.all(this.auth?.exec().authenticate())
 			.get(this.categoryController.list.bind(this.categoryController))
+			.all(this.auth?.exec().authenticate())
 			.put(this.categoryController.edit.bind(this.categoryController))
 			.delete(this.categoryController.remove.bind(this.categoryController))
 			.all(methodNotAllowed);

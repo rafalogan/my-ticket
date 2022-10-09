@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
 	return knex.schema.createTable('events', (table: TableBuilder) => {
 		table.increments('id').primary();
 		table.string('title', 100).notNullable();
-		table.string('sub_title', 150).nullable();
+		table.string('subtitle', 150).nullable();
 		table.binary('content').notNullable();
 		table.string('type', 50).notNullable();
 		table.integer('category_id').unsigned().references('id').inTable('categories').notNullable();

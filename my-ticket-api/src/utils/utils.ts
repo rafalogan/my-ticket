@@ -19,9 +19,9 @@ export const getKnexProps = (env: Environment, props?: Knexfile) => {
 	return { ...props, client, connection, useNullAsDefault } as Knexfile;
 };
 
-export const responseApi = (res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) => {
+export const responseApi = (res: Response, data: any, status?: number) => {
 	if (data instanceof ResponseException || data instanceof DatabaseException) {
-		return responseApiError({ res, message: data.message, err: data.error, status });
+		return responseApiError({ res, message: data.message, err: data.error, status: status || httpStatus.FORBIDDEN });
 	}
 
 	return ResponseHandle.onSuccess({ res, data });
