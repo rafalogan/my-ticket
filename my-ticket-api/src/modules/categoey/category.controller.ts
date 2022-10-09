@@ -5,6 +5,7 @@ import { Controller } from 'src/core/abstracts';
 import { CategoryService } from 'src/services';
 import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { Category } from 'src/repositories/entities';
+import { getUserIdByToken } from 'src/core/handlers';
 
 export class CategoryController extends Controller {
 	constructor(private categoryService: CategoryService) {
@@ -19,6 +20,7 @@ export class CategoryController extends Controller {
 		}
 
 		const category = new Category(req.body);
+		category.userId = getUserIdByToken(req);
 
 		this.categoryService
 			.save(category)
