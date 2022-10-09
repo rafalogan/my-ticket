@@ -16,3 +16,18 @@ export const categoryFields = ['id', 'name', 'description', 'url', 'status', 'pa
 export const eventFields = ['id', 'title', 'subtitle', 'content', 'type', 'category_id as categoryId', 'user_id as userId'];
 
 export const placeFields = ['id', 'name', 'description', 'user_id as  userId'];
+
+export const addressFields = [
+	'id',
+	'main',
+	'zip_code as zipCode',
+	'street',
+	'number',
+	'complement',
+	'district',
+	'city',
+	'state',
+	'url_maps as  urlMaps',
+	'place_id as placeId',
+	'user_id as userId',
+];

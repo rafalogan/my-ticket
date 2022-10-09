@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vitest } from 'vitest';
 import { faker } from '@faker-js/faker';
 
 import { IAdress } from '../types';
-import { Adress } from './adress.entity';
+import { Adress } from './address.entity';
 
 describe('#Adress Entity', () => {
 	let adressMock: IAdress;

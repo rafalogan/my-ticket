@@ -1,6 +1,7 @@
-export interface IAdress {
+export interface IAddress {
 	id?: number;
-	cep: string;
+	main: boolean;
+	zipCode: string;
 	street: string;
 	number?: string;
 	complement?: string;
@@ -8,4 +9,6 @@ export interface IAdress {
 	city: string;
 	state: string;
 	urlMaps?: string;
+	placeId?: number;
+	userId?: number;
 }

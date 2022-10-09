@@ -4,7 +4,7 @@ export * from './category.entity';
 export * from './event.entity';
 export * from './file.entity';
 export * from './place.entity';
-export * from './adress.entity';
+export * from './address.entity';
 export * from './palce-contact.entity';
 export * from './theater.entity';
 export * from './capacity.entity';
