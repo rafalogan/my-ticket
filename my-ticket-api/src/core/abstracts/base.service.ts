@@ -2,8 +2,9 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { convertDataValues, deleteField, existsOrError, messages, DatabaseException } from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseDataBaseCriate } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
+import { EventEntity } from 'src/repositories/entities';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -15,6 +16,10 @@ export abstract class BaseService extends CacheBaseService {
 		Object.assign(this, data);
 
 		this.fields = data?.fields || [];
+	}
+
+	save(data: any) {
+		return data.id ? this.update(data.id, data) : this.create(data);
 	}
 
 	create(item: any) {

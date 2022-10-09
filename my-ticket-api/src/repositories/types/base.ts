@@ -57,3 +57,8 @@ export interface ReulstDelete<T> {
 	message: string;
 	element: T;
 }
+
+export interface List<T> {
+	data: Array<T>;
+	pagination: Pagination;
+}
