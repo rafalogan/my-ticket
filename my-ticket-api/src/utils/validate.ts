@@ -1,7 +1,7 @@
 import isEmpty from 'is-empty';
 import bcrypt from 'bcrypt';
 
-import { ResponseException } from 'src/utils/exceptions';
+import { DatabaseException, ResponseException } from 'src/utils/exceptions';
 import { Credentials, UserModel } from 'src/repositories/models';
 import { IsMachValidateOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
@@ -12,6 +12,7 @@ export const existsOrError = (value: any, message: string): void | ResponseExcep
 	if (Array.isArray(value) && value.length === 0) throw new ResponseException(message);
 	if (typeof value === 'string' && !value.trim()) throw new ResponseException(message);
 	if (typeof value === 'number' && !Number(value)) throw new ResponseException(message);
+	if (value instanceof ResponseException || value instanceof DatabaseException) throw value;
 };
 
 export const notExistisOrError = (value: any, message: string) => {

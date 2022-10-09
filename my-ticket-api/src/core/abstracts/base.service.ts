@@ -70,7 +70,7 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...this.fields)
 			.where(column, value)
 			.first()
-			.then(result => (result ? result : {}))
+			.then(result => (result && result.severity === 'ERROR' ? new DatabaseException(messages.notFoundRegister, result) : result || {}))
 			.catch(err => err);
 	}
 

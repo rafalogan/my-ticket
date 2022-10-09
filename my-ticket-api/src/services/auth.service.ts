@@ -8,7 +8,7 @@ import { User } from 'src/repositories/entities';
 import { Credentials, Payload } from 'src/repositories/models';
 import { existsOrError, isMatch, messages, ResponseException } from 'src/utils';
 import { ProfileService } from './profile.service';
-import { onLog } from 'src/core/handlers';
+import { decodeToken, extractToken, getPayload, onLog } from 'src/core/handlers';
 import { error } from 'winston';
 
 export class AuthService {
@@ -62,8 +62,7 @@ export class AuthService {
 	}
 
 	getPayload(req: Request) {
-		const token = this.extractToken(req);
-		return token ? this.decodeToken(token) : undefined;
+		return getPayload(req);
 	}
 
 	async tokenIsValid(req: Request): Promise<ValidateTokenResponse> {
@@ -81,15 +80,10 @@ export class AuthService {
 	}
 
 	private extractToken(req: Request) {
-		const { authorization } = req.headers;
-		const [agent, token] = authorization ? authorization.split(' ') : [];
-
-		return agent === 'Bearer' ? token : undefined;
+		return extractToken(req);
 	}
 
 	private decodeToken(token: string): Payload {
-		const dataRaw = jwt.decode(token, this.authsecret);
-
-		return new Payload(dataRaw);
+		return decodeToken(token);
 	}
 }

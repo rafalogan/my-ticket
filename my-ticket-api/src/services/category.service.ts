@@ -12,7 +12,6 @@ import {
 } from 'src/utils';
 import { CategoryModel } from 'src/repositories/models';
 import { onLog } from 'src/core/handlers';
-import httpStatus from 'http-status';
 
 export class CategoryService extends BaseService {
 	constructor(data: BaseServiceOptions) {

@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 
-import { AuthService, CategoryService, InitService, ProfileService, UserService } from 'src/services';
+import { AuthService, CategoryService, EventService, InitService, ProfileService, UserService } from 'src/services';
 import { Environment } from 'src/config';
 import { RedisClientType } from 'redis';
 
-import { categoryFields, profileFields, userFields } from 'src/utils';
+import { categoryFields, eventFields, profileFields, userFields } from 'src/utils';
 
 export class ServicesFactory {
 	initService: InitService;
@@ -12,6 +12,7 @@ export class ServicesFactory {
 	profileService: ProfileService;
 	authService: AuthService;
 	categoryService: CategoryService;
+	eventService: EventService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -19,6 +20,7 @@ export class ServicesFactory {
 		this.profileService = new ProfileService({ ...this.setServiceOptions('profiles', profileFields) }, this.userService);
 		this.authService = new AuthService(this.env.security.authsecret, this.userService, this.profileService);
 		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
+		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {
