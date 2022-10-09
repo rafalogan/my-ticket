@@ -6,8 +6,8 @@ import { Logger } from 'winston';
 
 import { ICorsOptions } from 'src/repositories/types';
 import { AuthConfig } from 'src/config/auth.config';
-import { ModulesFactory } from 'src/core/factories';
-import { ServicesFactory } from 'src/core/factories/services.factory';
+import { ModulesFactory } from 'src/factories';
+import { ServicesFactory } from 'src/factories/services.factory';
 
 export class AppConfig {
 	private readonly _express: Application;

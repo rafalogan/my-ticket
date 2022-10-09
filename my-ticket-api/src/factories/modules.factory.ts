@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import { ServicesFactory } from 'src/core/factories/services.factory';
+import { ServicesFactory } from 'src/factories/services.factory';
 import { AuthModule } from 'src/modules/auth';
 import { UserModule } from 'src/modules/user';
 import { RouteOptions } from 'src/repositories/types';

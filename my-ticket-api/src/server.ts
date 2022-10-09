@@ -6,7 +6,7 @@ import { AppConfig, AuthConfig, Environment, KnexConfig, LoggerConfig } from 'sr
 import { App, ServerController } from 'src/core/controllers';
 import { InitService } from './services';
 import { CacheService, DatabaseService } from 'src/core/service';
-import { ServicesFactory } from 'src/core/factories/services.factory';
+import { ServicesFactory } from 'src/factories/services.factory';
 
 execDotenv();
 
