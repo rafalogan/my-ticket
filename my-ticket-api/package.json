@@ -1,6 +1,6 @@
 {
   "name": "my-ticket-api",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "hotfix:finish": "git flow hotfix finish",
     "support:start": "git flow support start",
     "support:finish": "git flow support finish",
-    "add:patch": "npm version patch && git push",
+    "add:patch": "npm version patch && VERSION=$(node -p \"require('./package').version\")  git status && git add --all  &&  git commit -m  \" Add new Patch $$VERSION\" && git push",
     "add:minor": "npm version minor && git push",
     "add:major": "npm version major && git push",
     "up:tags": "git push --follow-tags",
