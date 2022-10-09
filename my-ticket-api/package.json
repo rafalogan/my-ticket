@@ -38,7 +38,10 @@
     "knex:migrate:rollback": "npx knex migrate:rollback --knexfile knexfile.ts",
     "athon:c:s": "zsh bin/console/create-service.sh",
     "athon:c:m": "zsh bin/console/create-module.sh",
-    "athon:c:md": "zsh bin/console/create-model.sh"
+    "athon:c:md": "zsh bin/console/create-model.sh",
+    "athon:c:t": "zsh bin/console/create-types.sh",
+    "athon:c:e": "zsh bin/console/create-entity.sh",
+    "athon:c:c": "zsh bin/console/create-config.sh"
   },
   "keywords": [
     "API",

@@ -31,3 +31,5 @@ export const addressFields = [
 	'place_id as placeId',
 	'user_id as userId',
 ];
+
+export const phoneFields = ['id', 'type', 'number', 'user_id as userId', 'place_id as placeId'];
