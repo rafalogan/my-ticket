@@ -1,6 +1,6 @@
 {
   "name": "my-ticket-api",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,9 +29,9 @@
     "hotfix:finish": "git flow hotfix finish",
     "support:start": "git flow support start",
     "support:finish": "git flow support finish",
-    "add:patch": "npm version patch && VERSION=$(node -p \"require('./package').version\")  git status && git add --all  &&  git commit -m  \" Add new Patch $VERSION\" && git push",
-    "add:minor": "npm version minor && git push",
-    "add:major": "npm version major && git push",
+    "add:patch": "npm version patch && git status && git add --all  &&  git commit -m  \" Add new Patch in Version\" && git push",
+    "add:minor": "npm version minor && git status && git add --all  &&  git commit -m  \" Add new Minor in Version\" && git push",
+    "add:major": "npm version major && git status && git add --all  &&  git commit -m  \" Add new Major in Version\" && git push",
     "up:tags": "git push --follow-tags",
     "knex:migrate:make": "npx knex migrate:make --knexfile knexfile.ts -x ts",
     "knex:migrate:latest": "npx knex migrate:latest --knexfile knexfile.ts",
