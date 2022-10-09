@@ -17,7 +17,7 @@ import {
 	isMatchOrError,
 	messages,
 	notExistisOrError,
-	responseDataBaseCriate,
+	responseDataBaseCreate,
 	DatabaseException,
 } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
@@ -47,7 +47,7 @@ export class UserService extends BaseService {
 		}
 
 		return this.create(user)
-			.then(result => responseDataBaseCriate(result, user))
+			.then(result => responseDataBaseCreate(result, user))
 			.catch(err => err);
 	}
 

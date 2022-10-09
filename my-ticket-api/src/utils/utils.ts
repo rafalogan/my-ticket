@@ -29,7 +29,13 @@ export const responseApi = (res: Response, data: any, status?: number) => {
 
 export const responseApiError = (options: ErrorResponseParams) => ResponseHandle.onError(options);
 
-export const responseDataBaseCriate = (response: any, data?: any) => {
-	if (response.severity === 'ERROR') return new DatabaseException(`${messages.noSave}\n${response.detail}`, response);
+export const responseDataBaseUpdate = (response: any, data?: any) => {
+	if (response instanceof DatabaseException) return response;
+	if (response.severity === 'ERROR') return new DatabaseException(response.detail ? response.detail : messages.noEdit);
+	return { id: data.id, edit: response === 1, message: messages.successEdit, data };
+};
+
+export const responseDataBaseCreate = (response: any, data?: any) => {
+	if (response.severity === 'ERROR') return new DatabaseException(`${messages.noSave}`, response);
 	return { commad: response.command, rowCount: response.rowCount, message: messages.successSave, data };
 };

@@ -7,7 +7,7 @@ import {
 	existsOrError,
 	messages,
 	notExistisOrError,
-	responseDataBaseCriate,
+	responseDataBaseCreate,
 	ResponseException,
 } from 'src/utils';
 import { CategoryModel } from 'src/repositories/models';
@@ -33,7 +33,7 @@ export class CategoryService extends BaseService {
 		}
 
 		return this.create(data)
-			.then(res => responseDataBaseCriate(res, data))
+			.then(res => responseDataBaseCreate(res, data))
 			.catch(err => err);
 	}
 
