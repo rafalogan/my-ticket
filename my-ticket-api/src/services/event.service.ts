@@ -1,6 +1,6 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, Events, IEvent, ReadOptions } from 'src/repositories/types';
-import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate } from 'src/utils';
+import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCreate } from 'src/utils';
 import { EventEntity } from 'src/repositories/entities';
 import { onLog } from 'src/core/handlers';
 
@@ -27,7 +27,7 @@ export class EventService extends BaseService {
 					.then(res => (res instanceof DatabaseException ? res : { ...res, data }))
 					.catch(err => err)
 			: this.create(data)
-					.then(res => responseDataBaseCriate(res, data))
+					.then(res => responseDataBaseCreate(res, data))
 					.catch(err => err);
 	}
 

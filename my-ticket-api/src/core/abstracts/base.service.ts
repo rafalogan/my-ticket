@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseDataBaseCriate } from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseDataBaseCreate } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 import { EventEntity } from 'src/repositories/entities';
 
@@ -45,7 +45,7 @@ export abstract class BaseService extends CacheBaseService {
 			.update(data)
 			.where({ id })
 			.then((result: any) =>
-				result !== 1 ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
+				result === 'ERROR' ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
 			)
 			.catch(err => err);
 	}

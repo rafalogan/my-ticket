@@ -1,6 +1,6 @@
 import { BaseServiceOptions, IProfile, Profiles, ReadOptions } from 'src/repositories/types';
 import { Profile, User } from 'src/repositories/entities';
-import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate, ResponseException } from 'src/utils';
+import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCreate, ResponseException } from 'src/utils';
 import { UserService } from 'src/services/user.service';
 import { BaseService } from 'src/core/abstracts';
 
@@ -22,7 +22,7 @@ export class ProfileService extends BaseService {
 		}
 
 		return this.create(data)
-			.then(result => responseDataBaseCriate(result, data))
+			.then(result => responseDataBaseCreate(result, data))
 			.catch(err => err);
 	}
 

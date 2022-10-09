@@ -9,7 +9,7 @@ export class Place {
 	constructor(data: IPlace, id?: number) {
 		this.id = id ? Number(id) : data.id;
 		this.name = data.name;
-		this.description = data.description;
+		this.description = data.description.toString();
 		this.userId = Number(data.userId);
 	}
 }

@@ -1,7 +1,7 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IPlace, List, ReadOptions } from 'src/repositories/types';
 import { Place } from 'src/repositories/entities';
-import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCriate } from 'src/utils';
+import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 
 export class PlaceService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -18,12 +18,12 @@ export class PlaceService extends BaseService {
 	create(item: Place) {
 		return super
 			.create(item)
-			.then(result => responseDataBaseCriate(result))
+			.then(result => responseDataBaseCreate(result, item))
 			.catch(err => err);
 	}
 
 	update(id: number, data: Place) {
-		return super.update(id, data).then(res => (res instanceof DatabaseException ? res : { ...res, data }));
+		return super.update(id, data).then(res => responseDataBaseUpdate(res, data));
 	}
 
 	async findAll(options?: ReadOptions) {
