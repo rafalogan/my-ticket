@@ -37,7 +37,8 @@
     "knex:migrate:latest": "npx knex migrate:latest --knexfile knexfile.ts",
     "knex:migrate:rollback": "npx knex migrate:rollback --knexfile knexfile.ts",
     "athon:c:s": "zsh bin/console/create-service.sh",
-    "athon:c:m": "zsh bin/console/create-module.sh"
+    "athon:c:m": "zsh bin/console/create-module.sh",
+    "athon:c:md": "zsh bin/console/create-model.sh"
   },
   "keywords": [
     "API",
