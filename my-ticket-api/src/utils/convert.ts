@@ -53,7 +53,8 @@ export const setReadOptions = (req: Request, cacheTime?: number, fields?: string
 	const id = Number(req.params.id);
 	const page = Number(req.query.page);
 	const limit = Number(req.query.limit);
-	const order: OrderOptions = { by: req.query.order as string, type: req.query.orderBy as string };
+	const order: OrderOptions | undefined =
+		req.query.order || req.query.orderBy ? { by: req.query.order as string, type: req.query.orderBy as string } : undefined;
 
 	return { id, page, limit, order, cacheTime, fields };
 };

@@ -24,7 +24,7 @@ export const responseApi = (res: Response, data: any, status?: number) => {
 		return responseApiError({ res, message: data.message, err: data.error, status: status || httpStatus.FORBIDDEN });
 	}
 
-	return ResponseHandle.onSuccess({ res, data });
+	return ResponseHandle.onSuccess({ res, data, status: status || httpStatus.OK });
 };
 
 export const responseApiError = (options: ErrorResponseParams) => ResponseHandle.onError(options);
@@ -39,3 +39,8 @@ export const responseDataBaseCreate = (response: any, data?: any) => {
 	if (response.severity === 'ERROR') return new DatabaseException(`${messages.noSave}`, response);
 	return { commad: response.command, rowCount: response.rowCount, message: messages.successSave, data };
 };
+
+export const responseNotFoundRegister = (column: string, value?: any) => ({
+	status: httpStatus.NOT_FOUND,
+	message: `${messages.notFoundRegister} ${column}: ${value}`,
+});

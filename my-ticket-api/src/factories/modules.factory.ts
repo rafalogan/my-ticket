@@ -9,6 +9,7 @@ import { ProfileModule } from 'src/modules/profile';
 import { CategoryModule } from 'src/modules/categoey';
 import { EventModule } from 'src/modules/event';
 import { PlaceModule } from 'src/modules/place';
+import { AddressModule } from 'src/modules/address';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -17,6 +18,7 @@ export class ModulesFactory {
 	private categoryModule: CategoryModule;
 	private eventModule: EventModule;
 	private placeModule: PlaceModule;
+	private addressModule: AddressModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -25,6 +27,7 @@ export class ModulesFactory {
 		this.categoryModule = new CategoryModule({ service: services.categoryService, ...this.getRouteOptions() });
 		this.eventModule = new EventModule({ service: services.eventService, ...this.getRouteOptions() });
 		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
+		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -34,6 +37,7 @@ export class ModulesFactory {
 		this.categoryModule.exec();
 		this.eventModule.exec();
 		this.placeModule.exec();
+		this.addressModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

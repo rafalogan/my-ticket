@@ -1,7 +1,16 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IAddress, List, ReadOptions } from 'src/repositories/types';
 import { Address } from 'src/repositories/entities';
-import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import {
+	camelToSnake,
+	DatabaseException,
+	existsOrError,
+	messages,
+	responseDataBaseCreate,
+	responseDataBaseUpdate,
+	responseNotFoundRegister,
+} from 'src/utils';
+import { onLog } from 'src/core/handlers';
 
 export class AddressService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -30,10 +39,23 @@ export class AddressService extends BaseService {
 			.catch(err => err);
 	}
 
+	findOneByWhere(column: string, value: any) {
+		column = camelToSnake(column);
+		return super
+			.findOneByWhere(column, value)
+			.then(res => {
+				if (!res) return responseNotFoundRegister(column, value);
+				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+				if (res.status) return res;
+				return new Address(res);
+			})
+			.catch(err => err);
+	}
+
 	findOneById(id: number, options?: ReadOptions) {
 		return super
 			.findOneById(id, options)
-			.then(res => (res instanceof DatabaseException ? res : new Address(res)))
+			.then(res => (res instanceof DatabaseException ? res : res.status ? res : new Address(res)))
 			.catch(err => err);
 	}
 

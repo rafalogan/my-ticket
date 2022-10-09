@@ -2,9 +2,9 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseDataBaseCreate } from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseNotFoundRegister } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
-import { EventEntity } from 'src/repositories/entities';
+import { onLog } from '../handlers';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -75,7 +75,11 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...this.fields)
 			.where(column, value)
 			.first()
-			.then(result => (result && result.severity === 'ERROR' ? new DatabaseException(messages.notFoundRegister, result) : result || {}))
+			.then(result => {
+				if (!result) return responseNotFoundRegister(column, value);
+				if (result.severity === 'ERROR') return new DatabaseException(result.detail || result.hint || messages.notFoundRegister, result);
+				return result;
+			})
 			.catch(err => err);
 	}
 
@@ -97,7 +101,9 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
 			.first()
-			.then(item => (item.severity === 'ERROR' ? new DatabaseException(messages.noRead, item) : item))
+			.then(item =>
+				item && item.severity === 'ERROR' ? new DatabaseException(messages.noRead, item) : !item ? responseNotFoundRegister('nº', id) : item
+			)
 			.catch(err => err);
 	}
 

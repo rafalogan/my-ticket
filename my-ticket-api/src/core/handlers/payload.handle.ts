@@ -23,3 +23,5 @@ export const decodeToken = (token: string) => {
 };
 
 export const getUserIdByToken = (req: Request) => getPayload(req)?.id;
+
+export const getIdByReq = (req: Request) => Number(req.params.id);

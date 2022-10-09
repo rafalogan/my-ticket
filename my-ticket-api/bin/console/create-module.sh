@@ -12,8 +12,11 @@ export class $1Controller extends Controller {
 		super();
 	}
 	save(req: Request, res: Response) {}
+
   edit(req: Request, res: Response) {}
+
   list(req: Request, res: Response) {}
+
   remove(req: Request, res: Response) {}
 }"
 
