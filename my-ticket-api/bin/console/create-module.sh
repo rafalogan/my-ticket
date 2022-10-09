@@ -6,8 +6,6 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
-import { Category } from 'src/repositories/entities';
-import { getUserIdByToken } from 'src/core/handlers';
 
 export class $1Controller extends Controller {
 	constructor(private $1Service: ) {
@@ -35,7 +33,6 @@ exec() {}
 
 MODULE_TEMPLATE="import { CommonModule } from 'src/core/abstracts';
 import { ModuleOptions } from 'src/repositories/types';
-import { EventService } from 'src/services';
 
 export class $1Module extends CommonModule {
 private readonly eventController: EventController;
@@ -51,7 +48,7 @@ constructor(options: ModuleOptions<EventService>) {
 exec = () => this.$1Route.exec();
 }"
 
-INDEX_TEMPPLATE = "export * from './$1.controller';
+INDEX_TEMPLATE="export * from './$1.controller';
 export * from './$1.route';
 export * from './$1.module';"
 
@@ -77,7 +74,7 @@ touch "$ROOT_DIR/$1/$1.module.ts"  &&
 echo "$CONTROLLER_TEMPLATE" >> "$ROOT_DIR/$1/$1.controller.ts" &&
 echo "$ROUTES_TEMPLATE" >> "$ROOT_DIR/$1/$1.route.ts" &&
 echo "$MODULE_TEMPLATE" >> "$ROOT_DIR/$1/$1.module.ts" &&
-echo "$INDEX_TEMPPLATE" >> "$ROOT_DIR/$1/index.ts" &&
+echo "$INDEX_TEMPLATE" >> "$ROOT_DIR/$1/index.ts" &&
 
 
 echo "Module $1 created with success!"
