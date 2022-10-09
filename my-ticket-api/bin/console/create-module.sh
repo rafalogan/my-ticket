@@ -35,10 +35,10 @@ MODULE_TEMPLATE="import { CommonModule } from 'src/core/abstracts';
 import { ModuleOptions } from 'src/repositories/types';
 
 export class $1Module extends CommonModule {
-private readonly eventController: EventController;
-private eventRoute: EventRoute;
+private readonly $1Controller: ;
+private $1Route: ;
 
-constructor(options: ModuleOptions<EventService>) {
+constructor(options: ModuleOptions<>) {
 	super();
 
   this.$1Controller =

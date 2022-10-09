@@ -8,6 +8,7 @@ import { AuthConfig } from 'src/config';
 import { ProfileModule } from 'src/modules/profile';
 import { CategoryModule } from 'src/modules/categoey';
 import { EventModule } from 'src/modules/event';
+import { PlaceModule } from 'src/modules/place';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -15,6 +16,7 @@ export class ModulesFactory {
 	private profileModule: ProfileModule;
 	private categoryModule: CategoryModule;
 	private eventModule: EventModule;
+	private placeModule: PlaceModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -22,6 +24,7 @@ export class ModulesFactory {
 		this.profileModule = new ProfileModule({ service: services.profileService, ...this.getRouteOptions() });
 		this.categoryModule = new CategoryModule({ service: services.categoryService, ...this.getRouteOptions() });
 		this.eventModule = new EventModule({ service: services.eventService, ...this.getRouteOptions() });
+		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -30,6 +33,7 @@ export class ModulesFactory {
 		this.profileModule.exec();
 		this.categoryModule.exec();
 		this.eventModule.exec();
+		this.placeModule.exec();
 		this.app.use(notfoundRoute);
 	}
 
