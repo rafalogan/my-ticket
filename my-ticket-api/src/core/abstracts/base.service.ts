@@ -4,7 +4,6 @@ import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseNotFoundRegister } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
-import { onLog } from '../handlers';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -94,6 +93,14 @@ export abstract class BaseService extends CacheBaseService {
 	protected async clearCache(id?: number) {
 		if (id) await this.deleteCache([`GET:content`, this.read.name, `${id}`]);
 		return this.deleteCache(['GET:allContent', this.read.name]);
+	}
+
+	protected findAllByWhere(column: string, value: any, fields?: string[]) {
+		return this.conn(this.table)
+			.select(...(fields || this.fields))
+			.where(column, value)
+			.then(result => result)
+			.catch(err => err);
 	}
 
 	findOneById(id: number, options?: ReadOptions) {
