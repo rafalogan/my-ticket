@@ -1,3 +1,4 @@
+import httpStatus from 'http-status';
 import isEmpty from 'is-empty';
 import bcrypt from 'bcrypt';
 
@@ -13,6 +14,7 @@ export const existsOrError = (value: any, message: string): void | ResponseExcep
 	if (typeof value === 'string' && !value.trim()) throw new ResponseException(message);
 	if (typeof value === 'number' && !Number(value)) throw new ResponseException(message);
 	if (value instanceof ResponseException || value instanceof DatabaseException) throw value;
+	if (value.status === httpStatus.FORBIDDEN) throw new ResponseException(message);
 };
 
 export const notExistisOrError = (value: any, message: string) => {
