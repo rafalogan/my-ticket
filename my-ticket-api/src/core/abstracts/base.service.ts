@@ -2,7 +2,15 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseNotFoundRegister } from 'src/utils';
+import {
+	convertDataValues,
+	deleteField,
+	existsOrError,
+	messages,
+	DatabaseException,
+	responseNotFoundRegister,
+	camelToSnake,
+} from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
 export abstract class BaseService extends CacheBaseService {
@@ -104,6 +112,8 @@ export abstract class BaseService extends CacheBaseService {
 	}
 
 	protected findAllByWhere(column: string, value: any, fields = this.fields): Promise<any> {
+		column = camelToSnake(column);
+
 		if (this.activeCache) {
 			return this.findCache(
 				['GET:allContent', this.findAllByWhere.name, column, value],

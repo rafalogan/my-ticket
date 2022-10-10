@@ -12,6 +12,7 @@ import { PlaceModule } from 'src/modules/place';
 import { AddressModule } from 'src/modules/address';
 import { PhoneModule } from 'src/modules/phone';
 import { TheaterModule } from 'src/modules/theater';
+import { CapacityModule } from 'src/modules/capacity';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -23,6 +24,7 @@ export class ModulesFactory {
 	private addressModule: AddressModule;
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
+	private capacityModule: CapacityModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -34,6 +36,7 @@ export class ModulesFactory {
 		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
+		this.capacityModule = new CapacityModule({ service: services.capacityService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -46,6 +49,7 @@ export class ModulesFactory {
 		this.addressModule.exec();
 		this.phoneModule.exec();
 		this.theaterModule.exec();
+		this.capacityModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

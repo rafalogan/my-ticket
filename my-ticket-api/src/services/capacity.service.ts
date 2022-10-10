@@ -17,10 +17,8 @@ export class CapacityService extends BaseService {
 	}
 
 	async validate(data: ICapacity) {
-		const fromDB = await this.findOneByWhere('theaterId', data.theaterId);
 		existsOrError(data.places, messages.requires('Número de Lugares'));
 		existsOrError(data.theaterId, messages.requires('Sala'));
-		notExistisOrError(fromDB, `Capacidade ${messages.alreadyExists}`);
 	}
 
 	create(item: Capacity) {
@@ -37,16 +35,13 @@ export class CapacityService extends BaseService {
 			.catch(err => err);
 	}
 
-	findOneByWhere(column: string, value: number, options?: ReadOptions) {
-		return super
-			.findOneByWhere(column, value, options)
-			.then(res => {
-				if (!res) return responseNotFoundRegister(column, value);
-				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+	findAllByWhere(column: string, value: number, fields: string[] = this.fields) {
+		return super.findAllByWhere(column, value, fields).then(res => {
+			if (!res) return responseNotFoundRegister('theaterId', value);
+			if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
 
-				return new Capacity(res);
-			})
-			.catch(err => err);
+			return res.map((c: ICapacity) => new Capacity(c));
+		});
 	}
 
 	findOneById(id: number, options?: ReadOptions) {
