@@ -1,0 +1,18 @@
+[
+	{
+		"name": "root",
+		"description": "Esse perfil tem acesso total ao sistema"
+	},
+	{
+		"name": "admin",
+		"description": "Esse perfil tem as mesmas premissões dos  perfils anteriores.\nBem como pode criar/editar todos os tipos de enventos, apagar eventos/ususarios.\nCriar/editar/apagar prefis"
+	},
+	{
+		"name": "vendedor",
+		"description": "O perfil de vendedor pode criar eventos, editar eventos criados por ele, criar locais e/ou salas e vender ingressos."
+	},
+	{
+		"name": "cliente",
+		"description": "Esse perfil e capaz de ver eventos, locais, salas e comprar ingressos."
+	}
+]
