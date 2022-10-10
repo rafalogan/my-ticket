@@ -9,3 +9,4 @@ export * from './address.service';
 export * from './phone.service';
 export * from './theater.service';
 export * from './capacity.service';
+export * from './duration.service';

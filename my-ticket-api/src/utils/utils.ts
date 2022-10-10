@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { Environment } from 'src/config';
 import { ErrorResponseParams, Knexfile } from 'src/repositories/types';
 import { DatabaseException, ResponseException } from 'src/utils/exceptions';
-import { onError, onLog, ResponseHandle } from 'src/core/handlers';
+import { ResponseHandle } from 'src/core/handlers';
 import { messages } from 'src/utils/messages';
 
 const isValid = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
