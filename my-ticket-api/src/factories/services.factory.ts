@@ -4,16 +4,30 @@ import { RedisClientType } from 'redis';
 import {
 	AddressService,
 	AuthService,
+	CapacityService,
 	CategoryService,
+	DurationService,
 	EventService,
 	InitService,
 	PhoneService,
 	PlaceService,
 	ProfileService,
+	TheaterService,
 	UserService,
 } from 'src/services';
 import { Environment } from 'src/config';
-import { addressFields, categoryFields, eventFields, phoneFields, placeFields, profileFields, userFields } from 'src/utils';
+import {
+	addressFields,
+	capacityFields,
+	categoryFields,
+	durationFields,
+	eventFields,
+	phoneFields,
+	placeFields,
+	profileFields,
+	theaterFields,
+	userFields,
+} from 'src/utils';
 
 export class ServicesFactory {
 	initService: InitService;
@@ -25,6 +39,9 @@ export class ServicesFactory {
 	placeService: PlaceService;
 	addressService: AddressService;
 	phoneService: PhoneService;
+	theaterService: TheaterService;
+	capacityService: CapacityService;
+	durationService: DurationService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -36,6 +53,9 @@ export class ServicesFactory {
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
 		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
 		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
+		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
+		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
+		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

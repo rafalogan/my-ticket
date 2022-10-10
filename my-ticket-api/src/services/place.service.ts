@@ -9,10 +9,7 @@ export class PlaceService extends BaseService {
 	}
 
 	async validate(data: IPlace) {
-		const fromDB = (await this.findOneByWhere('name', data.name)) as Place;
-
 		existsOrError(data.name, messages.requires('Nome do local'));
-		notExistisOrError(fromDB, fromDB.name + ' ' + messages.alreadyExists);
 	}
 
 	create(item: Place) {

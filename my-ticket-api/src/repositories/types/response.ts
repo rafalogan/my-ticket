@@ -33,3 +33,8 @@ export interface ValidateTokenResponse {
 }
 
 export type IResponseExepiton = Error;
+
+export interface DataResponseError {
+	column: string;
+	value: any;
+}

@@ -2,9 +2,16 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, responseNotFoundRegister } from 'src/utils';
+import {
+	convertDataValues,
+	deleteField,
+	existsOrError,
+	messages,
+	DatabaseException,
+	responseNotFoundRegister,
+	camelToSnake,
+} from 'src/utils';
 import { Pagination } from 'src/repositories/models';
-import { onLog } from '../handlers';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -70,7 +77,15 @@ export abstract class BaseService extends CacheBaseService {
 			.catch(err => err);
 	}
 
-	protected findOneByWhere(column: string, value: any) {
+	protected async findOneByWhere(column: string, value: any, options?: ReadOptions): Promise<any> {
+		if (this.activeCache) {
+			return this.findCache(
+				['GET:content', this.findOneByWhere.name, column, value],
+				() => this.findOneByWhere(column, value),
+				options?.cacheTime || this.defaultTime
+			);
+		}
+
 		return this.conn(this.table)
 			.select(...this.fields)
 			.where(column, value)
@@ -94,6 +109,24 @@ export abstract class BaseService extends CacheBaseService {
 	protected async clearCache(id?: number) {
 		if (id) await this.deleteCache([`GET:content`, this.read.name, `${id}`]);
 		return this.deleteCache(['GET:allContent', this.read.name]);
+	}
+
+	protected findAllByWhere(column: string, value: any, fields = this.fields): Promise<any> {
+		column = camelToSnake(column);
+
+		if (this.activeCache) {
+			return this.findCache(
+				['GET:allContent', this.findAllByWhere.name, column, value],
+				() => this.findAllByWhere(column, value, fields),
+				this.defaultTime
+			);
+		}
+
+		return this.conn(this.table)
+			.select(...fields)
+			.where(column, value)
+			.then(result => result)
+			.catch(err => err);
 	}
 
 	findOneById(id: number, options?: ReadOptions) {
