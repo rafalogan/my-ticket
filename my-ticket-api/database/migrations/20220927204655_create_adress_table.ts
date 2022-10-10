@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.string('district', 50).notNullable();
 		table.string('city', 100).notNullable();
 		table.string('state', 50).notNullable();
-		table.string('url_maps', 100).nullable();
+		table.string('url_maps', 1000).nullable();
 		table.integer('user_id').unsigned().references('id').inTable('users').nullable();
 		table.integer('place_id').unsigned().references('id').inTable('places').nullable();
 	});

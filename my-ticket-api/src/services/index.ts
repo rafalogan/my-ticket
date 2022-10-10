@@ -7,3 +7,4 @@ export * from './event.service';
 export * from './place.service';
 export * from './address.service';
 export * from './phone.service';
+export * from './theater.service';
