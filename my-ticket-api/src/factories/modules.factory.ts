@@ -13,6 +13,8 @@ import { AddressModule } from 'src/modules/address';
 import { PhoneModule } from 'src/modules/phone';
 import { TheaterModule } from 'src/modules/theater';
 import { CapacityModule } from 'src/modules/capacity';
+import { DurationModule } from 'src/modules/duration';
+import { onLog } from 'src/core/handlers';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -25,6 +27,7 @@ export class ModulesFactory {
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
 	private capacityModule: CapacityModule;
+	private durationModule: DurationModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -37,6 +40,7 @@ export class ModulesFactory {
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
 		this.capacityModule = new CapacityModule({ service: services.capacityService, ...this.getRouteOptions() });
+		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -50,6 +54,7 @@ export class ModulesFactory {
 		this.phoneModule.exec();
 		this.theaterModule.exec();
 		this.capacityModule.exec();
+		this.durationModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

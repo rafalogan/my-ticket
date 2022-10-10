@@ -6,6 +6,7 @@ import {
 	AuthService,
 	CapacityService,
 	CategoryService,
+	DurationService,
 	EventService,
 	InitService,
 	PhoneService,
@@ -19,6 +20,7 @@ import {
 	addressFields,
 	capacityFields,
 	categoryFields,
+	durationFields,
 	eventFields,
 	phoneFields,
 	placeFields,
@@ -39,6 +41,7 @@ export class ServicesFactory {
 	phoneService: PhoneService;
 	theaterService: TheaterService;
 	capacityService: CapacityService;
+	durationService: DurationService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -52,6 +55,7 @@ export class ServicesFactory {
 		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
 		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
+		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

@@ -1,7 +1,7 @@
 import { IID } from './shared';
 
 export interface IDuration extends IID {
-	startDate: Date | string;
-	endDate: Date | string;
+	start: Date | string;
+	end: Date | string;
 	theaterId: number;
 }

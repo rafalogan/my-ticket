@@ -16,8 +16,8 @@ export class DurationService extends BaseService {
 	}
 
 	validate(data: IDuration) {
-		existsOrError(data.startDate, messages.requires('Data e hora de início'));
-		existsOrError(data.endDate, messages.requires('Data e hora de término'));
+		existsOrError(data.start, messages.requires('Data e hora de início'));
+		existsOrError(data.end, messages.requires('Data e hora de término'));
 		existsOrError(data.theaterId, messages.requires('Espaço'));
 	}
 
