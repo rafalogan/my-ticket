@@ -10,6 +10,7 @@ import { CategoryModule } from 'src/modules/categoey';
 import { EventModule } from 'src/modules/event';
 import { PlaceModule } from 'src/modules/place';
 import { AddressModule } from 'src/modules/address';
+import { PhoneModule } from 'src/modules/phone';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -19,6 +20,7 @@ export class ModulesFactory {
 	private eventModule: EventModule;
 	private placeModule: PlaceModule;
 	private addressModule: AddressModule;
+	private phoneModule: PhoneModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -28,6 +30,7 @@ export class ModulesFactory {
 		this.eventModule = new EventModule({ service: services.eventService, ...this.getRouteOptions() });
 		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
 		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
+		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -38,6 +41,7 @@ export class ModulesFactory {
 		this.eventModule.exec();
 		this.placeModule.exec();
 		this.addressModule.exec();
+		this.phoneModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

@@ -7,12 +7,13 @@ import {
 	CategoryService,
 	EventService,
 	InitService,
+	PhoneService,
 	PlaceService,
 	ProfileService,
 	UserService,
 } from 'src/services';
 import { Environment } from 'src/config';
-import { addressFields, categoryFields, eventFields, placeFields, profileFields, userFields } from 'src/utils';
+import { addressFields, categoryFields, eventFields, phoneFields, placeFields, profileFields, userFields } from 'src/utils';
 
 export class ServicesFactory {
 	initService: InitService;
@@ -23,6 +24,7 @@ export class ServicesFactory {
 	eventService: EventService;
 	placeService: PlaceService;
 	addressService: AddressService;
+	phoneService: PhoneService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -33,6 +35,7 @@ export class ServicesFactory {
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
 		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
+		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

@@ -11,6 +11,7 @@ export class $1Controller extends Controller {
 	constructor(private $1Service: ) {
 		super();
 	}
+
 	save(req: Request, res: Response) {}
 
   edit(req: Request, res: Response) {}

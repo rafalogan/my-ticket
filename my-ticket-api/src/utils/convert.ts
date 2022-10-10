@@ -49,6 +49,15 @@ export const clearTimestampFields = (data: any) => {
 	return data;
 };
 
+export const setParamsOrder = (req: Request) => {
+	const value = Number(req.params.id);
+	let where;
+	if (req.originalUrl.includes('user')) where = 'userId';
+	if (req.originalUrl.includes('place')) where = 'placeId';
+
+	return { where, value: value };
+};
+
 export const setReadOptions = (req: Request, cacheTime?: number, fields?: string[]): ReadOptions => {
 	const id = Number(req.params.id);
 	const page = Number(req.query.page);

@@ -3,55 +3,54 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { responseApi, responseApiError, ResponseException, setParamsOrder, setReadOptions } from 'src/utils';
-import { AddressService } from 'src/services';
-import { Address } from 'src/repositories/entities';
+import { PhoneService } from 'src/services';
+import { Phone } from 'src/repositories/entities';
 import { getIdByReq, onLog } from 'src/core/handlers';
 
-export class AddressController extends Controller {
-	constructor(private addressService: AddressService) {
+export class PhoneController extends Controller {
+	constructor(private phoneService: PhoneService) {
 		super();
 	}
+
 	async save(req: Request, res: Response) {
 		try {
-			await this.addressService.validate(req.body);
+			await this.phoneService.validate(req.body);
 		} catch (err) {
 			return responseApi(res, err, httpStatus.BAD_REQUEST);
 		}
 
-		const address = new Address(req.body);
+		const phone = new Phone(req.body);
 
-		this.addressService
-			.save(address)
-			.then(data => responseApi(res, data))
+		this.phoneService
+			.save(phone)
+			.then(data => responseApi(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
 	edit(req: Request, res: Response) {
 		const id = getIdByReq(req);
-		const address = new Address(req.body, id);
+		const phone = new Phone(req.body, id);
 
-		this.addressService
-			.save(address)
+		this.phoneService
+			.save(phone)
 			.then(data => responseApi(res, data, data.status))
-			.catch(err => responseApiError({ res, err, message: err.message }));
-	}
-
-	listByUserOrPlace(req: Request, res: Response) {
-		const params = this.setParamsOrder(req);
-
-		onLog('params', params);
-
-		this.addressService
-			.findOneByWhere(params.where as string, params.value)
-			.then((data: any) => responseApi(res, data, data?.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
 	list(req: Request, res: Response) {
 		const options = setReadOptions(req);
 
-		this.addressService
+		this.phoneService
 			.read(options)
+			.then(data => responseApi(res, data, data.status))
+			.catch(err => responseApiError({ res, err, message: err.message }));
+	}
+
+	listByPlaceOrUser(req: Request, res: Response) {
+		const params = setParamsOrder(req);
+
+		this.phoneService
+			.findPonhesUserOrPlaceId(params.where as string, params.value)
 			.then(data => responseApi(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
@@ -59,13 +58,9 @@ export class AddressController extends Controller {
 	remove(req: Request, res: Response) {
 		const id = getIdByReq(req);
 
-		this.addressService
+		this.phoneService
 			.delete(id)
 			.then(data => responseApi(res, data))
 			.catch(err => responseApiError({ res, err, message: err.message }));
-	}
-
-	private setParamsOrder(req: Request) {
-		return setParamsOrder(req);
 	}
 }
