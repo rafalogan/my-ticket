@@ -9,7 +9,7 @@ export class Theater {
 	constructor(data: ITheater, id?: number) {
 		this.id = Number(id || data.id) || undefined;
 		this.name = data.name;
-		this.description = data.description || undefined;
+		this.description = data.description ? data.description.toString() : undefined;
 		this.placeId = Number(data.placeId);
 	}
 }
