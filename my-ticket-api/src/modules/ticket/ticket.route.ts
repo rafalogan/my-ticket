@@ -20,8 +20,8 @@ export class TicketRoute extends Routes {
 			.route('/tickets/:id')
 			.get(this.ticketController.list.bind(this.ticketController))
 			.all(this.auth?.exec().authenticate())
-			.put(this.ticketController.list.bind(this.ticketController))
-			.delete(this.ticketController.list.bind(this.ticketController))
+			.put(this.ticketController.save.bind(this.ticketController))
+			.delete(this.ticketController.remove.bind(this.ticketController))
 			.all(methodNotAllowed);
 	}
 }

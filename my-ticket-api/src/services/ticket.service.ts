@@ -1,13 +1,6 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
-import {
-	DatabaseException,
-	existsOrError,
-	messages,
-	responseDataBaseCreate,
-	responseDataBaseUpdate,
-	responseNotFoundRegister,
-} from 'src/utils';
+import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 import { Ticket } from 'src/repositories/entities';
 
 export class TicketService extends BaseService {
