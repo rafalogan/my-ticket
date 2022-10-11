@@ -9,7 +9,7 @@ import {
 	ticketOtherTableFields,
 } from 'src/utils';
 import { Ticket } from 'src/repositories/entities';
-import { TicketModel } from 'src/repositories/models';
+import { Pagination, TicketModel } from 'src/repositories/models';
 
 export class TicketService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -60,10 +60,33 @@ export class TicketService extends BaseService {
 			.catch(err => err);
 	}
 
-	findAll(options?: ReadOptions) {
-		return super
-			.findAll(options)
-			.then(res => (res instanceof DatabaseException || res.status ? res : this.setTickets(res)))
+	async findAll(options?: ReadOptions) {
+		const page = options?.page || 1;
+		const limit = options?.limit || 10;
+		const count = await this.countById();
+		const pagination = new Pagination({ page, count, limit });
+
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.andWhereRaw('e.id = t.event_id')
+			.andWhereRaw('p.id = t.place_id')
+			.andWhereRaw('th.id = t.theater_id')
+			.andWhereRaw('d.id = t.duration_id')
+			.limit(limit)
+			.offset(page * limit - limit)
+			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
+			.then(res => {
+				if (!res) return res;
+				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+
+				return { data: res.map(t => new TicketModel(t)), pagination };
+			})
 			.catch(err => err);
 	}
 
