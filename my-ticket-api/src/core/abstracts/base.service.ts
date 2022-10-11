@@ -2,16 +2,7 @@ import { Knex } from 'knex';
 
 import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
-import {
-	convertDataValues,
-	deleteField,
-	existsOrError,
-	messages,
-	DatabaseException,
-	responseNotFoundRegister,
-	camelToSnake,
-	responseNotFoundRegisters,
-} from 'src/utils';
+import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, camelToSnake } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
 export abstract class BaseService extends CacheBaseService {
@@ -92,7 +83,7 @@ export abstract class BaseService extends CacheBaseService {
 			.where(column, value)
 			.first()
 			.then(result => {
-				if (!result) return responseNotFoundRegister(column, value);
+				if (!result) return result;
 				if (result.severity === 'ERROR') return new DatabaseException(result.detail || result.hint || messages.notFoundRegister, result);
 				return result;
 			})
@@ -136,7 +127,7 @@ export abstract class BaseService extends CacheBaseService {
 			.where({ id })
 			.first()
 			.then(item => {
-				if (!item) return responseNotFoundRegister('nº', id);
+				if (!item) return item;
 				if (item.severity === 'ERROR') return new DatabaseException(messages.noRead, item);
 				return item;
 			})
@@ -155,10 +146,10 @@ export abstract class BaseService extends CacheBaseService {
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
 			.then(data => {
-				if (!data) return responseNotFoundRegisters();
+				if (!data) return data;
 				if (!Array.isArray(data)) return new DatabaseException(messages.notFoundRegister, data);
 
-				return data;
+				return { data, pagination };
 			})
 			.catch(err => err);
 	}
