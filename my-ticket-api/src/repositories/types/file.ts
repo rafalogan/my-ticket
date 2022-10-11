@@ -1,11 +1,11 @@
-export interface IFile {
-	id?: number;
-	categoryId?: number;
-	eventId?: number;
+import { IID } from './shared';
+
+export interface IFile extends File, IID {
 	title?: string;
+	alt?: string;
 	name: string;
-	fileName: string;
-	filePath: string;
-	fileType: string;
+	type: string;
 	url: string;
+	eventId?: number;
+	categoryId?: number;
 }
