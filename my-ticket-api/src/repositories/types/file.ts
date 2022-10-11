@@ -1,10 +1,6 @@
 import { IID } from './shared';
 import { S3 } from 'aws-sdk';
-import { FileEntity } from 'src/repositories/entities';
 import { StorageEngine } from 'multer';
-import { Client as __Client } from '@aws-sdk/smithy-client/dist-types/client';
-import { HttpHandlerOptions as __HttpHandlerOptions } from '@aws-sdk/types/dist-types/http';
-import { S3ClientConfig, S3ClientResolvedConfig, ServiceInputTypes, ServiceOutputTypes } from '@aws-sdk/client-s3/dist-types/S3Client';
 
 export interface IFile extends File, IID {
 	title?: string;

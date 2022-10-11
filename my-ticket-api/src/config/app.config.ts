@@ -8,6 +8,7 @@ import { ICorsOptions } from 'src/repositories/types';
 import { AuthConfig } from 'src/config/auth.config';
 import { ModulesFactory } from 'src/factories';
 import { ServicesFactory } from 'src/factories/services.factory';
+import { Multer } from 'multer';
 
 export class AppConfig {
 	private readonly _express: Application;
@@ -18,10 +19,11 @@ export class AppConfig {
 		private corsOptions: ICorsOptions,
 		private logger: Logger,
 		private authConfig: AuthConfig,
-		private services: ServicesFactory
+		private services: ServicesFactory,
+		private upload: Multer
 	) {
 		this._express = express();
-		this.modules = new ModulesFactory(this.express, this.authConfig, this.services);
+		this.modules = new ModulesFactory(this.express, this.authConfig, this.services, this.upload);
 		this.configExpress();
 	}
 

@@ -32,6 +32,7 @@ import {
 	ticketFields,
 	userFields,
 } from 'src/utils';
+import { Multer } from 'multer';
 
 export class ServicesFactory {
 	initService: InitService;

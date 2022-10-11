@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IFile, List, ReadOptions } from 'src/repositories/types';
 import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
