@@ -44,3 +44,5 @@ export const responseNotFoundRegister = (column: string, value?: any) => ({
 	status: httpStatus.NOT_FOUND,
 	message: `${messages.notFoundRegister} ${column}: ${value}`,
 });
+
+export const responseNotFoundRegisters = () => ({ status: httpStatus.NOT_FOUND, message: messages.notFoundRegister });

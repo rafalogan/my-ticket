@@ -10,6 +10,7 @@ import {
 	DatabaseException,
 	responseNotFoundRegister,
 	camelToSnake,
+	responseNotFoundRegisters,
 } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
 
@@ -134,9 +135,11 @@ export abstract class BaseService extends CacheBaseService {
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
 			.first()
-			.then(item =>
-				item && item.severity === 'ERROR' ? new DatabaseException(messages.noRead, item) : !item ? responseNotFoundRegister('nº', id) : item
-			)
+			.then(item => {
+				if (!item) return responseNotFoundRegister('nº', id);
+				if (item.severity === 'ERROR') return new DatabaseException(messages.noRead, item);
+				return item;
+			})
 			.catch(err => err);
 	}
 
@@ -151,7 +154,12 @@ export abstract class BaseService extends CacheBaseService {
 			.limit(limit)
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
-			.then(data => (!Array.isArray(data) ? new DatabaseException(messages.noRead, data) : { data, pagination }))
+			.then(data => {
+				if (!data) return responseNotFoundRegisters();
+				if (!Array.isArray(data)) return new DatabaseException(messages.notFoundRegister, data);
+
+				return data;
+			})
 			.catch(err => err);
 	}
 
