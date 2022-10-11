@@ -39,3 +39,13 @@ export const theaterFields = ['id', 'name', 'description', 'place_id as placeId'
 export const capacityFields = ['id', 'section', 'row', 'places', 'theater_id as theaterId'];
 
 export const durationFields = ['id', 'start', 'end', 'theater_id as theaterId'];
+
+export const ticketFields = [
+	'id',
+	'amount',
+	'unitary_value as unitaryValue',
+	'event_id as eventId',
+	'place_id as placeId',
+	'theater_id as theaterId',
+	'duration_id as durationId',
+];

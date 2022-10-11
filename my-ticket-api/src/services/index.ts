@@ -10,3 +10,4 @@ export * from './phone.service';
 export * from './theater.service';
 export * from './capacity.service';
 export * from './duration.service';
+export * from './ticket.service';

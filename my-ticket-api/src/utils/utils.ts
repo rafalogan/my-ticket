@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { Environment } from 'src/config';
 import { ErrorResponseParams, Knexfile } from 'src/repositories/types';
 import { DatabaseException, ResponseException } from 'src/utils/exceptions';
-import { ResponseHandle } from 'src/core/handlers';
+import { onLog, ResponseHandle } from 'src/core/handlers';
 import { messages } from 'src/utils/messages';
 
 const isValid = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
@@ -20,6 +20,15 @@ export const getKnexProps = (env: Environment, props?: Knexfile) => {
 };
 
 export const responseApi = (res: Response, data: any, status?: number) => {
+	if (!data) {
+		return responseApiError({
+			res,
+			err: responseNotFoundRegisters.error,
+			message: responseNotFoundRegisters.message,
+			status: responseNotFoundRegisters.error.status,
+		});
+	}
+
 	if (data instanceof ResponseException || data instanceof DatabaseException) {
 		return responseApiError({ res, message: data.message, err: data.error, status: status || httpStatus.FORBIDDEN });
 	}
@@ -30,17 +39,18 @@ export const responseApi = (res: Response, data: any, status?: number) => {
 export const responseApiError = (options: ErrorResponseParams) => ResponseHandle.onError(options);
 
 export const responseDataBaseUpdate = (response: any, data?: any) => {
-	if (response instanceof DatabaseException) return response;
+	if (!response) return response;
 	if (response.severity === 'ERROR') return new DatabaseException(response.detail ? response.detail : messages.noEdit);
 	return { id: data.id, edit: response === 1, message: messages.successEdit, data };
 };
 
 export const responseDataBaseCreate = (response: any, data?: any) => {
+	if (!response) return response;
 	if (response.severity === 'ERROR') return new DatabaseException(`${messages.noSave}`, response);
 	return { commad: response.command, rowCount: response.rowCount, message: messages.successSave, data };
 };
 
-export const responseNotFoundRegister = (column: string, value?: any) => ({
-	status: httpStatus.NOT_FOUND,
-	message: `${messages.notFoundRegister} ${column}: ${value}`,
+export const responseNotFoundRegisters = new ResponseException(messages.notFoundRegister, {
+	status: httpStatus.FORBIDDEN,
+	message: messages.notFoundRegister,
 });
