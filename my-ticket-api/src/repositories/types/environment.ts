@@ -36,6 +36,7 @@ export interface ICache {
 }
 
 export interface IAWS {
+	storage: string;
 	accessKeyId: string;
 	secretAccessKey: string;
 	region: string;
