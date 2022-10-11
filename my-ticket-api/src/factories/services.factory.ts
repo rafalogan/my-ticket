@@ -13,6 +13,7 @@ import {
 	PlaceService,
 	ProfileService,
 	TheaterService,
+	TicketService,
 	UserService,
 } from 'src/services';
 import { Environment } from 'src/config';
@@ -26,6 +27,7 @@ import {
 	placeFields,
 	profileFields,
 	theaterFields,
+	ticketFields,
 	userFields,
 } from 'src/utils';
 
@@ -42,6 +44,7 @@ export class ServicesFactory {
 	theaterService: TheaterService;
 	capacityService: CapacityService;
 	durationService: DurationService;
+	ticketService: TicketService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -56,6 +59,7 @@ export class ServicesFactory {
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
 		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
+		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {
