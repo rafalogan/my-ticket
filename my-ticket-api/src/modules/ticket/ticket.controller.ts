@@ -27,6 +27,15 @@ export class TicketController extends Controller {
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
+	listTickesByEvent(req: Request, res: Response) {
+		const id = getIdByReq(req);
+
+		this.ticketService
+			.findTicketsByEvent(id)
+			.then(data => responseApi(res, data, data.staus))
+			.catch(err => responseApiError({ res, err, message: err.message }));
+	}
+
 	edit(req: Request, res: Response) {
 		const id = getIdByReq(req);
 		const ticket = new Ticket(req.body, id);

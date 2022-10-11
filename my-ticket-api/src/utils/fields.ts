@@ -49,3 +49,10 @@ export const ticketFields = [
 	'theater_id as theaterId',
 	'duration_id as durationId',
 ];
+
+export const ticketOtherTableFields = {
+	event: { eventTitle: 'e.title', eventSubtitle: 'e.subtitle', eventContent: 'e.content', eventType: 'e.type' },
+	place: { placeName: 'p.name', placeDescription: 'p.description' },
+	theater: { theaterName: 'th.name', theaterDescription: 'th.description' },
+	duration: { durationStart: 'd.start', durationEnd: 'd.end' },
+};

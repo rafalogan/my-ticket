@@ -1,7 +1,15 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
-import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { BaseServiceOptions, FindTicketOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
+import {
+	DatabaseException,
+	existsOrError,
+	messages,
+	responseDataBaseCreate,
+	responseDataBaseUpdate,
+	ticketOtherTableFields,
+} from 'src/utils';
 import { Ticket } from 'src/repositories/entities';
+import { TicketModel } from 'src/repositories/models';
 
 export class TicketService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -31,6 +39,27 @@ export class TicketService extends BaseService {
 			.catch(err => err);
 	}
 
+	findTicketsByEvent(id: number) {
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.whereRaw('e.id = ?', [id])
+			.andWhereRaw('p.id = t.place_id')
+			.andWhereRaw('th.id = t.theater_id')
+			.andWhereRaw('d.id = t.duration_id')
+			.then(res => {
+				if (!res) return res;
+				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+				return res.map(t => new TicketModel(t));
+			})
+			.catch(err => err);
+	}
+
 	findAll(options?: ReadOptions) {
 		return super
 			.findAll(options)
@@ -38,10 +67,26 @@ export class TicketService extends BaseService {
 			.catch(err => err);
 	}
 
-	findOneById(id: number, options?: ReadOptions) {
-		return super
-			.findOneById(id, options)
-			.then(res => (res instanceof DatabaseException || res.status ? res : new Ticket(res)))
+	findOneById(id: number) {
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.whereRaw('t.id = ?', [id])
+			.andWhereRaw('e.id = t.event_id')
+			.andWhereRaw('p.id = t.place_id')
+			.andWhereRaw('th.id = t.theater_id')
+			.andWhereRaw('d.id = t.duration_id')
+			.first()
+			.then(res => {
+				if (!res) return res;
+				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+				return new TicketModel(res);
+			})
 			.catch(err => err);
 	}
 
