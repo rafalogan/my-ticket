@@ -22,7 +22,7 @@ export class FileRoute extends Routes {
 			.route('/files/:id')
 			.all(this.auth?.exec().authenticate())
 			.get(this.fileController.list.bind(this.fileController))
-			.put(this.fileController.save.bind(this.fileController))
+			.put(this.fileController.edit.bind(this.fileController))
 			.delete(this.fileController.remove.bind(this.fileController))
 			.all(methodNotAllowed);
 	}

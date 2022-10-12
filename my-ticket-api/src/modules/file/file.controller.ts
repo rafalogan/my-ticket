@@ -22,7 +22,6 @@ export class FileController extends Controller {
 		}
 
 		const file = new FileEntity(raw);
-		onLog('file', file);
 
 		this.fileService
 			.save(file)
@@ -32,8 +31,7 @@ export class FileController extends Controller {
 
 	edit(req: Request, res: Response) {
 		const id = getIdByReq(req);
-		const raw = filterRawFile(req) as IFile;
-		const file = new FileEntity(raw, id);
+		const file = new FileEntity(req.body, id);
 
 		this.fileService
 			.save(file)
