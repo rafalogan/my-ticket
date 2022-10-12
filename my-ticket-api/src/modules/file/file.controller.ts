@@ -6,7 +6,7 @@ import { filterRawFile, responseApi, responseApiError, setReadOptions } from 'sr
 import { FileService } from 'src/services';
 import { IFile } from 'src/repositories/types';
 import { FileEntity } from 'src/repositories/entities';
-import { getIdByReq } from 'src/core/handlers';
+import { getIdByReq, onLog } from 'src/core/handlers';
 
 export class FileController extends Controller {
 	constructor(private fileService: FileService) {
@@ -22,6 +22,7 @@ export class FileController extends Controller {
 		}
 
 		const file = new FileEntity(raw);
+		onLog('file', file);
 
 		this.fileService
 			.save(file)

@@ -62,6 +62,7 @@ export class ModulesFactory {
 		this.capacityModule.exec();
 		this.durationModule.exec();
 		this.ticketModule.exec();
+		this.fileModule.exec();
 		this.app.use(notfoundRoute);
 	}
 

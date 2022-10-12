@@ -14,8 +14,8 @@ export class FileRoute extends Routes {
 		this.app
 			.route('/files')
 			.all(this.auth?.exec().authenticate())
-			.get(this.fileController.list.bind(this.fileController))
 			.post(this.upload.single('file'), this.fileController.save.bind(this.fileController))
+			.get(this.fileController.list.bind(this.fileController))
 			.all(methodNotAllowed);
 
 		this.app

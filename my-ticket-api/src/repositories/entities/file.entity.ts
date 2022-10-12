@@ -13,7 +13,7 @@ export class FileEntity {
 	constructor(data: IFile, id?: number) {
 		this.id = Number(id || data.id) || undefined;
 		this.title = data.title;
-		this.alt = data.alt;
+		this.alt = data.alt ? data.alt.toString() : undefined;
 		this.name = data.name;
 		this.type = data.type;
 		this.url = data.url;

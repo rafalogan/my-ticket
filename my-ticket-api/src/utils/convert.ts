@@ -4,6 +4,7 @@ import { IFile, OrderOptions, ReadOptions, Users } from 'src/repositories/types'
 import { User } from 'src/repositories/entities';
 import { UserModel } from 'src/repositories/models';
 import { isDev } from 'src/utils/validate';
+import { onLog } from 'src/core/handlers';
 // import { FileEntity } from 'src/repositories/types';
 // import { FileMedia } from 'src/repositories/entities';
 
@@ -78,7 +79,7 @@ export const setTimestampFields = (data?: Date | string | number) => (data ? new
 export const filterRawFile = (req: Request) => ({
 	title: req.body.title,
 	alt: req.body.alt,
-	name: req.file?.filename,
+	name: req.file?.originalname,
 	type: req.file?.mimetype,
 	url: req.body.url || isDev ? `/media/${req.file?.filename}` : '',
 	eventId: req.body.eventId,
