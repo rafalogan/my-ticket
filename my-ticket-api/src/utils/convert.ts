@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { OrderOptions, ReadOptions, Users } from 'src/repositories/types';
+import { IFile, OrderOptions, ReadOptions, Users } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { UserModel } from 'src/repositories/models';
+import { isDev } from 'src/utils/validate';
+import { onLog } from 'src/core/handlers';
 // import { FileEntity } from 'src/repositories/types';
 // import { FileMedia } from 'src/repositories/entities';
 
@@ -74,6 +76,12 @@ export const deleteField = (data: any, field: string) => Reflect.deleteProperty(
 
 export const setTimestampFields = (data?: Date | string | number) => (data ? new Date(data) : undefined);
 
-// export const setFilesMeda = (data?: FileEntity[] | FileMedia[]) => {
-// 	return  data ? data.map(file => (file instanceof FileMedia ? file : new FileMedia(file))) : [];
-// }
+export const filterRawFile = (req: Request) => ({
+	title: req.body.title,
+	alt: req.body.alt,
+	name: req.file?.originalname,
+	type: req.file?.mimetype,
+	url: req.body.url || isDev ? `/media/${req.file?.filename}` : '',
+	eventId: req.body.eventId,
+	categoryId: req.body.categoryId,
+});

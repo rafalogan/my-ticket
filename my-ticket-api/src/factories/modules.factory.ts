@@ -1,9 +1,10 @@
-import { Application } from 'express';
+import { resolve } from 'path';
+import express, { Application } from 'express';
+import { Multer } from 'multer';
+
 import { ServicesFactory } from 'src/factories/services.factory';
 import { AuthModule } from 'src/modules/auth';
 import { UserModule } from 'src/modules/user';
-import { RouteOptions } from 'src/repositories/types';
-import { notfoundRoute } from 'src/core/routes/notfound.route';
 import { AuthConfig } from 'src/config';
 import { ProfileModule } from 'src/modules/profile';
 import { CategoryModule } from 'src/modules/categoey';
@@ -15,6 +16,9 @@ import { TheaterModule } from 'src/modules/theater';
 import { CapacityModule } from 'src/modules/capacity';
 import { DurationModule } from 'src/modules/duration';
 import { TicketModule } from 'src/modules/ticket';
+import { FileModule } from 'src/modules/file';
+import { RouteOptions } from 'src/repositories/types';
+import { notfoundRoute } from 'src/core/routes/notfound.route';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -29,8 +33,9 @@ export class ModulesFactory {
 	private capacityModule: CapacityModule;
 	private durationModule: DurationModule;
 	private ticketModule: TicketModule;
+	private fileModule: FileModule;
 
-	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory) {
+	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory, upload: Multer) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
 		this.userModule = new UserModule({ service: services.userService, ...this.getRouteOptions() });
 		this.profileModule = new ProfileModule({ service: services.profileService, ...this.getRouteOptions() });
@@ -43,6 +48,7 @@ export class ModulesFactory {
 		this.capacityModule = new CapacityModule({ service: services.capacityService, ...this.getRouteOptions() });
 		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 		this.ticketModule = new TicketModule({ service: services.ticketService, ...this.getRouteOptions() });
+		this.fileModule = new FileModule({ service: services.fileService, ...this.getRouteOptions() }, upload);
 	}
 
 	exec() {
@@ -58,6 +64,8 @@ export class ModulesFactory {
 		this.capacityModule.exec();
 		this.durationModule.exec();
 		this.ticketModule.exec();
+		this.fileModule.exec();
+		this.app.use('/media', express.static(resolve(__dirname, '../..', 'tmp', 'uploads')));
 		this.app.use(notfoundRoute);
 	}
 

@@ -7,6 +7,8 @@ import { Credentials, UserModel } from 'src/repositories/models';
 import { IsMachValidateOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 
+export const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
+
 export const existsOrError = (value: any, message: string): void | ResponseException => {
 	if (isEmpty(value)) throw new ResponseException(message);
 	if (!value) throw new ResponseException(message);

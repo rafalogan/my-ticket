@@ -8,6 +8,7 @@ import {
 	CategoryService,
 	DurationService,
 	EventService,
+	FileService,
 	InitService,
 	PhoneService,
 	PlaceService,
@@ -23,6 +24,7 @@ import {
 	categoryFields,
 	durationFields,
 	eventFields,
+	fileFields,
 	phoneFields,
 	placeFields,
 	profileFields,
@@ -30,6 +32,7 @@ import {
 	ticketFields,
 	userFields,
 } from 'src/utils';
+import { Multer } from 'multer';
 
 export class ServicesFactory {
 	initService: InitService;
@@ -45,6 +48,7 @@ export class ServicesFactory {
 	capacityService: CapacityService;
 	durationService: DurationService;
 	ticketService: TicketService;
+	fileService: FileService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -60,6 +64,7 @@ export class ServicesFactory {
 		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
+		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

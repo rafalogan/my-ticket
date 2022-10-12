@@ -4,7 +4,6 @@ export class Environment {
 	private readonly _nodeEnv: string;
 	private readonly _port: number;
 	private readonly _host: string;
-	private readonly _storage: string;
 	private readonly _timezone: string;
 	private readonly _database: IDatabase;
 	private readonly _corsOptions: ICorsOptions;
@@ -17,7 +16,6 @@ export class Environment {
 		this._nodeEnv = process.env.NODE_ENV || '';
 		this._port = Number(process.env.PORT);
 		this._host = process.env.HOST || '';
-		this._storage = process.env.STORAGE_TYPE || '';
 		this._timezone = process.env.TIMEZONE || '';
 		this._database = this.setDatabase();
 		this._corsOptions = this.setCoresOptions();
@@ -35,9 +33,6 @@ export class Environment {
 	}
 	get host() {
 		return this._host;
-	}
-	get storage() {
-		return this._storage;
 	}
 	get timezone() {
 		return this._timezone;
@@ -91,12 +86,13 @@ export class Environment {
 	}
 
 	private setAWS(): IAWS {
+		const storage = process.env.STORAGE_TYPE || '';
 		const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 		const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 		const region = process.env.AWS_REGION || '';
 		const bucket = process.env.AWS_BUCKET || '';
 
-		return { accessKeyId, secretAccessKey, region, bucket };
+		return { storage, accessKeyId, secretAccessKey, region, bucket };
 	}
 
 	private setHttp(): IHttps {
