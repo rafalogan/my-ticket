@@ -1,8 +1,10 @@
-import { Request } from 'express';
+import { S3 } from 'aws-sdk';
+import { unlink } from 'fs/promises';
+import { resolve } from 'path';
 
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IFile, List, ReadOptions } from 'src/repositories/types';
-import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate, storage } from 'src/utils';
 import { FileEntity } from 'src/repositories/entities';
 
 export class FileService extends BaseService {
@@ -48,5 +50,33 @@ export class FileService extends BaseService {
 		const data = value.data.map(f => new FileEntity(f));
 
 		return { ...value, data };
+	}
+
+	delete(id: number) {
+		return this.deleteFile(id)
+			.then(() => super.delete(id))
+			.catch(err => err);
+	}
+
+	private async deleteFile(id: number) {
+		const fromDB = await this.findOneById(id);
+		const s3 = new S3();
+
+		try {
+			existsOrError(fromDB, messages.notFoundRegister);
+		} catch (err) {
+			return err;
+		}
+
+		const file = new FileEntity(fromDB);
+
+		return storage === 's3'
+			? s3
+					.deleteObject({
+						Bucket: process.env.AWS_BUCKET as string,
+						Key: file.filename,
+					})
+					.promise()
+			: unlink(resolve(__dirname, '..', '..', 'tmp', 'uploads', file.filename));
 	}
 }

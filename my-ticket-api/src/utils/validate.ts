@@ -8,6 +8,14 @@ import { IsMachValidateOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 
 export const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
+export const storage = process.env.STORAGE_TYPE;
+export const baseUrl = () => {
+	const prefix = process.env.ENABLE_HTTPS === 'true' ? 'https://' : 'http://';
+	const host = process.env.HOST;
+	const port = Number(process.env.PORT);
+
+	return `${prefix}${host}:${port}`;
+};
 
 export const existsOrError = (value: any, message: string): void | ResponseException => {
 	if (isEmpty(value)) throw new ResponseException(message);

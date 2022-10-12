@@ -1,3 +1,6 @@
+import { existsSync } from 'fs';
+import { mkdir } from 'fs/promises';
+import { join } from 'path';
 import dotenv from 'dotenv';
 import httpStatus from 'http-status';
 import { Response } from 'express';
@@ -7,10 +10,19 @@ import { ErrorResponseParams, Knexfile } from 'src/repositories/types';
 import { DatabaseException, ResponseException } from 'src/utils/exceptions';
 import { onLog, ResponseHandle } from 'src/core/handlers';
 import { messages } from 'src/utils/messages';
+import { storage } from 'src/utils/validate';
 
 const isValid = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 
 export const execDotenv = () => (isValid ? dotenv.config({ path: process.env.NODE_ENV === 'test' ? './.env.testing' : './.env' }) : null);
+export const createUplodasDir = () => {
+	const path = join(__dirname, '..', '..', 'tmp', 'uploads');
+	const exists = existsSync(path);
+
+	if (storage === 'local' && !exists) return mkdir(path, { recursive: true });
+	return;
+};
+
 export const getKnexProps = (env: Environment, props?: Knexfile) => {
 	const { client, host, database, password, port, user } = env.database;
 	const connection = { database, host, user, password, port };

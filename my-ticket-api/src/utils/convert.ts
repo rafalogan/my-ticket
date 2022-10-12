@@ -1,12 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { IFile, OrderOptions, ReadOptions, Users } from 'src/repositories/types';
-import { User } from 'src/repositories/entities';
-import { UserModel } from 'src/repositories/models';
-import { isDev } from 'src/utils/validate';
-import { onLog } from 'src/core/handlers';
-// import { FileEntity } from 'src/repositories/types';
-// import { FileMedia } from 'src/repositories/entities';
+import { CustomFile, OrderOptions, ReadOptions } from 'src/repositories/types';
+import { baseUrl, storage } from 'src/utils/validate';
 
 export const snakeToCamel = (field: string): string => {
 	let toArray = field.split('_');
@@ -70,18 +65,23 @@ export const setReadOptions = (req: Request, cacheTime?: number, fields?: string
 	return { id, page, limit, order, cacheTime, fields };
 };
 
-export const setFieldToDate = (field?: string | Date | number) => (field ? new Date(field) : undefined);
-
 export const deleteField = (data: any, field: string) => Reflect.deleteProperty(data, field);
 
 export const setTimestampFields = (data?: Date | string | number) => (data ? new Date(data) : undefined);
 
-export const filterRawFile = (req: Request) => ({
-	title: req.body.title,
-	alt: req.body.alt,
-	name: req.file?.originalname,
-	type: req.file?.mimetype,
-	url: req.body.url || isDev ? `/media/${req.file?.filename}` : '',
-	eventId: req.body.eventId,
-	categoryId: req.body.categoryId,
-});
+export const filterRawFile = (req: Request) => {
+	const file = req.file as CustomFile;
+	const url = storage === 's3' ? file.location : `${baseUrl()}/media/${file.key}`;
+
+	return {
+		title: req.body.title,
+		alt: req.body.alt,
+		name: file.originalname,
+		filename: file.key,
+		type: file.mimetype,
+		url,
+		eventId: req.body.eventId,
+		categoryId: req.body.categoryId,
+		userId: req.body.userId,
+	};
+};

@@ -6,10 +6,12 @@ export interface IFile extends File, IID {
 	title?: string;
 	alt?: string;
 	name: string;
+	filename: string;
 	type: string;
 	url: string;
 	eventId?: number;
 	categoryId?: number;
+	userId?: number;
 }
 
 export interface FileEntityOptions {
@@ -19,7 +21,7 @@ export interface FileEntityOptions {
 	baseUrl?: string;
 }
 
-export interface CustomFile extends Express.Multer.File {
+export interface CustomFile extends Express.Multer.File, Express.MulterS3.File {
 	key: string;
 }
 
