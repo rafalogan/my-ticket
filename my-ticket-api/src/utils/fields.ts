@@ -69,3 +69,5 @@ export const fileFields = [
 	'category_id as categoryId',
 	'user_id  as userId',
 ];
+
+export const saleFields = ['id', 'code', 'discount', 'amount', 'unitary_value as unitaryValue', 'total', 'user_id as userId'];

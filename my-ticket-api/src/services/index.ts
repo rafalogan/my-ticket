@@ -12,3 +12,4 @@ export * from './capacity.service';
 export * from './duration.service';
 export * from './ticket.service';
 export * from './file.service';
+export * from './sale.service';

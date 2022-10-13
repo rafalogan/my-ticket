@@ -13,6 +13,7 @@ import {
 	PhoneService,
 	PlaceService,
 	ProfileService,
+	SaleService,
 	TheaterService,
 	TicketService,
 	UserService,
@@ -28,11 +29,11 @@ import {
 	phoneFields,
 	placeFields,
 	profileFields,
+	saleFields,
 	theaterFields,
 	ticketFields,
 	userFields,
 } from 'src/utils';
-import { Multer } from 'multer';
 
 export class ServicesFactory {
 	initService: InitService;
@@ -49,6 +50,7 @@ export class ServicesFactory {
 	durationService: DurationService;
 	ticketService: TicketService;
 	fileService: FileService;
+	saleService: SaleService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -65,6 +67,7 @@ export class ServicesFactory {
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
+		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {
