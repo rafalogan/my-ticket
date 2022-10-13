@@ -1,11 +1,39 @@
 import { Routes } from 'src/core/abstracts';
 import { RouteOptions } from 'src/repositories/types';
 import { methodNotAllowed } from 'src/core/routes/notfound.route';
+import { SaleController } from 'src/modules/sale/sale.controller';
 
-export class saleRoute extends Routes {
-constructor(options: RouteOptions, private saleController:) {
-	super(options.app, options.auth);
-}
+export class SaleRoute extends Routes {
+	constructor(options: RouteOptions, private saleController: SaleController) {
+		super(options.app, options.auth);
+	}
 
-exec() {}
+	exec() {
+		this.app
+			.route('/sales')
+			.all(this.auth?.exec().authenticate())
+			.get(this.saleController.list.bind(this.saleController))
+			.post(this.saleController.save.bind(this.saleController))
+			.all(methodNotAllowed);
+
+		this.app
+			.route('/sales/user/:id')
+			.all(this.auth?.exec().authenticate())
+			.get(this.saleController.listByUser.bind(this.saleController))
+			.all(methodNotAllowed);
+
+		this.app
+			.route('/sales/code/:code')
+			.all(this.auth?.exec().authenticate())
+			.get(this.saleController.listByCode.bind(this.saleController))
+			.all(methodNotAllowed);
+
+		this.app
+			.route('/sales/:id')
+			.all(this.auth?.exec().authenticate())
+			.get(this.saleController.list.bind(this.saleController))
+			.put(this.saleController.edit.bind(this.saleController))
+			.delete(this.saleController.remove.bind(this.saleController))
+			.all(methodNotAllowed);
+	}
 }

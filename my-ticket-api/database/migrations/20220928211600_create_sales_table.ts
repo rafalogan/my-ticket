@@ -4,7 +4,7 @@ import TableBuilder = Knex.TableBuilder;
 export async function up(knex: Knex): Promise<void> {
 	return knex.schema.createTable('sales', (table: TableBuilder) => {
 		table.increments('id').primary();
-		table.string('code', 1000).notNullable();
+		table.string('code', 1000).notNullable().unique();
 		table.integer('discount').nullable();
 		table.integer('amount').notNullable();
 		table.integer('unitary_value').notNullable();

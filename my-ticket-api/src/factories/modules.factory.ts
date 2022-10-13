@@ -19,6 +19,7 @@ import { TicketModule } from 'src/modules/ticket';
 import { FileModule } from 'src/modules/file';
 import { RouteOptions } from 'src/repositories/types';
 import { notfoundRoute } from 'src/core/routes/notfound.route';
+import { SaleModule } from 'src/modules/sale';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -34,6 +35,7 @@ export class ModulesFactory {
 	private durationModule: DurationModule;
 	private ticketModule: TicketModule;
 	private fileModule: FileModule;
+	private saleModule: SaleModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory, upload: Multer) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -49,6 +51,7 @@ export class ModulesFactory {
 		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 		this.ticketModule = new TicketModule({ service: services.ticketService, ...this.getRouteOptions() });
 		this.fileModule = new FileModule({ service: services.fileService, ...this.getRouteOptions() }, upload);
+		this.saleModule = new SaleModule({ service: services.saleService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -65,6 +68,7 @@ export class ModulesFactory {
 		this.durationModule.exec();
 		this.ticketModule.exec();
 		this.fileModule.exec();
+		this.saleModule.exec();
 		this.app.use('/media', express.static(resolve(__dirname, '../..', 'tmp', 'uploads')));
 		this.app.use(notfoundRoute);
 	}

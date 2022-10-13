@@ -8,7 +8,7 @@ import { Response } from 'express';
 import { Environment } from 'src/config';
 import { ErrorResponseParams, Knexfile } from 'src/repositories/types';
 import { DatabaseException, ResponseException } from 'src/utils/exceptions';
-import { ResponseHandle } from 'src/core/handlers';
+import { onLog, ResponseHandle } from 'src/core/handlers';
 import { messages } from 'src/utils/messages';
 
 const isValid = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
@@ -50,9 +50,10 @@ export const responseApi = (res: Response, data: any, status?: number) => {
 export const responseApiError = (options: ErrorResponseParams) => ResponseHandle.onError(options);
 
 export const responseDataBaseUpdate = (response: any, data?: any) => {
+	onLog('edit', response);
 	if (!response) return response;
 	if (response.severity === 'ERROR') return new DatabaseException(response.detail ? response.detail : messages.noEdit);
-	return { id: data.id, edit: response === 1, message: messages.successEdit, data };
+	return { id: data.id, edit: response === 1 || response.edit, message: messages.successEdit, data };
 };
 
 export const responseDataBaseCreate = (response: any, data?: any) => {
