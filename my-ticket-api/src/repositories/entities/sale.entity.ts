@@ -12,7 +12,7 @@ export class Sale {
 
 	constructor(data: ISale, id?: number) {
 		this.id = Number(id || data.id) || undefined;
-		this.code = v4();
+		this.code = data.code || v4();
 		this.discount = Number(data.discount);
 		this.amount = Number(data.amount);
 		this.unitaryValue = Number(data.unitaryValue);
