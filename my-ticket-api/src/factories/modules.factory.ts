@@ -13,7 +13,6 @@ import { PlaceModule } from 'src/modules/place';
 import { AddressModule } from 'src/modules/address';
 import { PhoneModule } from 'src/modules/phone';
 import { TheaterModule } from 'src/modules/theater';
-import { CapacityModule } from 'src/modules/capacity';
 import { DurationModule } from 'src/modules/duration';
 import { TicketModule } from 'src/modules/ticket';
 import { FileModule } from 'src/modules/file';
@@ -31,7 +30,6 @@ export class ModulesFactory {
 	private addressModule: AddressModule;
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
-	private capacityModule: CapacityModule;
 	private durationModule: DurationModule;
 	private ticketModule: TicketModule;
 	private fileModule: FileModule;
@@ -47,7 +45,6 @@ export class ModulesFactory {
 		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
-		this.capacityModule = new CapacityModule({ service: services.capacityService, ...this.getRouteOptions() });
 		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 		this.ticketModule = new TicketModule({ service: services.ticketService, ...this.getRouteOptions() });
 		this.fileModule = new FileModule({ service: services.fileService, ...this.getRouteOptions() }, upload);
@@ -64,7 +61,6 @@ export class ModulesFactory {
 		this.addressModule.exec();
 		this.phoneModule.exec();
 		this.theaterModule.exec();
-		this.capacityModule.exec();
 		this.durationModule.exec();
 		this.ticketModule.exec();
 		this.fileModule.exec();

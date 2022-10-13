@@ -6,6 +6,12 @@ export async function up(knex: Knex): Promise<void> {
 		table.increments('id').primary();
 		table.string('name', 100).notNullable();
 		table.binary('description').nullable();
+		table.integer('sections_number').nullable();
+		table.string('sections_type', 100).nullable();
+		table.integer('raws_per_section').nullable();
+		table.string('rows_type', 100).nullable();
+		table.integer('capacity').notNullable();
+		table.boolean('addressed_seats').notNullable().defaultTo(false);
 		table.integer('place_id').unsigned().references('id').inTable('places').notNullable();
 	});
 }

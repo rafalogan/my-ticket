@@ -7,8 +7,6 @@ export * from './place.entity';
 export * from './address.entity';
 export * from './palce-contact.entity';
 export * from './theater.entity';
-export * from './capacity.entity';
-export * from './capacity.entity';
 export * from './duration.entity';
 export * from './ticket.entity';
 export * from './newsletter.entity';

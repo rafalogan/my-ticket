@@ -8,8 +8,6 @@ export * from './place';
 export * from './adress';
 export * from './palce-contact';
 export * from './theater';
-export * from './capacity';
-export * from './capacity';
 export * from './duration';
 export * from './ticket';
 export * from './newsletter';

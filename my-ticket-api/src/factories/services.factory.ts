@@ -5,7 +5,6 @@ import {
 	AddressService,
 	AuthService,
 	CapacityService,
-	CategoryService,
 	DurationService,
 	EventService,
 	FileService,
@@ -40,7 +39,6 @@ export class ServicesFactory {
 	userService: UserService;
 	profileService: ProfileService;
 	authService: AuthService;
-	categoryService: CategoryService;
 	eventService: EventService;
 	placeService: PlaceService;
 	addressService: AddressService;
@@ -57,7 +55,6 @@ export class ServicesFactory {
 		this.userService = new UserService({ ...this.setServiceOptions('users', userFields) });
 		this.profileService = new ProfileService({ ...this.setServiceOptions('profiles', profileFields) }, this.userService);
 		this.authService = new AuthService(this.env.security.authsecret, this.userService, this.profileService);
-		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
 		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
