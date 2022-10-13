@@ -15,8 +15,6 @@ export class FileController extends Controller {
 
 	async save(req: Request, res: Response) {
 		const raw = filterRawFile(req) as IFile;
-		onLog('raw', raw);
-
 		try {
 			await this.fileService.validate(raw);
 		} catch (err) {

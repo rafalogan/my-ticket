@@ -73,8 +73,6 @@ export const setTimestampFields = (data?: Date | string | number) => (data ? new
 export const filterRawFile = (req: Request) => {
 	const file = req.file as CustomFile;
 
-	onLog('file', req.file);
-
 	return {
 		title: req.body.title,
 		alt: req.body.alt,
