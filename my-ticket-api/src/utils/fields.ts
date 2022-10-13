@@ -57,4 +57,15 @@ export const ticketOtherTableFields = {
 	duration: { durationStart: 'd.start', durationEnd: 'd.end' },
 };
 
-export const fileFields = ['id', 'title', 'alt', 'name', 'type', 'url', 'event_id as eventId', 'category_id as categoryId'];
+export const fileFields = [
+	'id',
+	'title',
+	'alt',
+	'name',
+	'filename',
+	'type',
+	'url',
+	'event_id as eventId',
+	'category_id as categoryId',
+	'user_id  as userId',
+];

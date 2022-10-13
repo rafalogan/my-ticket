@@ -2,7 +2,7 @@ import { ServerController } from 'src/core/controllers/server.controller';
 
 import { onError } from 'src/core/handlers';
 import { CacheService, DatabaseService } from 'src/core/service';
-import { createUplodasDir } from 'src/utils';
+import { createUploadsDir } from 'src/utils';
 
 export class App {
 	constructor(private server: ServerController, private databaseService: DatabaseService, private cacheService: CacheService) {}
@@ -12,7 +12,6 @@ export class App {
 			.isConnected()
 			.then(() => this.databaseService.latest())
 			.then(() => this.cacheService.isConnect())
-			.then(() => createUplodasDir())
 			.then(() => this.server.exec())
 			.catch(err => onError('Falha ao inicar o Servidor', err));
 	}

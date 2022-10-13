@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import Config = Knex.Config;
 
-import { execDotenv, getKnexProps } from 'src/utils';
+import { createUploadsDir, execDotenv, getKnexProps } from 'src/utils';
 import { AppConfig, AuthConfig, Environment, KnexConfig, LoggerConfig, MulterConfig } from 'src/config';
 import { App, ServerController } from 'src/core/controllers';
 import { InitService } from './services';
@@ -9,6 +9,7 @@ import { CacheService, DatabaseService } from 'src/core/service';
 import { ServicesFactory } from 'src/factories/services.factory';
 
 execDotenv();
+createUploadsDir();
 
 export const env = new Environment();
 const knexProps = getKnexProps(env);
