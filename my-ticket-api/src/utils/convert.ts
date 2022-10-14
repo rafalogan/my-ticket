@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { CustomFile, OrderOptions, ReadOptions } from 'src/repositories/types';
+import { CustomFile, ICategoryModel, OrderOptions, ReadOptions } from 'src/repositories/types';
 import { baseUrl, storage } from 'src/utils/validate';
 import { onLog } from 'src/core/handlers';
 
@@ -85,3 +85,12 @@ export const filterRawFile = (req: Request) => {
 		userId: req.body.userId,
 	};
 };
+
+export const filterCategoryModelInterface = (value: any): ICategoryModel => ({
+	id: Number(value.id),
+	name: value.name,
+	description: value.description,
+	url: value.url,
+	parentId: Number(value.parentId || value.parentid),
+	userId: Number(value.userId || value.userid),
+});

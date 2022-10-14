@@ -6,15 +6,17 @@ export const categoryWithChildren = `WITH RECURSIVE subcategories (id) as (
 )
 SELECT id FROM subcategories`;
 
-const parserFildsCategory = (fields: string[]) => fields.map(f => f.replace('parent_id as ', '').replace('user_id as ', '')).join(', ');
+const parserFieldsCategory = (fields: string[]) => fields.map(f => f.replace('parent_id as ', '').replace('user_id as ', '')).join(', ');
 
-export const categoryWithChildrens = (fields: string[], where = 'id') => `WITH RECURSIVE subcategories (${parserFildsCategory(fields)}) as (
+export const categoryWithChildrens = (fields: string[], where = 'id') => `WITH RECURSIVE subcategories (${parserFieldsCategory(
+	fields
+)}) as (
 	SELECT * FROM categories WHERE ${where} = ?
 	UNION ALL
 SELECT c. * FROM subcategories, categories c
 WHERE parent_id = subcategories.id
 )
-SELECT ${parserFildsCategory(fields)} FROM subcategories`;
+SELECT ${parserFieldsCategory(fields)} FROM subcategories`;
 
 export const rulesByUser = (userId: number) => `SELECT r.*
 FROM rules as r

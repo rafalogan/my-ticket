@@ -50,10 +50,9 @@ export const responseApi = (res: Response, data: any, status?: number) => {
 export const responseApiError = (options: ErrorResponseParams) => ResponseHandle.onError(options);
 
 export const responseDataBaseUpdate = (response: any, data?: any) => {
-	onLog('edit', response);
 	if (!response) return response;
 	if (response.severity === 'ERROR') return new DatabaseException(response.detail ? response.detail : messages.noEdit);
-	return { id: data.id, edit: response === 1 || response.edit, message: messages.successEdit, data };
+	return { id: data.id, edit: response === 1, message: messages.successEdit, data };
 };
 
 export const responseDataBaseCreate = (response: any, data?: any) => {

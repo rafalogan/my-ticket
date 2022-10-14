@@ -43,9 +43,7 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.update(data)
 			.where({ id })
-			.then((result: any) =>
-				result === 'ERROR' ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
-			)
+			.then(result => result)
 			.catch(err => err);
 	}
 
@@ -64,7 +62,7 @@ export abstract class BaseService extends CacheBaseService {
 			.where({ id })
 			.del()
 			.then(result =>
-				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel)
+				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel, result)
 			)
 			.catch(err => err);
 	}

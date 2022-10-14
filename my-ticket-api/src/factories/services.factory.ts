@@ -4,7 +4,7 @@ import { RedisClientType } from 'redis';
 import {
 	AddressService,
 	AuthService,
-	CapacityService,
+	CategoryService,
 	DurationService,
 	EventService,
 	FileService,
@@ -21,7 +21,6 @@ import {
 import { Environment } from 'src/config';
 import {
 	addressFields,
-	capacityFields,
 	categoryFields,
 	durationFields,
 	eventFields,
@@ -42,12 +41,12 @@ export class ServicesFactory {
 	profileService: ProfileService;
 	authService: AuthService;
 	eventService: EventService;
+	categoryService: CategoryService;
 	placeService: PlaceService;
 	addressService: AddressService;
 	phoneService: PhoneService;
 	theaterService: TheaterService;
 	seatAddressService: SeatAddressService;
-	capacityService: CapacityService;
 	durationService: DurationService;
 	ticketService: TicketService;
 	fileService: FileService;
@@ -59,12 +58,12 @@ export class ServicesFactory {
 		this.profileService = new ProfileService({ ...this.setServiceOptions('profiles', profileFields) }, this.userService);
 		this.authService = new AuthService(this.env.security.authsecret, this.userService, this.profileService);
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
+		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
 		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
 		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
 		this.seatAddressService = new SeatAddressService(this.setServiceOptions('seat_address', seatAddressFields));
-		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
