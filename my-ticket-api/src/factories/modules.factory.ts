@@ -10,7 +10,6 @@ import { ProfileModule } from 'src/modules/profile';
 import { CategoryModule } from 'src/modules/categoey';
 import { EventModule } from 'src/modules/event';
 import { PlaceModule } from 'src/modules/place';
-import { AddressModule } from 'src/modules/address';
 import { PhoneModule } from 'src/modules/phone';
 import { TheaterModule } from 'src/modules/theater';
 import { DurationModule } from 'src/modules/duration';
@@ -28,7 +27,6 @@ export class ModulesFactory {
 	private categoryModule: CategoryModule;
 	private eventModule: EventModule;
 	private placeModule: PlaceModule;
-	private addressModule: AddressModule;
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
 	private seatAddressModule: SeatSddressModule;
@@ -44,7 +42,6 @@ export class ModulesFactory {
 		this.categoryModule = new CategoryModule({ service: services.categoryService, ...this.getRouteOptions() });
 		this.eventModule = new EventModule({ service: services.eventService, ...this.getRouteOptions() });
 		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
-		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
 		this.seatAddressModule = new SeatSddressModule({ service: services.seatAddressService, ...this.getRouteOptions() });
@@ -61,7 +58,6 @@ export class ModulesFactory {
 		this.categoryModule.exec();
 		this.eventModule.exec();
 		this.placeModule.exec();
-		this.addressModule.exec();
 		this.phoneModule.exec();
 		this.theaterModule.exec();
 		this.seatAddressModule.exec();

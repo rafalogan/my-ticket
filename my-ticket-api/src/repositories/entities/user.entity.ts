@@ -1,30 +1,41 @@
 import { IUser, IUserModel } from 'src/repositories/types';
-import { deleteField } from 'src/utils';
+import { convertToDate, deleteField } from 'src/utils';
+import { profile } from 'winston';
 
 export class User {
-	id: number;
+	id?: number;
 	firstName: string;
 	lastName: string;
 	cpf: string;
+	phone?: string;
 	email: string;
 	password: string;
+	zipCode: string;
+	street: string;
+	number: string;
+	complement?: string;
+	district: string;
+	city: string;
+	state: string;
 	profileId: number;
 	deletedAt?: Date;
 
 	constructor(data: IUser | IUserModel, id?: number) {
-		Object.assign(this, data);
-
-		this.id = id ? Number(id) : this.id;
-		this.profileId = this.setProfileId(data);
-
-		deleteField(this, 'profile');
-	}
-
-	private setProfileId(data: IUser | IUserModel) {
-		if ('profile' in data) {
-			return Number(data.profile.id);
-		}
-
-		return Number(data.profileId);
+		this.id = Number(id || data.id) || undefined;
+		this.firstName = data.firstName;
+		this.lastName = data.lastName;
+		this.cpf = data.cpf;
+		this.phone = data.phone;
+		this.email = data.email;
+		this.password = data.password;
+		this.zipCode = data.zipCode;
+		this.street = data.street;
+		this.number = data.number;
+		this.complement = data.complement;
+		this.district = data.district;
+		this.city = data.city;
+		this.state = data.state;
+		this.profileId = Number(data.profileId);
+		this.deletedAt = data.deletedAt ? convertToDate(data.deletedAt) : undefined;
 	}
 }

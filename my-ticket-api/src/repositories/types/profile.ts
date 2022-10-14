@@ -2,6 +2,7 @@ import { ProfileService } from 'src/services';
 import { RouteOptions } from 'src/repositories/types/route';
 import { Profile } from 'src/repositories/entities';
 import { Pagination } from 'src/repositories/models';
+import { IID } from 'src/repositories/types/shared';
 
 export interface IProfile {
 	id?: number;
@@ -10,8 +11,7 @@ export interface IProfile {
 	active: boolean;
 }
 
-export interface CustomProfile {
-	id?: number;
+export interface CustomProfile extends IID {
 	name: string;
 	description: string;
 	active?: boolean;

@@ -1,6 +1,4 @@
 export interface IAddress {
-	id?: number;
-	main: boolean;
 	zipCode: string;
 	street: string;
 	number?: string;
@@ -9,6 +7,4 @@ export interface IAddress {
 	city: string;
 	state: string;
 	urlMaps?: string;
-	placeId?: number;
-	userId?: number;
 }
