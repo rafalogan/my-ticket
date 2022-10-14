@@ -2,7 +2,6 @@ import { Knex } from 'knex';
 import { RedisClientType } from 'redis';
 
 import {
-	AddressService,
 	AuthService,
 	CategoryService,
 	DurationService,
@@ -43,7 +42,6 @@ export class ServicesFactory {
 	eventService: EventService;
 	categoryService: CategoryService;
 	placeService: PlaceService;
-	addressService: AddressService;
 	phoneService: PhoneService;
 	theaterService: TheaterService;
 	seatAddressService: SeatAddressService;
@@ -60,7 +58,6 @@ export class ServicesFactory {
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
 		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
-		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
 		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
 		this.seatAddressService = new SeatAddressService(this.setServiceOptions('seat_address', seatAddressFields));

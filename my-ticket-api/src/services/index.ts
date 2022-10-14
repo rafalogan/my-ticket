@@ -4,7 +4,6 @@ export * from './profile.service';
 export * from './auth.service';
 export * from './event.service';
 export * from './place.service';
-export * from './address.service';
 export * from './phone.service';
 export * from './theater.service';
 export * from './duration.service';

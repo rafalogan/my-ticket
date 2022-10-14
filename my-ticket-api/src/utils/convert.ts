@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { CustomFile, ICategoryModel, OrderOptions, ReadOptions } from 'src/repositories/types';
+import { CustomFile, ICategoryModel, OrderOptions, ReadOptions, UpdatePasswordOptions } from 'src/repositories/types';
 import { baseUrl, storage } from 'src/utils/validate';
 import { onLog } from 'src/core/handlers';
 
@@ -94,4 +94,11 @@ export const filterCategoryModelInterface = (value: any): ICategoryModel => ({
 	active: value.active,
 	parentId: Number(value.parentId || value.parentid) || undefined,
 	userId: Number(value.userId || value.userid) || undefined,
+});
+
+export const filterUpdatePasswordOptions = (value: any): UpdatePasswordOptions => ({
+	email: value.email,
+	oldPassword: value.oldPassword,
+	password: value.password,
+	confirmPassword: value.confirmPassword,
 });
