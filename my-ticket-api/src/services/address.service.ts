@@ -1,16 +1,7 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IAddress, List, ReadOptions } from 'src/repositories/types';
 import { Address } from 'src/repositories/entities';
-import {
-	camelToSnake,
-	DatabaseException,
-	existsOrError,
-	messages,
-	responseDataBaseCreate,
-	responseDataBaseUpdate,
-	responseNotFoundRegister,
-} from 'src/utils';
-import { onLog } from 'src/core/handlers';
+import { camelToSnake, DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 
 export class AddressService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -44,9 +35,25 @@ export class AddressService extends BaseService {
 		return super
 			.findOneByWhere(column, value)
 			.then(res => {
-				if (!res) return responseNotFoundRegister(column, value);
+				if (!res) return {};
 				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
 				if (res.status) return res;
+				return new Address(res);
+			})
+			.catch(err => err);
+	}
+
+	findPrincipalAddress(where: string, value: any) {
+		where = camelToSnake(where);
+
+		return this.conn(this.table)
+			.select(...this.fields)
+			.where(where, [value])
+			.andWhere({ main: true })
+			.first()
+			.then(res => {
+				if (!res) return {};
+				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
 				return new Address(res);
 			})
 			.catch(err => err);

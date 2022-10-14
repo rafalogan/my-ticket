@@ -11,6 +11,7 @@ export class AddressController extends Controller {
 	constructor(private addressService: AddressService) {
 		super();
 	}
+
 	async save(req: Request, res: Response) {
 		try {
 			await this.addressService.validate(req.body);
@@ -19,7 +20,9 @@ export class AddressController extends Controller {
 		}
 
 		const address = new Address(req.body);
+		const replaceAddress = await this.setDefaultAdress(address);
 
+		if (typeof replaceAddress !== 'string') return responseApiError({ res, err: replaceAddress, message: replaceAddress.message });
 		this.addressService
 			.save(address)
 			.then(data => responseApi(res, data))
@@ -67,5 +70,25 @@ export class AddressController extends Controller {
 
 	private setParamsOrder(req: Request) {
 		return setParamsOrder(req);
+	}
+
+	private async setDefaultAdress(data: Address) {
+		try {
+			const fromDB = data.userId
+				? await this.addressService.findPrincipalAddress('userId', data.userId)
+				: await this.addressService.findPrincipalAddress('placeId', data.placeId);
+
+			if (data.main && fromDB.main) {
+				fromDB.main = false;
+				return this.addressService
+					.save(fromDB)
+					.then(() => 'ok')
+					.catch(err => err);
+			}
+
+			return 'ok';
+		} catch (err) {
+			return err;
+		}
 	}
 }
