@@ -13,6 +13,7 @@ import {
 	PlaceService,
 	ProfileService,
 	SaleService,
+	SeatAddressService,
 	TheaterService,
 	TicketService,
 	UserService,
@@ -29,6 +30,7 @@ import {
 	placeFields,
 	profileFields,
 	saleFields,
+	seatAddressFields,
 	theaterFields,
 	ticketFields,
 	userFields,
@@ -44,6 +46,7 @@ export class ServicesFactory {
 	addressService: AddressService;
 	phoneService: PhoneService;
 	theaterService: TheaterService;
+	seatAddressService: SeatAddressService;
 	capacityService: CapacityService;
 	durationService: DurationService;
 	ticketService: TicketService;
@@ -60,6 +63,7 @@ export class ServicesFactory {
 		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
 		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
+		this.seatAddressService = new SeatAddressService(this.setServiceOptions('seat_address', seatAddressFields));
 		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));

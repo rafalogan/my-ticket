@@ -121,7 +121,7 @@ export abstract class BaseService extends CacheBaseService {
 			.catch(err => err);
 	}
 
-	findOneById(id: number, options?: ReadOptions) {
+	findOneById(id: number, options?: ReadOptions): Promise<DatabaseException | any> {
 		return this.conn(this.table)
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
