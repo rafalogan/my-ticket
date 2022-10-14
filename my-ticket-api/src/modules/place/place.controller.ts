@@ -20,7 +20,7 @@ export class PlaceController extends Controller {
 		}
 
 		const place = new Place(req.body);
-		place.userId = getUserIdByToken(req);
+		place.userId = getUserIdByToken(req) as number;
 
 		this.placeService
 			.save(place)
@@ -38,8 +38,17 @@ export class PlaceController extends Controller {
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
-	list(req: Request, res: Response) {
+	listAllByUser(req: Request, res: Response) {
+		const userId = getUserIdByToken(req) as number;
 		const options = setReadOptions(req);
+		this.placeService
+			.findAllByUser(userId, options)
+			.then(data => responseApi(res, data))
+			.catch(err => responseApiError({ res, err, message: err.message }));
+	}
+
+	list(req: Request, res: Response) {
+		const options = this.setPlaceRreadOptions(req);
 
 		this.placeService
 			.read(options)
@@ -55,4 +64,9 @@ export class PlaceController extends Controller {
 			.then(data => responseApi(res, data))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
+
+	private setPlaceRreadOptions = (req: Request) => ({
+		...setReadOptions(req),
+		userId: getUserIdByToken(req),
+	});
 }
