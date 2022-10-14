@@ -11,7 +11,7 @@ export const userFields = [
 
 export const profileFields = ['id', 'name', 'description', 'active'];
 
-export const categoryFields = ['id', 'name', 'description', 'url', 'status', 'parent_id as parentId', 'user_id as userId'];
+export const categoryFields = ['id', 'name', 'description', 'url', 'active', 'parent_id as parentId', 'user_id as userId'];
 
 export const eventFields = ['id', 'title', 'subtitle', 'content', 'type', 'category_id as categoryId', 'user_id as userId'];
 
@@ -33,8 +33,6 @@ export const addressFields = [
 ];
 
 export const phoneFields = ['id', 'type', 'number', 'user_id as userId', 'place_id as placeId'];
-
-export const capacityFields = ['id', 'section', 'row', 'places', 'theater_id as theaterId'];
 
 export const theaterFields = [
 	'name',

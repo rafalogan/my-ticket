@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.string('name', 50).notNullable().unique();
 		table.string('description', 1000).nullable();
 		table.string('url').nullable();
-		table.boolean('status').notNullable().defaultTo(true);
+		table.boolean('active').notNullable().defaultTo(true);
 		table.integer('parent_id').unsigned().references('id').inTable('categories').nullable();
 		table.integer('user_id').unsigned().references('id').inTable('users').nullable();
 	});

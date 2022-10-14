@@ -14,6 +14,7 @@ import {
 } from 'src/utils';
 import { Category } from 'src/repositories/entities';
 import { CategoryModel, Pagination } from 'src/repositories/models';
+import { onLog } from 'src/core/handlers';
 
 export class CategoryService extends BaseService {
 	constructor(options: BaseServiceOptions) {

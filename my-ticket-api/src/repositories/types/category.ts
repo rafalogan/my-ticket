@@ -5,6 +5,7 @@ export interface ICategory {
 	name: string;
 	description?: string;
 	url?: string;
+	active?: boolean;
 	parentId?: number;
 	userId?: number;
 }

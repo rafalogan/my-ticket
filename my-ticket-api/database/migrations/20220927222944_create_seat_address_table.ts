@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.string('section', 100).nullable();
 		table.string('row', 100).nullable();
 		table.integer('seat').notNullable();
-		table.integer('theater_id').unsigned().references('id').inTable('capacity').notNullable();
+		table.integer('theater_id').unsigned().references('id').inTable('theaters').notNullable();
 	});
 }
 

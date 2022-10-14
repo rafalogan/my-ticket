@@ -91,6 +91,7 @@ export const filterCategoryModelInterface = (value: any): ICategoryModel => ({
 	name: value.name,
 	description: value.description,
 	url: value.url,
-	parentId: Number(value.parentId || value.parentid),
-	userId: Number(value.userId || value.userid),
+	active: value.active,
+	parentId: Number(value.parentId || value.parentid) || undefined,
+	userId: Number(value.userId || value.userid) || undefined,
 });

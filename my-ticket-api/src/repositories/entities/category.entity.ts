@@ -5,6 +5,7 @@ export class Category {
 	name: string;
 	description?: string;
 	url?: string;
+	status: boolean;
 	parentId?: number;
 	userId?: number;
 
