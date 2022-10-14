@@ -34,9 +34,19 @@ export const addressFields = [
 
 export const phoneFields = ['id', 'type', 'number', 'user_id as userId', 'place_id as placeId'];
 
-export const theaterFields = ['id', 'name', 'description', 'place_id as placeId'];
-
 export const capacityFields = ['id', 'section', 'row', 'places', 'theater_id as theaterId'];
+
+export const theaterFields = [
+	'name',
+	'description',
+	'sections_number as sectionsNumber',
+	'sections_type as sectionsType',
+	'raws_per_section as rawsPerSection',
+	'rows_type as rowsType',
+	'capacity',
+	'addressed_seats as addressedSeats',
+	'place_id as placeId',
+];
 
 export const durationFields = ['id', 'start', 'end', 'theater_id as theaterId'];
 
@@ -49,6 +59,8 @@ export const ticketFields = [
 	'theater_id as theaterId',
 	'duration_id as durationId',
 ];
+
+export const seatAddressFields = ['section', 'row', 'seat', 'theater_id as theaterId'];
 
 export const ticketOtherTableFields = {
 	event: { eventTitle: 'e.title', eventSubtitle: 'e.subtitle', eventContent: 'e.content', eventType: 'e.type' },
