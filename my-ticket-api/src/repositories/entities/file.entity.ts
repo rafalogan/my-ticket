@@ -8,6 +8,7 @@ export class FileEntity {
 	filename: string;
 	type: string;
 	url: string;
+	location: string;
 	eventId?: number;
 	categoryId?: number;
 	userId?: number;
@@ -20,6 +21,7 @@ export class FileEntity {
 		this.filename = data.filename;
 		this.type = data.type;
 		this.url = data.url;
+		this.location = data.location;
 		this.eventId = Number(data.eventId) || undefined;
 		this.categoryId = Number(data.categoryId) || undefined;
 		this.userId = Number(data.userId) || undefined;

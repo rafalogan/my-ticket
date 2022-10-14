@@ -11,6 +11,7 @@ import {
 	notExistisOrError,
 	responseDataBaseCreate,
 	DatabaseException,
+	userOtherTablesFiled,
 } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
 import { onLog } from 'src/core/handlers';
@@ -56,10 +57,11 @@ export class UserService extends BaseService {
 	}
 
 	findUserById(id: number) {
-		return this.conn({ u: this.table, p: 'profiles' })
-			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+		return this.conn({ u: this.table, p: 'profiles', f: 'files' })
+			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile, userOtherTablesFiled.photo)
 			.whereRaw('u.id = ?', [id])
 			.andWhereRaw('p.id = u.profile_id')
+			.andWhereRaw('f.user_id = u.id')
 			.first()
 			.then(res => this.responseFindUser(res))
 			.catch(err => err);

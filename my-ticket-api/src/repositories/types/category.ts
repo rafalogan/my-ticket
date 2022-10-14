@@ -1,4 +1,5 @@
 import { CategoryModel } from 'src/repositories/models';
+import { IFile } from 'src/repositories/types/file';
 
 export interface ICategory {
 	id?: number;
@@ -11,5 +12,6 @@ export interface ICategory {
 }
 
 export interface ICategoryModel extends ICategory {
+	cover?: IFile;
 	subCategories?: ICategoryModel[] | CategoryModel[];
 }

@@ -9,6 +9,11 @@ export const userFields = [
 	'deleted_at as deletedAt',
 ];
 
+export const userOtherTablesFiled = {
+	profile: { profileName: 'p.name', profileDescription: 'p.description' },
+	photo: { photoTitle: 'f.title', PhotoAlt: 'f.alt', photoName: 'f.name', photoUrl: 'f.url', photoLocation: 'f.location' },
+};
+
 export const profileFields = ['id', 'name', 'description', 'active'];
 
 export const categoryFields = ['id', 'name', 'description', 'url', 'active', 'parent_id as parentId', 'user_id as userId'];
@@ -75,6 +80,7 @@ export const fileFields = [
 	'filename',
 	'type',
 	'url',
+	'location',
 	'event_id as eventId',
 	'category_id as categoryId',
 	'user_id  as userId',

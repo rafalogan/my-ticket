@@ -9,6 +9,7 @@ export interface IFile extends File, IID {
 	filename: string;
 	type: string;
 	url: string;
+	location: string;
 	eventId?: number;
 	categoryId?: number;
 	userId?: number;

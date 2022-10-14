@@ -1,4 +1,4 @@
-import { ICategoryModel } from '../types';
+import { ICategoryModel, IFile } from '../types';
 
 export class CategoryModel {
 	id: number;
@@ -7,6 +7,7 @@ export class CategoryModel {
 	url?: string;
 	active?: boolean;
 	parentId?: number;
+	cover: IFile;
 	subCategories: ICategoryModel[] | CategoryModel[];
 
 	constructor(data: ICategoryModel) {
