@@ -1,5 +1,6 @@
 import { Profile, User } from 'src/repositories/entities';
 import { IPayload, IProfile } from 'src/repositories/types';
+import { UserModel } from 'src/repositories/models/user.model';
 
 export class Payload {
 	id: number;
@@ -11,7 +12,7 @@ export class Payload {
 	exp: number;
 
 	constructor(data: User | IPayload) {
-		this.id = data.id;
+		this.id = Number(data.id);
 		this.firstName = data.firstName;
 		this.lastName = data.lastName;
 		this.email = data.email;

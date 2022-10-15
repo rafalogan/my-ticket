@@ -5,7 +5,7 @@ import httpStatus from 'http-status';
 import { UserService } from './user.service';
 import { ICredentials, IUser, ValidateTokenResponse } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
-import { Credentials, Payload } from 'src/repositories/models';
+import { Credentials, Payload, UserModel } from 'src/repositories/models';
 import { existsOrError, isMatch, messages, ResponseException } from 'src/utils';
 import { ProfileService } from './profile.service';
 import { decodeToken, extractToken, getPayload, onLog } from 'src/core/handlers';
@@ -35,6 +35,7 @@ export class AuthService {
 
 		if (isMatch(credentials, user)) {
 			const payload = new Payload(user);
+			onLog('Payload', payload);
 			return { ...payload, token: jwt.encode(payload, this.authsecret) };
 		}
 	}

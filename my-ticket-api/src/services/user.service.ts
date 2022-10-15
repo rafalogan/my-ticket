@@ -1,4 +1,13 @@
-import { IUser, ReadOptions, ResultUpdate, UpdatePasswordOptions, Users, UserServiceOptions } from 'src/repositories/types';
+import {
+	IUser,
+	IUserModel,
+	List,
+	ReadOptions,
+	ResultUpdate,
+	UpdatePasswordOptions,
+	Users,
+	UserServiceOptions,
+} from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
@@ -45,23 +54,30 @@ export class UserService extends BaseService {
 			.catch(err => err);
 	}
 
-	read(options?: ReadOptions) {
-		const id = Number(options?.id);
+	findAll(options?: ReadOptions) {
+		return super
+			.findAll(options)
+			.then(res => (!res || res instanceof DatabaseException ? res : this.setUsers(res)))
+			.catch(err => err);
+	}
 
-		if (this.activeCache) return this.checkUserCache(options);
-		return id
-			? this.findUserById(id)
-			: this.findAll(options)
-					.then((value: Users | DatabaseException) => (value instanceof DatabaseException ? value : this.setUsers(value)))
-					.catch(err => err);
+	findOneById(id: number, options?: ReadOptions): Promise<any> {
+		const fields = options?.fields ? options.fields.map(i => `u.${i}`) : this.fields.map(i => `u.${i}`);
+
+		return this.conn({ u: this.table, p: 'profiles' })
+			.select(...fields, userOtherTablesFiled.profile)
+			.whereRaw('u.id = ?', [id])
+			.andWhereRaw('p.id = u.profile_id')
+			.first()
+			.then(res => this.responseFindUser(res))
+			.catch(err => err);
 	}
 
 	findUserById(id: number) {
-		return this.conn({ u: this.table, p: 'profiles', f: 'files' })
-			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile, userOtherTablesFiled.photo)
+		return this.conn({ u: this.table, p: 'profiles' })
+			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile)
 			.whereRaw('u.id = ?', [id])
 			.andWhereRaw('p.id = u.profile_id')
-			.andWhereRaw('f.user_id = u.id')
 			.first()
 			.then(res => this.responseFindUser(res))
 			.catch(err => err);
@@ -90,7 +106,7 @@ export class UserService extends BaseService {
 
 	findUserByEmail(email: string) {
 		return this.conn({ u: this.table, p: 'profiles' })
-			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile)
 			.whereRaw('u.email = ?', [email])
 			.andWhereRaw('p.id = u.profile_id')
 			.first()
@@ -137,7 +153,7 @@ export class UserService extends BaseService {
 		notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
 	}
 
-	private userNoPassword(user: User) {
+	private userNoPassword(user: User | UserModel) {
 		deleteField(user, 'password');
 
 		return user;
@@ -162,12 +178,24 @@ export class UserService extends BaseService {
 					.catch(err => err);
 	}
 
-	private setUsers(users: Users) {
-		users.data = users.data.map(user => new User(user)).map(this.userNoPassword);
-		return users;
+	private setUsers(users: List<IUser>): List<User> {
+		const data = users.data
+			.map(user => new User(user))
+			.map(this.userNoPassword)
+			.map(this.shortUser) as User[];
+		return { ...users, data };
+	}
+
+	private shortUser(user: IUser | User | UserModel) {
+		const fields = ['zipCode', 'street', 'number', 'complement', 'district', 'city', 'state', 'profileId', 'deletedAt'];
+		fields.forEach(field => deleteField(user, field));
+		return user;
 	}
 
 	private responseFindUser(res: any) {
+		onLog('response user', res);
+		onLog('response query', res.query);
+
 		if (!res) return {};
 		if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.user.error.notFound, res);
 		return new UserModel(res);

@@ -19,6 +19,7 @@ export class UserModel {
 		this.lastName = data.lastName;
 		this.cpf = data.cpf;
 		this.email = data.email;
+		this.phone = data.phone;
 		this.password = data.password;
 		this.address = this.setAddress(data);
 		this.profile = this.setProfile(data);
