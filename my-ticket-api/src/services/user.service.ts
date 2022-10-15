@@ -1,13 +1,4 @@
-import {
-	IUser,
-	IUserModel,
-	List,
-	ReadOptions,
-	ResultUpdate,
-	UpdatePasswordOptions,
-	Users,
-	UserServiceOptions,
-} from 'src/repositories/types';
+import { IUser, List, ReadOptions, ResultUpdate, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
@@ -66,16 +57,6 @@ export class UserService extends BaseService {
 
 		return this.conn({ u: this.table, p: 'profiles' })
 			.select(...fields, userOtherTablesFiled.profile)
-			.whereRaw('u.id = ?', [id])
-			.andWhereRaw('p.id = u.profile_id')
-			.first()
-			.then(res => this.responseFindUser(res))
-			.catch(err => err);
-	}
-
-	findUserById(id: number) {
-		return this.conn({ u: this.table, p: 'profiles' })
-			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile)
 			.whereRaw('u.id = ?', [id])
 			.andWhereRaw('p.id = u.profile_id')
 			.first()
@@ -155,27 +136,7 @@ export class UserService extends BaseService {
 
 	private userNoPassword(user: User | UserModel) {
 		deleteField(user, 'password');
-
 		return user;
-	}
-
-	private checkUserCache(options?: ReadOptions) {
-		const id = Number(options?.id);
-
-		return id
-			? this.findCache([`GET:content`, this.read.name, `${id}`], () => this.findUserById(id), options?.cacheTime || this.defaultTime)
-					.then(value => this.responseFindUser(value))
-					.catch(err => err)
-			: this.findCache(['GET:allContent', this.read.name], () => this.findAll(options), options?.cacheTime || this.defaultTime)
-					.then((value: IUser[]) =>
-						value
-							.map(u => new User(u))
-							.map(u => {
-								deleteField(u, 'password');
-								return u;
-							})
-					)
-					.catch(err => err);
 	}
 
 	private setUsers(users: List<IUser>): List<User> {

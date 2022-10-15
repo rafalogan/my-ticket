@@ -32,7 +32,6 @@ export class AuthConfig {
 		this.userService
 			.read({ id })
 			.then(data => {
-				onLog('data  model', data);
 				return done(null, data instanceof UserModel ? this.setUserNoPass(data) : false);
 			})
 			.catch(error => done(error, false));

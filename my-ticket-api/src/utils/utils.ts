@@ -31,15 +31,6 @@ export const getKnexProps = (env: Environment, props?: Knexfile) => {
 };
 
 export const responseApi = (res: Response, data: any, status?: number) => {
-	if (!data) {
-		return responseApiError({
-			res,
-			err: responseNotFoundRegisters.error,
-			message: responseNotFoundRegisters.message,
-			status: responseNotFoundRegisters.error.status,
-		});
-	}
-
 	if (data instanceof ResponseException || data instanceof DatabaseException) {
 		return responseApiError({ res, message: data.message, err: data.error, status: status || httpStatus.FORBIDDEN });
 	}

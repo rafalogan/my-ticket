@@ -61,7 +61,7 @@ export class UserController extends Controller {
 			.catch(err => responseApiError({ res, message: messages.user.error.noDelete(id), err }));
 	}
 
-	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
+	private response(res: Response, data: any, status?: number) {
 		if (data.password) deleteField(data, 'password');
 		return responseApi(res, data, status);
 	}

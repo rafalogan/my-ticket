@@ -35,7 +35,6 @@ export class AuthService {
 
 		if (isMatch(credentials, user)) {
 			const payload = new Payload(user);
-			onLog('Payload', payload);
 			return { ...payload, token: jwt.encode(payload, this.authsecret) };
 		}
 	}
