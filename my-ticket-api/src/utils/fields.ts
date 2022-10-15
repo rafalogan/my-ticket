@@ -86,4 +86,13 @@ export const fileFields = [
 	'user_id  as userId',
 ];
 
-export const saleFields = ['id', 'code', 'discount', 'amount', 'unitary_value as unitaryValue', 'total', 'user_id as userId'];
+export const saleFields = [
+	'id',
+	'code',
+	'discount',
+	'amount',
+	'unitary_value as unitaryValue',
+	'total',
+	'user_id as userId',
+	'ticket_id as ticketId',
+];

@@ -9,6 +9,7 @@ export class Sale {
 	unitaryValue: number;
 	total: number;
 	userId: number;
+	ticketId: number;
 
 	constructor(data: ISale, id?: number) {
 		this.id = Number(id || data.id) || undefined;
@@ -18,6 +19,7 @@ export class Sale {
 		this.unitaryValue = Number(data.unitaryValue) * 100;
 		this.total = Number(data.total) || this.setTotal();
 		this.userId = Number(data.userId);
+		this.ticketId = Number(data.ticketId);
 	}
 
 	private setTotal() {

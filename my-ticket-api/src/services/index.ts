@@ -12,3 +12,4 @@ export * from './file.service';
 export * from './sale.service';
 export * from './seat-address.service';
 export * from './category.service';
+export * from './pay.service';

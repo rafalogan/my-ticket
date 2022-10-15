@@ -7,4 +7,5 @@ export interface ISale extends IID {
 	unitaryValue: number;
 	total: number;
 	userId: number;
+	ticketId: number;
 }

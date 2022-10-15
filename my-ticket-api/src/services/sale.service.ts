@@ -1,10 +1,13 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, ISale, List, ReadOptions } from 'src/repositories/types';
 import { Sale } from 'src/repositories/entities';
-import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { DatabaseException, existsOrError, messages, PaymentException, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { PayService } from 'src/services/pay.service';
+import { CompleteSaleModel } from 'src/repositories/models';
+import httpStatus from 'http-status';
 
 export class SaleService extends BaseService {
-	constructor(options: BaseServiceOptions) {
+	constructor(options: BaseServiceOptions, private payService: PayService) {
 		super(options);
 	}
 
@@ -13,10 +16,26 @@ export class SaleService extends BaseService {
 		existsOrError(data.unitaryValue, messages.requires('Valor Unitario'));
 	}
 
-	create(item: Sale) {
+	async create(item: CompleteSaleModel) {
+		try {
+			const payProcess = await this.payService.executePayment(item.payPrams, item.sale);
+			if (payProcess.StatusPagamento !== 'Sucesso') return new PaymentException(payProcess.Mensagem, payProcess, httpStatus.FORBIDDEN);
+		} catch (err) {
+			return err;
+		}
+
 		return super
-			.create(item)
-			.then(res => responseDataBaseCreate(res, item))
+			.create(item.sale)
+			.then(res => res)
+			.then(res => {
+				if (item.seats?.length) {
+					return this.saveDataWithSeats(item.sale.ticketId, item.seats)
+						.then(() => responseDataBaseCreate(res, item.sale))
+						.catch(err => err);
+				}
+
+				return responseDataBaseCreate(res, item.sale);
+			})
 			.catch(err => err);
 	}
 
@@ -52,6 +71,14 @@ export class SaleService extends BaseService {
 		return super
 			.findAllByWhere(column, value, fields)
 			.then(res => (!res || res instanceof DatabaseException ? res : res.map((s: ISale) => new Sale(s))))
+			.catch(err => err);
+	}
+
+	private saveDataWithSeats(ticketId: number, seats: number[]) {
+		const result = seats.map(seat => this.conn('seat_per_ticket').insert({ seat_address_id: seat, ticket_id: ticketId }));
+
+		return Promise.all(result)
+			.then(() => 'ok')
 			.catch(err => err);
 	}
 

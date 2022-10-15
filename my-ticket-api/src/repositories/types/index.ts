@@ -24,3 +24,4 @@ export * from './module';
 export * from './phone';
 export * from './phone';
 export * from './seat-address';
+export * from './pay';
