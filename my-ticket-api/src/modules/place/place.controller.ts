@@ -5,7 +5,7 @@ import { Controller } from 'src/core/abstracts';
 import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { PlaceService } from 'src/services';
 import { Place } from 'src/repositories/entities';
-import { getUserIdByToken } from 'src/core/handlers';
+import { getUserIdByToken, onLog } from 'src/core/handlers';
 
 export class PlaceController extends Controller {
 	constructor(private placeService: PlaceService) {
@@ -41,6 +41,8 @@ export class PlaceController extends Controller {
 	listAllByUser(req: Request, res: Response) {
 		const userId = getUserIdByToken(req) as number;
 		const options = setReadOptions(req);
+		onLog('userId', userId);
+
 		this.placeService
 			.findAllByUser(userId, options)
 			.then(data => responseApi(res, data))

@@ -3,6 +3,7 @@ import { BaseServiceOptions, IPlace, List, PlaceReadOptions, ReadOptions } from 
 import { Place } from 'src/repositories/entities';
 import { DatabaseException, existsOrError, messages, notExistisOrError, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 import { Pagination, PlaceModel } from 'src/repositories/models';
+import { onLog } from 'src/core/handlers';
 
 export class PlaceService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -27,7 +28,10 @@ export class PlaceService extends BaseService {
 	async findAll(options?: ReadOptions) {
 		return super
 			.findAll(options)
-			.then(res => (res instanceof DatabaseException ? res : this.setPlaces(res)))
+			.then(res => {
+				onLog('data', res);
+				return res instanceof DatabaseException ? res : this.setPlaces(res);
+			})
 			.catch(err => err);
 	}
 
@@ -39,24 +43,23 @@ export class PlaceService extends BaseService {
 
 		return this.conn(this.table)
 			.select(...(options.fields || this.fields))
-			.where('user_id', [id])
+			.where({ user_id: id })
 			.limit(limit)
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
 			.then(res => {
-				if (!res) return [];
-				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+				onLog('response by user', res);
+				if (!res) return {};
+				if ('severity' in res) return new DatabaseException(messages.notFoundRegister, res);
 
 				return this.setPlaces({ data: res, pagination });
 			})
 			.catch(err => err);
 	}
 
-	findOneById(id: number, options?: PlaceReadOptions) {
-		return this.conn(this.table)
-			.select(...(options?.fields || this.fields))
-			.where({ id })
-			.andWhere('user_id', [options?.userId])
+	findOneById(id: number, options?: ReadOptions) {
+		return super
+			.findOneById(id, options)
 			.then(res => this.responseFindPlace(res))
 			.catch(err => err);
 	}

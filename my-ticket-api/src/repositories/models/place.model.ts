@@ -12,7 +12,7 @@ export class PlaceModel {
 	constructor(data: IPlace | Place) {
 		this.id = Number(data.id);
 		this.name = data.name;
-		this.description = data.description;
+		this.description = data.description.toString();
 		this.phone = data.phone;
 		this.address = this.setAddress(data);
 		this.userId = Number(data.userId);

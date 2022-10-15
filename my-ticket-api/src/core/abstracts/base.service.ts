@@ -144,8 +144,8 @@ export abstract class BaseService extends CacheBaseService {
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
 			.then(data => {
-				if (!data) return data;
-				if (!Array.isArray(data)) return new DatabaseException(messages.notFoundRegister, data);
+				if (!data) return {};
+				if ('severity' in data) return new DatabaseException(messages.notFoundRegister, data);
 
 				return { data, pagination };
 			})

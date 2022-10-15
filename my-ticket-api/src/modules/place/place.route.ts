@@ -12,15 +12,9 @@ export class PlaceRoute extends Routes {
 	exec() {
 		this.app
 			.route('/places')
+			.all(this.auth?.exec().authenticate())
 			.get(this.placeController.listAllByUser.bind(this.placeController))
-			.all(this.auth?.exec().authenticate())
 			.post(this.placeController.save.bind(this.placeController))
-			.all(methodNotAllowed);
-
-		this.app
-			.route('/places/all')
-			.all(this.auth?.exec().authenticate())
-			.get(this.placeController.list.bind(this.placeController))
 			.all(methodNotAllowed);
 
 		this.app

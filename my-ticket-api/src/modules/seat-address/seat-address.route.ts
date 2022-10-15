@@ -12,13 +12,8 @@ export class SeatSddressRoute extends Routes {
 		this.app
 			.route('/seat-address')
 			.all(this.auth?.exec().authenticate())
-			.post(this.seatAddressController.save.bind(this.seatAddressController))
-			.all(methodNotAllowed);
-
-		this.app
-			.route('/seat-address/theater/:id')
-			.all(this.auth?.exec().authenticate())
 			.get(this.seatAddressController.listAllByTheater.bind(this.seatAddressController))
+			.post(this.seatAddressController.save.bind(this.seatAddressController))
 			.all(methodNotAllowed);
 
 		this.app
