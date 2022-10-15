@@ -1,3 +1,5 @@
+import { onLog } from 'src/core/handlers';
+
 export const convertToDate = (value: number | Date | string): Date => {
 	if (value instanceof Date) return value;
 	if (typeof value === 'string') return convertStringToDate(value);
@@ -28,7 +30,7 @@ const convertSimplesStringToDate = (value: string[]) => {
 	const year = `${part1}`.length === 4 ? part1 : part3;
 	const day = year === part1 ? part3 : part1;
 
-	return new Date(year, month - 1, day);
+	return new Date(year, month + 1, day);
 };
 
 const convertCompleteStringToDate = (value: string) => {
@@ -40,7 +42,12 @@ const convertCompleteStringToDate = (value: string) => {
 	return convertPtBrToDate(value);
 };
 
-const returnDate = (value: string) => new Date(value);
+const returnDate = (value: string) => {
+	onLog('chegou nesse ponto', value);
+	onLog('data', new Date(value));
+
+	return new Date(value);
+};
 
 export const upperCaseFirstLetter = (value: string) => {
 	const [firstWrod, ...restWords] = value.split(' ');
