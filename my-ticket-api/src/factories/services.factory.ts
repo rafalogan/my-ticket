@@ -8,27 +8,24 @@ import {
 	EventService,
 	FileService,
 	InitService,
+	PayService,
 	PhoneService,
 	PlaceService,
 	ProfileService,
 	SaleService,
-	SeatAddressService,
 	TheaterService,
 	TicketService,
 	UserService,
 } from 'src/services';
 import { Environment } from 'src/config';
 import {
-	addressFields,
 	categoryFields,
 	durationFields,
 	eventFields,
 	fileFields,
-	phoneFields,
 	placeFields,
 	profileFields,
 	saleFields,
-	seatAddressFields,
 	theaterFields,
 	ticketFields,
 	userFields,
@@ -44,11 +41,11 @@ export class ServicesFactory {
 	placeService: PlaceService;
 	phoneService: PhoneService;
 	theaterService: TheaterService;
-	seatAddressService: SeatAddressService;
 	durationService: DurationService;
 	ticketService: TicketService;
 	fileService: FileService;
 	saleService: SaleService;
+	payService: PayService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
 		this.initService = new InitService();
@@ -58,13 +55,12 @@ export class ServicesFactory {
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
 		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
-		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
-		this.seatAddressService = new SeatAddressService(this.setServiceOptions('seat_address', seatAddressFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
-		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields));
+		this.payService = new PayService();
+		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields), this.payService);
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

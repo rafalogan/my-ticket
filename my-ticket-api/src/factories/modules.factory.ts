@@ -18,7 +18,6 @@ import { FileModule } from 'src/modules/file';
 import { RouteOptions } from 'src/repositories/types';
 import { notfoundRoute } from 'src/core/routes/notfound.route';
 import { SaleModule } from 'src/modules/sale';
-import { SeatSddressModule } from 'src/modules/seat-address';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -29,7 +28,6 @@ export class ModulesFactory {
 	private placeModule: PlaceModule;
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
-	private seatAddressModule: SeatSddressModule;
 	private durationModule: DurationModule;
 	private ticketModule: TicketModule;
 	private fileModule: FileModule;
@@ -44,7 +42,6 @@ export class ModulesFactory {
 		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
-		this.seatAddressModule = new SeatSddressModule({ service: services.seatAddressService, ...this.getRouteOptions() });
 		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 		this.ticketModule = new TicketModule({ service: services.ticketService, ...this.getRouteOptions() });
 		this.fileModule = new FileModule({ service: services.fileService, ...this.getRouteOptions() }, upload);
@@ -60,7 +57,6 @@ export class ModulesFactory {
 		this.placeModule.exec();
 		this.phoneModule.exec();
 		this.theaterModule.exec();
-		this.seatAddressModule.exec();
 		this.durationModule.exec();
 		this.ticketModule.exec();
 		this.fileModule.exec();
