@@ -154,9 +154,6 @@ export class UserService extends BaseService {
 	}
 
 	private responseFindUser(res: any) {
-		onLog('response user', res);
-		onLog('response query', res.query);
-
 		if (!res) return {};
 		if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.user.error.notFound, res);
 		return new UserModel(res);

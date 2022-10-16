@@ -5,7 +5,6 @@ import { deleteField } from 'src/utils';
 import { UserService } from 'src/services';
 import { IAuthConfig } from 'src/repositories/types';
 import { Payload, UserModel } from 'src/repositories/models';
-import { onLog } from 'src/core/handlers';
 import { User } from 'src/repositories/entities';
 
 export class AuthConfig {
