@@ -12,6 +12,7 @@ const successEdit = `Registro Editado com sucesso.`;
 const successDel = `Registro Apagado com sucesso.`;
 const notFoundRegister = 'Registo Não encontrado';
 const notFound = 'Não encontrado.';
+const ticketSoldOut = 'Ingressos esgotados!';
 const categoryWithChildrenNoDelete = (name: string) =>
 	`Não foi possivel apagar a categoria ${name.toUpperCase()}.\n Pois ela tem subcategorias, por favor mova ou apague as subcategorias antes de apagar essa categoria.`;
 
@@ -84,4 +85,5 @@ export const messages = {
 	notFoundRegister,
 	notFound,
 	categoryWithChildrenNoDelete,
+	ticketSoldOut,
 };

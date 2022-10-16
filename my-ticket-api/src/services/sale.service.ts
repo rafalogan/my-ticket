@@ -1,13 +1,24 @@
-import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, ISale, List, ReadOptions } from 'src/repositories/types';
-import { Sale } from 'src/repositories/entities';
-import { DatabaseException, existsOrError, messages, PaymentException, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
-import { PayService } from 'src/services/pay.service';
-import { CompleteSaleModel } from 'src/repositories/models';
 import httpStatus from 'http-status';
 
+import { BaseService } from 'src/core/abstracts';
+import { BaseServiceOptions, ISale, ITicket, List, ReadOptions } from 'src/repositories/types';
+import { Sale, Ticket } from 'src/repositories/entities';
+import {
+	DatabaseException,
+	existsOrError,
+	messages,
+	PaymentException,
+	responseDataBaseCreate,
+	responseDataBaseUpdate,
+	ResponseException,
+	saleVerify,
+} from 'src/utils';
+import { PayService } from 'src/services/pay.service';
+import { CompleteSaleModel, PayParams } from 'src/repositories/models';
+import { TicketService } from 'src/services/ticket.service';
+
 export class SaleService extends BaseService {
-	constructor(options: BaseServiceOptions, private payService: PayService) {
+	constructor(options: BaseServiceOptions, private payService: PayService, private ticketService: TicketService) {
 		super(options);
 	}
 
@@ -17,25 +28,25 @@ export class SaleService extends BaseService {
 	}
 
 	async create(item: CompleteSaleModel) {
+		const reserve = await this.reserveTickets(item.sale);
 		try {
-			const payProcess = await this.payService.executePayment(item.payPrams, item.sale);
-			if (payProcess.StatusPagamento !== 'Sucesso') return new PaymentException(payProcess.Mensagem, payProcess, httpStatus.FORBIDDEN);
+			saleVerify(reserve);
 		} catch (err) {
 			return err;
 		}
 
+		const payProcess = await this.saleProcess(item.payPrams, item.sale);
+		try {
+			saleVerify(payProcess);
+		} catch (err) {
+			return this.revertTicketsReservation(reserve, item.sale)
+				.then(res => (res ? err : res))
+				.catch(err => err);
+		}
+
 		return super
 			.create(item.sale)
-			.then(res => res)
-			.then(res => {
-				if (item.seats?.length) {
-					return this.saveDataWithSeats(item.sale.ticketId, item.seats)
-						.then(() => responseDataBaseCreate(res, item.sale))
-						.catch(err => err);
-				}
-
-				return responseDataBaseCreate(res, item.sale);
-			})
+			.then(res => responseDataBaseCreate(res, item.sale))
 			.catch(err => err);
 	}
 
@@ -74,11 +85,38 @@ export class SaleService extends BaseService {
 			.catch(err => err);
 	}
 
-	private saveDataWithSeats(ticketId: number, seats: number[]) {
-		const result = seats.map(seat => this.conn('seat_per_ticket').insert({ seat_address_id: seat, ticket_id: ticketId }));
+	private async reserveTickets(data: Sale) {
+		const stockTicket = await this.ticketService.findOneById(data.ticketId);
+		try {
+			existsOrError(stockTicket, `${messages.notFoundRegister} Em ticket stock`);
+			existsOrError(stockTicket.amount >= data.amount, messages.ticketSoldOut);
+		} catch (err) {
+			return new DatabaseException(err as string);
+		}
 
-		return Promise.all(result)
-			.then(() => 'ok')
+		stockTicket.amount = stockTicket.amount - data.amount;
+		const toSave = new Ticket(stockTicket);
+
+		return this.ticketService
+			.save(toSave)
+			.then(res => (!(res instanceof DatabaseException) ? toSave : res))
+			.catch(err => err);
+	}
+
+	private async saleProcess(data: PayParams, sale: Sale) {
+		return this.payService
+			.executePayment(data, sale)
+			.then(res => (res.StatusPagamento !== 'Sucesso' ? new PaymentException(res.Mensagem, res) : res))
+			.catch(err => err);
+	}
+
+	private async revertTicketsReservation(reservation: ITicket, data: Sale) {
+		reservation.amount = reservation.amount + data.amount;
+		const toSave = new Ticket(reservation);
+
+		return this.ticketService
+			.save(toSave)
+			.then(res => !(res instanceof DatabaseException) || res)
 			.catch(err => err);
 	}
 

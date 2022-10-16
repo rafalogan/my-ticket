@@ -2,10 +2,10 @@ import httpStatus from 'http-status';
 import isEmpty from 'is-empty';
 import bcrypt from 'bcrypt';
 
-import { DatabaseException, ResponseException } from 'src/utils/exceptions';
+import { DatabaseException, PaymentException, ResponseException } from 'src/utils/exceptions';
 import { Credentials, UserModel } from 'src/repositories/models';
 import { IsMachValidateOptions } from 'src/repositories/types';
-import { User } from 'src/repositories/entities';
+import { Sale, User } from 'src/repositories/entities';
 
 export const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 export const storage = process.env.STORAGE_TYPE;
@@ -45,3 +45,9 @@ export const isMatchOrError = (data: IsMachValidateOptions) => {
 };
 
 export const isMatch = (credentials: Credentials, user: UserModel | User) => bcrypt.compareSync(credentials.password, user.password);
+
+export const saleVerify = (data: any): void | DatabaseException => {
+	if (data instanceof DatabaseException) throw data;
+	if (data instanceof ResponseException) throw data;
+	if (data instanceof PaymentException) throw data;
+};
