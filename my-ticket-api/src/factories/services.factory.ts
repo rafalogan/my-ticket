@@ -60,7 +60,7 @@ export class ServicesFactory {
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
 		this.payService = new PayService();
-		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields), this.payService);
+		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields), this.payService, this.ticketService);
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

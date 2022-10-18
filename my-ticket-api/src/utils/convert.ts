@@ -1,8 +1,17 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
-import { CustomFile, ICategoryModel, OrderOptions, ReadOptions, UpdatePasswordOptions } from 'src/repositories/types';
+import {
+	CustomFile,
+	ICategoryModel,
+	IPayCard,
+	IPayment,
+	IPayPortador,
+	OrderOptions,
+	ReadOptions,
+	UpdatePasswordOptions,
+} from 'src/repositories/types';
 import { baseUrl, storage } from 'src/utils/validate';
-import { onLog } from 'src/core/handlers';
+import { Payment } from 'src/repositories/entities';
 
 export const snakeToCamel = (field: string): string => {
 	let toArray = field.split('_');
@@ -101,4 +110,16 @@ export const filterUpdatePasswordOptions = (value: any): UpdatePasswordOptions =
 	oldPassword: value.oldPassword,
 	password: value.password,
 	confirmPassword: value.confirmPassword,
+});
+
+export const setCard = (data: IPayment | Payment): IPayCard => ({
+	numero: data.numero,
+	expiracao: data.expiracao,
+	codigoSeguranca: data.codigoSeguranca,
+	portador: setPortador(data),
+});
+
+const setPortador = (data: IPayment | Payment): IPayPortador => ({
+	nome: data.nome,
+	cpf: data.cpf,
 });

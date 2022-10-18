@@ -1,30 +1,54 @@
-import { PayParams } from 'src/repositories/models';
-import { IPayResponseClasificacao, IPPayResponse } from 'src/repositories/types';
+import { v4 } from 'uuid';
+
+import { CredCardPaymentModel, DebitCardPaymentModel } from 'src/repositories/models';
+import { IPPayResponse, IPPayResponsePix } from 'src/repositories/types';
 import { Sale } from 'src/repositories/entities';
 
 export class PayService {
 	constructor() {}
 
-	executePayment = (data: PayParams, sale: Sale): Promise<IPPayResponse> => {
-		return new Promise(resolve =>
-			setTimeout(
-				() => ({
-					StatusPagamento: 'Sucesso',
-					Status: 'EmAnalise',
-					CodigoMoIP: Number(8067235),
-					TotalPago: `${sale.total / 100}`,
-					TaxaMoIP: '13.49',
-					Mensagem: 'Requisição processada com sucesso',
-					CodigoRetorno: '012345',
-					Classificacao: {
-						Codigo: 3,
-						Descricao: 'Politica do banco emissor',
-					},
-				}),
-				3000
-			)
-		)
-			.then(res => res as IPPayResponse)
-			.catch(err => err);
-	};
+	async executePayment<T>(data: T, sale: Sale): Promise<IPPayResponse | IPPayResponsePix> {
+		if (data instanceof CredCardPaymentModel || data instanceof DebitCardPaymentModel) {
+			return this.responseCreditOrDebit(sale);
+		}
+
+		return this.responsePixTransacion(sale);
+	}
+
+	async execCancelPayment<T>(data: T, sale: Sale): Promise<IPPayResponse | IPPayResponsePix> {
+		if (data instanceof CredCardPaymentModel || data instanceof DebitCardPaymentModel) {
+			return this.responseCreditOrDebit(sale);
+		}
+
+		return this.responsePixTransacion(sale);
+	}
+
+	private responseCreditOrDebit = (sale: Sale): IPPayResponse => ({
+		statusPagamento: 'Sucesso',
+		status: 'EmAnalise',
+		codigoMoIP: Number(8067235),
+		totalPago: `${sale.total / 100}`,
+		taxaMoIP: '13.49',
+		mensagem: 'Requisição processada com sucesso',
+		codigoRetorno: '012345',
+		classificacao: {
+			codigo: 3,
+			descricao: 'Politica do banco emissor',
+		},
+	});
+
+	private responsePixTransacion = (sale: Sale): IPPayResponsePix => ({
+		codigoPix: `${v4()}${Date.now()}`,
+		statusPagamento: 'Sucesso',
+		status: 'EmAnalise',
+		codigoMoIP: Number(8067235),
+		totalPago: sale.total.toFixed(2),
+		taxaMoIP: `${sale.total * (2 / 100)}`,
+		mensagem: 'Requisição processada com sucesso',
+		codigoRetorno: '012345',
+		classificacao: {
+			codigo: 3,
+			descricao: 'Politica do banco emissor',
+		},
+	});
 }

@@ -68,8 +68,6 @@ export const ticketFields = [
 	'duration_id as durationId',
 ];
 
-export const seatAddressFields = ['id', 'section', 'row', 'seat', 'theater_id as theaterId'];
-
 export const ticketOtherTableFields = {
 	event: { eventTitle: 'e.title', eventSubtitle: 'e.subtitle', eventContent: 'e.content', eventType: 'e.type' },
 	place: { placeName: 'p.name', placeDescription: 'p.description' },
@@ -98,6 +96,7 @@ export const saleFields = [
 	'amount',
 	'unitary_value as unitaryValue',
 	'total',
+	'payment_status as paymentStatus',
 	'user_id as userId',
 	'ticket_id as ticketId',
 ];

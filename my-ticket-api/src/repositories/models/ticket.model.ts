@@ -1,4 +1,4 @@
-import { ITicketModel, TicketDuration, TicketEvent, TicketPlace } from 'src/repositories/types';
+import { ITheater, ITicketModel, TicketDuration, TicketEvent, TicketPlace, TicketTheater } from 'src/repositories/types';
 import { convertToDate } from 'src/utils';
 
 export class TicketModel {
@@ -7,6 +7,7 @@ export class TicketModel {
 	unitaryValue: number;
 	event: TicketEvent;
 	place: TicketPlace;
+	theater: TicketTheater;
 	duration: TicketDuration;
 
 	constructor(data: ITicketModel, id?: number) {
@@ -15,6 +16,7 @@ export class TicketModel {
 		this.unitaryValue = Number(data.unitaryValue);
 		this.event = this.setTicketEvent(data);
 		this.place = this.setTicketPlace(data);
+		this.theater = this.setTicketTheater(data);
 		this.duration = this.setTicketDuration(data);
 	}
 
@@ -27,19 +29,21 @@ export class TicketModel {
 		return { id, title, subtitle, content };
 	}
 
-	private setTicketPlace(data: ITicketModel): TicketPlace {
-		const id = Number(data.placeId);
-		const name = data.placeName;
-		const description = data.placeDescription.toString();
+	private setTicketPlace = (data: ITicketModel): TicketPlace => ({
+		id: Number(data.placeId),
+		name: data.placeName,
+		description: data.placeDescription.toString(),
+	});
 
-		return { id, name, description };
-	}
+	private setTicketTheater = (data: ITicketModel): TicketTheater => ({
+		id: Number(data.theaterId),
+		name: data.theaterName,
+		description: data.theaterDescription.toString(),
+	});
 
-	private setTicketDuration(data: ITicketModel): TicketDuration {
-		const id = Number(data.durationId);
-		const start = convertToDate(data.durationStart);
-		const end = convertToDate(data.durationEnd);
-
-		return { id, start, end };
-	}
+	private setTicketDuration = (data: ITicketModel): TicketDuration => ({
+		id: Number(data.durationId),
+		start: convertToDate(data.durationStart),
+		end: convertToDate(data.durationEnd),
+	});
 }

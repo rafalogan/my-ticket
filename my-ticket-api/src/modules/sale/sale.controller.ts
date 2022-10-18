@@ -5,6 +5,7 @@ import { responseApi, responseApiError, setReadOptions } from 'src/utils';
 import { SaleService } from 'src/services';
 import { Sale } from 'src/repositories/entities';
 import { getIdByReq, getUserIdByToken, onLog } from 'src/core/handlers';
+import { CompleteSaleModel } from 'src/repositories/models';
 
 export class SaleController extends Controller {
 	constructor(private saleService: SaleService) {
@@ -13,16 +14,16 @@ export class SaleController extends Controller {
 
 	async save(req: Request, res: Response) {
 		try {
-			await this.saleService.validate(req.body);
+			await this.saleService.validate(req.body.sale);
 		} catch (err) {
 			return responseApi(res, err);
 		}
 
-		const sale = new Sale(req.body);
-		sale.userId = getUserIdByToken(req) as number;
+		const completeSale = new CompleteSaleModel(req.body);
+		completeSale.sale.userId = getUserIdByToken(req) as number;
 
 		this.saleService
-			.save(sale)
+			.save(completeSale)
 			.then(data => responseApi(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}

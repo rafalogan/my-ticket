@@ -6,5 +6,7 @@ export * from './payload.model';
 export * from './category.model';
 export * from './ticket.model';
 export * from './place.model';
-export * from './pay-params.model';
 export * from './complete-sale.model';
+export * from './cred-card-payment.model';
+export * from './debit-card-payment.model';
+export * from './pix-payment.model';

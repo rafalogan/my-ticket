@@ -10,12 +10,12 @@ import {
 	PaymentException,
 	responseDataBaseCreate,
 	responseDataBaseUpdate,
-	ResponseException,
 	saleVerify,
 } from 'src/utils';
 import { PayService } from 'src/services/pay.service';
-import { CompleteSaleModel, PayParams } from 'src/repositories/models';
+import { CompleteSaleModel } from 'src/repositories/models';
 import { TicketService } from 'src/services/ticket.service';
+import { onLog } from 'src/core/handlers';
 
 export class SaleService extends BaseService {
 	constructor(options: BaseServiceOptions, private payService: PayService, private ticketService: TicketService) {
@@ -44,10 +44,25 @@ export class SaleService extends BaseService {
 				.catch(err => err);
 		}
 
+		item.sale.paymentStatus = payProcess.StatusPagamento;
+		onLog('Sale', item.sale);
+
 		return super
 			.create(item.sale)
+			.then(res => {
+				if (res.severity === 'ERROR')
+					return this.revertTicketsReservation(reserve, item.sale)
+						.then(revert => (revert ? res : revert))
+						.catch(err => err);
+
+				return res;
+			})
 			.then(res => responseDataBaseCreate(res, item.sale))
-			.catch(err => err);
+			.catch(err =>
+				this.revertTicketsReservation(reserve, item.sale)
+					.then(res => (res ? err : res))
+					.catch(err => err)
+			);
 	}
 
 	update(id: number, values: Sale) {
@@ -85,8 +100,52 @@ export class SaleService extends BaseService {
 			.catch(err => err);
 	}
 
+	async delete(id: number) {
+		const fromDB = await this.findOneById(id);
+		try {
+			saleVerify(fromDB);
+			existsOrError(fromDB, `Venda ${messages.notFoundRegister}`);
+		} catch (err) {
+			return err;
+		}
+
+		const ticketOfSale = await this.ticketService.findOneById(fromDB.ticketId);
+		try {
+			saleVerify(ticketOfSale);
+			existsOrError(ticketOfSale, messages.notFoundRegister);
+		} catch (err) {
+			return err;
+		}
+		//
+		// const saleReturn = await this.payService.execCancelPayment(params, fromDB);
+		// try {
+		// 	saleVerify(saleReturn);
+		// } catch (err) {
+		// 	return err;
+		// }
+
+		fromDB.canceledAt = new Date();
+
+		if (ticketOfSale.duration.start > fromDB.canceledAt) {
+			return this.revertTicketsReservation(ticketOfSale, fromDB)
+				.then(res =>
+					res
+						? this.update(fromDB.id, fromDB)
+								.then(up => this.saleCalceld(up, fromDB))
+								.catch(err => err)
+						: res
+				)
+				.catch(err => err);
+		}
+
+		return this.update(fromDB.id, fromDB)
+			.then(up => this.saleCalceld(up, fromDB))
+			.catch(err => err);
+	}
+
 	private async reserveTickets(data: Sale) {
 		const stockTicket = await this.ticketService.findOneById(data.ticketId);
+		onLog('stockTicket', stockTicket);
 		try {
 			existsOrError(stockTicket, `${messages.notFoundRegister} Em ticket stock`);
 			existsOrError(stockTicket.amount >= data.amount, messages.ticketSoldOut);
@@ -96,6 +155,7 @@ export class SaleService extends BaseService {
 
 		stockTicket.amount = stockTicket.amount - data.amount;
 		const toSave = new Ticket(stockTicket);
+		onLog('to save', toSave);
 
 		return this.ticketService
 			.save(toSave)
@@ -113,6 +173,7 @@ export class SaleService extends BaseService {
 	private async revertTicketsReservation(reservation: ITicket, data: Sale) {
 		reservation.amount = reservation.amount + data.amount;
 		const toSave = new Ticket(reservation);
+		onLog('revert', toSave);
 
 		return this.ticketService
 			.save(toSave)
@@ -123,5 +184,12 @@ export class SaleService extends BaseService {
 	private setSales(value: List<ISale>) {
 		const data = value.data.map(s => new Sale(s));
 		return { ...value, data };
+	}
+
+	private saleCalceld(res: any, data: Sale) {
+		if (!res) return res;
+		if (res.severity === 'ERROR') return new DatabaseException(res.detail ? res.detail : messages.saleNoCancel(data.code), res);
+
+		return { saleId: data.id, saleCode: data.code, cancel: res === 1, message: messages.canceledSaleSuccess, data };
 	}
 }

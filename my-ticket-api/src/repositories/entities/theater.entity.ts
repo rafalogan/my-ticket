@@ -20,7 +20,7 @@ export class Theater {
 		this.sectionsType = data.sectionsType;
 		this.rawsPerSection = Number(data.sectionsType);
 		this.rowsType = data.rowsType;
-		this.capacity = Number(data.rawsPerSection);
+		this.capacity = Number(data.capacity);
 		this.addressedSeats = data.addressedSeats || false;
 		this.placeId = Number(data.placeId);
 	}

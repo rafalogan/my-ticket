@@ -23,6 +23,7 @@ export interface ReadOptions {
 	order?: OrderOptions;
 	cacheTime?: number;
 	fields?: string[];
+	userId?: number;
 }
 
 export interface OrderOptions {

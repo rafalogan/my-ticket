@@ -10,6 +10,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.integer('unitary_value').notNullable();
 		table.integer('total').notNullable();
 		table.string('payment_status').notNullable();
+		table.timestamp('canceled_at').nullable();
 		table.integer('user_id').unsigned().references('id').inTable('users').notNullable();
 		table.integer('ticket_id').unsigned().references('id').inTable('tickets').notNullable();
 	});

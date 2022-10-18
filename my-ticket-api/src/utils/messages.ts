@@ -15,6 +15,8 @@ const notFound = 'Não encontrado.';
 const ticketSoldOut = 'Ingressos esgotados!';
 const categoryWithChildrenNoDelete = (name: string) =>
 	`Não foi possivel apagar a categoria ${name.toUpperCase()}.\n Pois ela tem subcategorias, por favor mova ou apague as subcategorias antes de apagar essa categoria.`;
+const saleNoCancel = (id: string | number) => `Venda - ${id} - Não cancelada.`;
+const canceledSaleSuccess = `Venda cancelada com sucesso!`;
 
 const user = {
 	alreadyExists: (email: string) => `${upperCaseFirstLetter(alreadyExists)} usuário resistrado com eses e-mail: ${email}`,
@@ -86,4 +88,6 @@ export const messages = {
 	notFound,
 	categoryWithChildrenNoDelete,
 	ticketSoldOut,
+	saleNoCancel,
+	canceledSaleSuccess,
 };

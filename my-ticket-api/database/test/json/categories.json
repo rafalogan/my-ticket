@@ -1,0 +1,37 @@
+[
+	{
+		"name": "Ação e Aventura",
+		"description": "Os melhores e mais alucinantes filmes.",
+		"parentId": 1
+	},
+	{
+		"name": "Terror",
+		"description": "Terror ou Horror é um gênero cinematográfico que procura uma reação emocional negativa dos espectadores, ao jogar com os medos primários da audiência. Inspirado na literatura de autores como Edgar Allan Poe, H.P",
+		"parentId": 1
+	},
+	{
+		"name": "Fantasia",
+		"description": "Fantasia é um gênero da ficção em que se usa geralmente fenômenos sobrenaturais, mágicos e outros como um elemento primário do enredo, tema ou configuração. Muitas obras dentro do gênero ocorrem em mundos imaginários onde há criaturas mágicas e itens mágicos.",
+		"parentId": 4
+	},
+	{
+		"name": "Comédia",
+		"description": "Se a hora de assistir um filme é o momento de descontração para você, as comédias são escolhas perfeitas. Nesta categoria, temos filmes que trazem o humor como característica principal do enredo e que proporcionam muitas risadas e bons momentos com as pessoas que você ama.",
+		"parentId": 1
+	},
+	{
+		"name": "Comédia dramática",
+		"description": "Trazendo uma história séria mas abordada de forma cômica, essa mistura de comédia com drama proporciona um misto de sentimentos ao espectador, oferecendo, também, uma experiência única. Esse gênero consegue passar mensagens importantes de forma leve e descontraída.",
+		"parentId": 7
+	},
+	{
+		"name": "Comédia romântica",
+		"description": "Se você ama as comédias mas não consegue deixar de lado os filmes com roteiros românticos, temos a solução perfeita: as comédias românticas.",
+		"parentId": 7
+	},
+	{
+		"name": "Terror espacial",
+		"description": "O gênero de filmes de terror é muito popular há décadas. No geral, os filmes com essa temática são sempre ligados ao desconhecido, brincando com o nosso medo e nos forçando a enfrentá-lo. Dentro do gênero terror, existem vários outros subgêneros, tais como sobrenatural, trash, gore entre outros. Talvez, um dos menos comentados sejam os filmes de terror espacial que, como o próprio nome já sugere, acontecem no espaço.",
+		"parentId": 5
+	}
+]

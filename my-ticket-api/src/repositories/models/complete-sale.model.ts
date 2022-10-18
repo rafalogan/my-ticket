@@ -1,15 +1,12 @@
-import { PayParams } from 'src/repositories/models/pay-params.model';
-import { Sale } from 'src/repositories/entities';
-import { ICompleteSale } from 'src/repositories/types';
+import { Payment, Sale } from 'src/repositories/entities';
+import { ICompleteSale, IPayment } from 'src/repositories/types';
 
 export class CompleteSaleModel {
-	payPrams: PayParams;
+	payment: Payment;
 	sale: Sale;
-	seats?: number[];
 
 	constructor(data: ICompleteSale) {
-		this.payPrams = new PayParams(data.payPrams);
-		this.sale = new Sale(data.sale);
-		this.seats = data.seats ? data.seats.map(Number) : undefined;
+		this.sale = data.sale instanceof Sale ? data.sale : new Sale(data.sale);
+		this.payment = data.payment instanceof Payment ? data.payment : new Payment(data.payment);
 	}
 }

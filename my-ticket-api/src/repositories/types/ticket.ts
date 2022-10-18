@@ -29,6 +29,11 @@ export interface ITicketModel extends ITicket {
 	durationEnd: Date | string;
 }
 
+export interface TicketTheater extends IID {
+	name: string;
+	description: string;
+}
+
 export interface TicketEvent extends IID {
 	title: string;
 	subtitle: string;

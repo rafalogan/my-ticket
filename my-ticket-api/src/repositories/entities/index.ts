@@ -14,3 +14,4 @@ export * from './contact.entity';
 export * from './sale.entity';
 export * from './phone.entity';
 export * from './seat-address.entity';
+export * from './payment.entity';

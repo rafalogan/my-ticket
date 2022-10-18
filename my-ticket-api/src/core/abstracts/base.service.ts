@@ -152,6 +152,14 @@ export abstract class BaseService extends CacheBaseService {
 			.catch(err => err);
 	}
 
+	protected findAllByUser(userid: number, options: ReadOptions) {
+		return this.conn(this.table)
+			.select(...(options.fields || this.fields))
+			.where({ user_id: userid })
+			.then(result => result)
+			.catch(err => err);
+	}
+
 	protected checkCache(options?: ReadOptions) {
 		const id = Number(options?.id);
 
