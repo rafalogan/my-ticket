@@ -8,6 +8,7 @@ import {
 	EventService,
 	FileService,
 	InitService,
+	PaymentService,
 	PayService,
 	PhoneService,
 	PlaceService,
@@ -23,6 +24,7 @@ import {
 	durationFields,
 	eventFields,
 	fileFields,
+	paymentFields,
 	placeFields,
 	profileFields,
 	saleFields,
@@ -44,6 +46,7 @@ export class ServicesFactory {
 	durationService: DurationService;
 	ticketService: TicketService;
 	fileService: FileService;
+	paymentService: PaymentService;
 	saleService: SaleService;
 	payService: PayService;
 
@@ -59,6 +62,7 @@ export class ServicesFactory {
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
+		this.paymentService = new PaymentService(this.setServiceOptions('payments_formats', paymentFields));
 		this.payService = new PayService();
 		this.saleService = new SaleService(this.setServiceOptions('sales', saleFields), this.payService, this.ticketService);
 	}

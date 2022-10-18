@@ -1,11 +1,21 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IPayment, ReadOptions } from 'src/repositories/types';
 import { Payment } from 'src/repositories/entities';
-import { DatabaseException, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 
 export class PaymentService extends BaseService {
 	constructor(options: BaseServiceOptions) {
 		super(options);
+	}
+
+	validate(data: IPayment) {
+		existsOrError(data.forma, messages.requires('Forma'));
+		existsOrError(data.numero, messages.requires('Número'));
+		existsOrError(data.instituicao, messages.requires('Instituicao'));
+		existsOrError(data.expiracao, messages.requires('Expiração'));
+		existsOrError(data.codigoSeguranca, messages.requires('Codigo de Seguranca'));
+		existsOrError(data.nome, messages.requires('Nome do titular'));
+		existsOrError(data.cpf, messages.requires('CPF'));
 	}
 
 	create(value: Payment) {

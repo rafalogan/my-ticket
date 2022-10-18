@@ -89,6 +89,19 @@ export const fileFields = [
 	'user_id  as userId',
 ];
 
+export const paymentFields = [
+	'id',
+	'forma',
+	'numero',
+	'instituicao',
+	'expiracao',
+	'codigo_seguranca as codigoSeguranca',
+	'nome',
+	'cpf',
+	'active',
+	'user_id as userId',
+];
+
 export const saleFields = [
 	'id',
 	'code',
