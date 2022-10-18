@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import TableBuilder = Knex.TableBuilder;
 
 export async function up(knex: Knex): Promise<void> {
-	return knex.schema.createTable('payments_formats', (table: TableBuilder) => {
+	return knex.schema.createTable('payment_methods', (table: TableBuilder) => {
 		table.increments('id').primary();
 		table.string('forma', 100).notNullable();
 		table.string('numero', 100).notNullable();
@@ -17,5 +17,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-	return knex.schema.dropTable('payments_formats');
+	return knex.schema.dropTable('payment_methods');
 }

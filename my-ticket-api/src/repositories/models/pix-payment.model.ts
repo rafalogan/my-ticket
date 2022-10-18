@@ -1,11 +1,13 @@
+import { v4 } from 'uuid';
+
 import { IPayPix, ISale } from 'src/repositories/types';
 
 export class PixPaymentModel implements IPayPix {
 	forma: string;
 	codigo: string;
 
-	constructor(data: ISale, forma: string) {
+	constructor(forma: string) {
 		this.forma = forma;
-		this.codigo = data.pixCode as string;
+		this.codigo = `${this.forma}.${v4}.${Date.now()}`;
 	}
 }

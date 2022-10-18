@@ -8,7 +8,6 @@ export interface ISale extends IID {
 	total: number;
 	paymentStatus: string;
 	canceledAt?: Date | string;
-	pixCode?: string;
 	paymentId?: number;
 	userId: number;
 	ticketId: number;

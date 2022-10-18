@@ -1,8 +1,6 @@
-import httpStatus from 'http-status';
-
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, ISale, ITicket, List, ReadOptions } from 'src/repositories/types';
-import { Sale, Ticket } from 'src/repositories/entities';
+import { Payment, Sale, Ticket } from 'src/repositories/entities';
 import {
 	DatabaseException,
 	existsOrError,
@@ -13,12 +11,18 @@ import {
 	saleVerify,
 } from 'src/utils';
 import { PayService } from 'src/services/pay.service';
-import { CompleteSaleModel } from 'src/repositories/models';
+import { CredCardPaymentModel, DebitCardPaymentModel, PixPaymentModel } from 'src/repositories/models';
 import { TicketService } from 'src/services/ticket.service';
 import { onLog } from 'src/core/handlers';
+import { PaymentService } from './payment.service';
 
 export class SaleService extends BaseService {
-	constructor(options: BaseServiceOptions, private payService: PayService, private ticketService: TicketService) {
+	constructor(
+		options: BaseServiceOptions,
+		private payService: PayService,
+		private ticketService: TicketService,
+		private paymentService: PaymentService
+	) {
 		super(options);
 	}
 
@@ -27,39 +31,41 @@ export class SaleService extends BaseService {
 		existsOrError(data.unitaryValue, messages.requires('Valor Unitario'));
 	}
 
-	async create(item: CompleteSaleModel) {
-		const reserve = await this.reserveTickets(item.sale);
+	async create(item: Sale) {
+		const reserve = await this.reserveTickets(item);
+		const payment = item.paymentId ? await this.paymentService.findOneById(item.paymentId) : 'Pix Payment';
 		try {
 			saleVerify(reserve);
+			saleVerify(payment);
 		} catch (err) {
 			return err;
 		}
 
-		const payProcess = await this.saleProcess(item.payPrams, item.sale);
+		const payProcess = await this.saleProcess(payment, item);
 		try {
 			saleVerify(payProcess);
 		} catch (err) {
-			return this.revertTicketsReservation(reserve, item.sale)
+			return this.revertTicketsReservation(reserve, item)
 				.then(res => (res ? err : res))
 				.catch(err => err);
 		}
 
-		item.sale.paymentStatus = payProcess.StatusPagamento;
-		onLog('Sale', item.sale);
+		item.paymentStatus = payProcess.StatusPagamento;
+		onLog('Sale', item);
 
 		return super
-			.create(item.sale)
+			.create(item)
 			.then(res => {
 				if (res.severity === 'ERROR')
-					return this.revertTicketsReservation(reserve, item.sale)
+					return this.revertTicketsReservation(reserve, item)
 						.then(revert => (revert ? res : revert))
 						.catch(err => err);
 
 				return res;
 			})
-			.then(res => responseDataBaseCreate(res, item.sale))
+			.then(res => responseDataBaseCreate(res, item))
 			.catch(err =>
-				this.revertTicketsReservation(reserve, item.sale)
+				this.revertTicketsReservation(reserve, item)
 					.then(res => (res ? err : res))
 					.catch(err => err)
 			);
@@ -110,19 +116,21 @@ export class SaleService extends BaseService {
 		}
 
 		const ticketOfSale = await this.ticketService.findOneById(fromDB.ticketId);
+		const payment = (await this.paymentService.findOneById(fromDB.paymentId)) || 'Pix payment';
 		try {
 			saleVerify(ticketOfSale);
+			saleVerify(payment);
 			existsOrError(ticketOfSale, messages.notFoundRegister);
 		} catch (err) {
 			return err;
 		}
-		//
-		// const saleReturn = await this.payService.execCancelPayment(params, fromDB);
-		// try {
-		// 	saleVerify(saleReturn);
-		// } catch (err) {
-		// 	return err;
-		// }
+
+		const saleReturn = await this.saleCancelProcess(payment, fromDB);
+		try {
+			saleVerify(saleReturn);
+		} catch (err) {
+			return err;
+		}
 
 		fromDB.canceledAt = new Date();
 
@@ -163,10 +171,20 @@ export class SaleService extends BaseService {
 			.catch(err => err);
 	}
 
-	private async saleProcess(data: PayParams, sale: Sale) {
+	private saleProcess(pay: Payment, sale: Sale) {
+		const params = this.setPayParams(pay);
 		return this.payService
-			.executePayment(data, sale)
-			.then(res => (res.StatusPagamento !== 'Sucesso' ? new PaymentException(res.Mensagem, res) : res))
+			.executePayment<CredCardPaymentModel | DebitCardPaymentModel | PixPaymentModel>(params, sale)
+			.then(res => (res.statusPagamento !== 'Sucesso' ? new PaymentException(res.mensagem, res) : res))
+			.catch(err => err);
+	}
+
+	private saleCancelProcess(pay: Payment, sale: Sale) {
+		const params = this.setPayParams(pay);
+
+		return this.payService
+			.execCancelPayment<CredCardPaymentModel | DebitCardPaymentModel | PixPaymentModel>(params, sale)
+			.then(res => (res.statusPagamento !== 'Sucesso' ? new PaymentException(res.mensagem, res) : res))
 			.catch(err => err);
 	}
 
@@ -191,5 +209,13 @@ export class SaleService extends BaseService {
 		if (res.severity === 'ERROR') return new DatabaseException(res.detail ? res.detail : messages.saleNoCancel(data.code), res);
 
 		return { saleId: data.id, saleCode: data.code, cancel: res === 1, message: messages.canceledSaleSuccess, data };
+	}
+
+	private setPayParams(pay: Payment | string) {
+		const isPayment = pay instanceof Payment;
+		if (isPayment && pay.forma.toLowerCase() === 'debito') return new DebitCardPaymentModel(pay);
+		if (isPayment && pay.forma.toLowerCase() === 'credito') return new CredCardPaymentModel(pay);
+
+		return new PixPaymentModel(pay as string);
 	}
 }
