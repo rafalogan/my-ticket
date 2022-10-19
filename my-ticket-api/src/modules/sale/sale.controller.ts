@@ -19,11 +19,11 @@ export class SaleController extends Controller {
 			return responseApi(res, err);
 		}
 
-		const completeSale = new CompleteSaleModel(req.body);
-		completeSale.sale.userId = getUserIdByToken(req) as number;
+		const data = new Sale(req.body);
+		data.userId = getUserIdByToken(req) as number;
 
 		this.saleService
-			.save(completeSale)
+			.save(data)
 			.then(data => responseApi(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
