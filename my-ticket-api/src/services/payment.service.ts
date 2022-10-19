@@ -2,6 +2,7 @@ import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IPayment, ReadOptions } from 'src/repositories/types';
 import { Payment } from 'src/repositories/entities';
 import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { onLog } from 'src/core/handlers';
 
 export class PaymentService extends BaseService {
 	constructor(options: BaseServiceOptions) {

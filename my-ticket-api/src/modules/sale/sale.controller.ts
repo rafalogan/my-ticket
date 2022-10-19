@@ -5,7 +5,9 @@ import { responseApi, responseApiError, setReadOptions } from 'src/utils';
 import { SaleService } from 'src/services';
 import { Sale } from 'src/repositories/entities';
 import { getIdByReq, getUserIdByToken, onLog } from 'src/core/handlers';
-import { CompleteSaleModel } from 'src/repositories/models';
+import httpStatus from 'http-status';
+import { ReadSelesOptions } from 'src/repositories/types';
+import { methodNotAllowed } from 'src/core/routes/notfound.route';
 
 export class SaleController extends Controller {
 	constructor(private saleService: SaleService) {
@@ -13,14 +15,17 @@ export class SaleController extends Controller {
 	}
 
 	async save(req: Request, res: Response) {
+		onLog('chegou');
 		try {
-			await this.saleService.validate(req.body.sale);
+			await this.saleService.validate(req.body);
 		} catch (err) {
-			return responseApi(res, err);
+			return responseApi(res, err, httpStatus.BAD_REQUEST);
 		}
 
 		const data = new Sale(req.body);
-		data.userId = getUserIdByToken(req) as number;
+		data.userId = getUserIdByToken(req);
+
+		onLog('data', data);
 
 		this.saleService
 			.save(data)
@@ -29,35 +34,14 @@ export class SaleController extends Controller {
 	}
 
 	edit(req: Request, res: Response) {
-		const id = getIdByReq(req);
-		const sale = new Sale(req.body, id);
-
-		this.saleService
-			.save(sale)
-			.then(data => responseApi(res, data, data.status))
-			.catch(err => responseApiError({ res, err, message: err.message }));
-	}
-
-	listByUser(req: Request, res: Response) {
-		const id = getIdByReq(req);
-
-		this.saleService
-			.findAllByWhere('userId', id)
-			.then(data => responseApi(res, data, data.status))
-			.catch(err => responseApiError({ res, err, message: err.message }));
-	}
-
-	listByCode(req: Request, res: Response) {
-		const code = req.params.code;
-
-		this.saleService
-			.findAllByWhere('code', code)
-			.then(data => responseApi(res, data, data.status))
-			.catch(err => responseApiError({ res, err, message: err.message }));
+		methodNotAllowed(req, res);
 	}
 
 	list(req: Request, res: Response) {
-		const options = setReadOptions(req);
+		const options: ReadSelesOptions = { ...setReadOptions(req) };
+		options.userId = getUserIdByToken(req);
+		options.paginate = true;
+		options.code = req.query.code as string;
 
 		this.saleService
 			.read(options)

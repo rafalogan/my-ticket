@@ -12,20 +12,8 @@ export class SaleRoute extends Routes {
 		this.app
 			.route('/sales')
 			.all(this.auth?.exec().authenticate())
-			.get(this.saleController.list.bind(this.saleController))
 			.post(this.saleController.save.bind(this.saleController))
-			.all(methodNotAllowed);
-
-		this.app
-			.route('/sales/user/:id')
-			.all(this.auth?.exec().authenticate())
-			.get(this.saleController.listByUser.bind(this.saleController))
-			.all(methodNotAllowed);
-
-		this.app
-			.route('/sales/code/:code')
-			.all(this.auth?.exec().authenticate())
-			.get(this.saleController.listByCode.bind(this.saleController))
+			.get(this.saleController.list.bind(this.saleController))
 			.all(methodNotAllowed);
 
 		this.app

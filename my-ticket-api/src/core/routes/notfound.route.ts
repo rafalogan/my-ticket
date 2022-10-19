@@ -7,7 +7,7 @@ export const notfoundRoute = (req: Request, res: Response, next: any) => {
 	});
 };
 
-export const methodNotAllowed = (req: Request, res: Response, next: any) => {
+export const methodNotAllowed = (req: Request, res: Response, next?: any) => {
 	res.status(405).send({
 		status: 405,
 		message: 'Method Not Allowed',

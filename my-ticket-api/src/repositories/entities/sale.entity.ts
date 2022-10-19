@@ -25,7 +25,7 @@ export class Sale {
 		this.total = Number(data.total) || this.setTotal();
 		this.paymentStatus = data.paymentStatus;
 		this.canceledAt = data.canceledAt ? convertToDate(data.canceledAt) : undefined;
-		this.paymentId = Number(this.paymentId) || undefined;
+		this.paymentId = Number(data.paymentId) || undefined;
 		this.userId = Number(data.userId);
 		this.ticketId = Number(data.ticketId);
 	}

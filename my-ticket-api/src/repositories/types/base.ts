@@ -24,6 +24,7 @@ export interface ReadOptions {
 	cacheTime?: number;
 	fields?: string[];
 	userId?: number;
+	paginate?: boolean;
 }
 
 export interface OrderOptions {

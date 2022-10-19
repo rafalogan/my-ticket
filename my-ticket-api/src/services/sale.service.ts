@@ -1,5 +1,5 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, ISale, ITicket, List, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, ISale, ITicket, List, ReadOptions, ReadSelesOptions } from 'src/repositories/types';
 import { Payment, Sale, Ticket } from 'src/repositories/entities';
 import {
 	DatabaseException,
@@ -29,14 +29,21 @@ export class SaleService extends BaseService {
 	validate(data: ISale) {
 		existsOrError(data.amount, messages.requires('Quantidade'));
 		existsOrError(data.unitaryValue, messages.requires('Valor Unitario'));
+		existsOrError(data.paymentId, messages.requires('Forma de pagemanto'));
+		existsOrError(data.ticketId, messages.requires('Ticket'));
 	}
 
 	async create(item: Sale) {
 		const reserve = await this.reserveTickets(item);
+		onLog('reserveTickets', reserve);
 		const payment = item.paymentId ? await this.paymentService.findOneById(item.paymentId) : 'Pix Payment';
+		onLog('payment', payment);
+
 		try {
 			saleVerify(reserve);
 			saleVerify(payment);
+			existsOrError(reserve, messages.notFoundRegister);
+			existsOrError(payment, messages.notFoundRegister);
 		} catch (err) {
 			return err;
 		}
@@ -50,16 +57,17 @@ export class SaleService extends BaseService {
 				.catch(err => err);
 		}
 
-		item.paymentStatus = payProcess.StatusPagamento;
+		item.paymentStatus = payProcess.statusPagamento;
 		onLog('Sale', item);
 
 		return super
 			.create(item)
 			.then(res => {
-				if (res.severity === 'ERROR')
+				if (res.severity === 'ERROR') {
 					return this.revertTicketsReservation(reserve, item)
 						.then(revert => (revert ? res : revert))
 						.catch(err => err);
+				}
 
 				return res;
 			})
@@ -71,6 +79,12 @@ export class SaleService extends BaseService {
 			);
 	}
 
+	read(options?: ReadSelesOptions) {
+		if (options?.code) return this.findOneByWhere('code', options.code);
+		if (options?.ticketId) return this.findAllByWhere('ticketId', options.ticketId);
+		return super.read(options);
+	}
+
 	update(id: number, values: Sale) {
 		return super
 			.update(id, values)
@@ -79,8 +93,10 @@ export class SaleService extends BaseService {
 	}
 
 	findAll(options?: ReadOptions) {
+		const userId = Number(options?.userId);
+		onLog('userId', userId);
 		return super
-			.findAll(options)
+			.findAllByUser(userId, options)
 			.then(res => (!res || res instanceof DatabaseException ? res : this.setSales(res)))
 			.catch(err => err);
 	}
@@ -99,9 +115,9 @@ export class SaleService extends BaseService {
 			.catch(err => err);
 	}
 
-	findAllByWhere(column: string, value: any, fields: string[] = this.fields) {
+	findAllByWhere(column: string, value: any, options?: ReadSelesOptions) {
 		return super
-			.findAllByWhere(column, value, fields)
+			.findAllByWhere(column, value, options)
 			.then(res => (!res || res instanceof DatabaseException ? res : res.map((s: ISale) => new Sale(s))))
 			.catch(err => err);
 	}
@@ -121,6 +137,7 @@ export class SaleService extends BaseService {
 			saleVerify(ticketOfSale);
 			saleVerify(payment);
 			existsOrError(ticketOfSale, messages.notFoundRegister);
+			existsOrError(payment, messages.notFoundRegister);
 		} catch (err) {
 			return err;
 		}
@@ -139,7 +156,7 @@ export class SaleService extends BaseService {
 				.then(res =>
 					res
 						? this.update(fromDB.id, fromDB)
-								.then(up => this.saleCalceld(up, fromDB))
+								.then(up => this.saleCanceled(up, fromDB))
 								.catch(err => err)
 						: res
 				)
@@ -147,7 +164,7 @@ export class SaleService extends BaseService {
 		}
 
 		return this.update(fromDB.id, fromDB)
-			.then(up => this.saleCalceld(up, fromDB))
+			.then(up => this.saleCanceled(up, fromDB))
 			.catch(err => err);
 	}
 
@@ -204,7 +221,7 @@ export class SaleService extends BaseService {
 		return { ...value, data };
 	}
 
-	private saleCalceld(res: any, data: Sale) {
+	private saleCanceled(res: any, data: Sale) {
 		if (!res) return res;
 		if (res.severity === 'ERROR') return new DatabaseException(res.detail ? res.detail : messages.saleNoCancel(data.code), res);
 

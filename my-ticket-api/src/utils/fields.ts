@@ -110,6 +110,7 @@ export const saleFields = [
 	'unitary_value as unitaryValue',
 	'total',
 	'payment_status as paymentStatus',
+	'payment_id as paymentId',
 	'user_id as userId',
 	'ticket_id as ticketId',
 ];
