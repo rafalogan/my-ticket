@@ -5,7 +5,7 @@ import { Controller } from 'src/core/abstracts';
 import { responseApi, responseApiError, setReadOptions } from 'src/utils';
 import { PaymentService } from 'src/services';
 import { Payment } from 'src/repositories/entities';
-import { getIdByReq, getUserIdByToken } from 'src/core/handlers';
+import { getIdByReq, getUserIdByToken, onLog } from 'src/core/handlers';
 
 export class PaymentController extends Controller {
 	constructor(private paymentService: PaymentService) {

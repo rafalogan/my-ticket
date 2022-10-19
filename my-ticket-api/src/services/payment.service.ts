@@ -34,13 +34,16 @@ export class PaymentService extends BaseService {
 
 	findAll(options: ReadOptions) {
 		const userId = Number(options.userId);
-		return super.findAllByUser(userId, options).then(res => {
-			if (!res) return [];
-			if (res.severity === 'ERROR' || !Array.isArray(res)) {
-				return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
-			}
-			return res.map((res: IPayment) => new Payment(res));
-		});
+		return super
+			.findAllByUser(userId, options)
+			.then(res => {
+				if (!res) return [];
+				if (res.severity === 'ERROR' || !Array.isArray(res)) {
+					return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+				}
+				return res.map((res: IPayment) => new Payment(res));
+			})
+			.catch(err => err);
 	}
 
 	findOneById(id: number, options?: ReadOptions) {

@@ -20,7 +20,7 @@ export class PaymentRoute extends Routes {
 			.route('/payment-methods/:id')
 			.all(this.auth?.exec().authenticate())
 			.get(this.paymentController.list.bind(this.paymentController))
-			.put(this.paymentController.save.bind(this.paymentController))
+			.put(this.paymentController.edit.bind(this.paymentController))
 			.delete(this.paymentController.remove.bind(this.paymentController))
 			.all(methodNotAllowed);
 	}
