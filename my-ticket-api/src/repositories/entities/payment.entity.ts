@@ -21,7 +21,7 @@ export class Payment {
 		this.codigoSeguranca = data.codigoSeguranca;
 		this.nome = data.nome;
 		this.cpf = data.cpf;
-		this.active = data.active;
+		this.active = data.active || true;
 		this.userId = Number(data.userId);
 	}
 }

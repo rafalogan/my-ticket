@@ -20,6 +20,7 @@ export class PaymentController extends Controller {
 		}
 
 		const data = new Payment(req.body);
+		data.userId = getUserIdByToken(req) as number;
 
 		this.paymentService
 			.save(data)
