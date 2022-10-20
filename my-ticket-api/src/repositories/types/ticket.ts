@@ -7,6 +7,7 @@ export interface ITicket extends IID {
 	placeId: number;
 	theaterId: number;
 	durationId: number;
+	userId: number;
 }
 
 export interface FindTicketOptions {

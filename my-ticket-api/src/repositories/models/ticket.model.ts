@@ -9,6 +9,7 @@ export class TicketModel {
 	place: TicketPlace;
 	theater: TicketTheater;
 	duration: TicketDuration;
+	userId: number;
 
 	constructor(data: ITicketModel, id?: number) {
 		this.id = Number(id || data.id);
@@ -18,6 +19,7 @@ export class TicketModel {
 		this.place = this.setTicketPlace(data);
 		this.theater = this.setTicketTheater(data);
 		this.duration = this.setTicketDuration(data);
+		this.userId = Number(data.userId);
 	}
 
 	private setTicketEvent(data: ITicketModel): TicketEvent {

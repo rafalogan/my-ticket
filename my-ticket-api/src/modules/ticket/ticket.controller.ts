@@ -2,10 +2,12 @@ import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
-import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
+import { DatabaseException, deleteField, responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { TicketService } from 'src/services';
 import { Ticket } from 'src/repositories/entities';
-import { getIdByReq } from 'src/core/handlers';
+import { getIdByReq, getUserIdByToken } from 'src/core/handlers';
+import { TicketModel } from 'src/repositories/models';
+import isEmpty from 'is-empty';
 
 export class TicketController extends Controller {
 	constructor(private ticketService: TicketService) {
@@ -16,14 +18,15 @@ export class TicketController extends Controller {
 		try {
 			await this.ticketService.validate(req.body);
 		} catch (err) {
-			return responseApi(res, err, httpStatus.BAD_REQUEST);
+			return this.setTicketResponse(res, err, httpStatus.BAD_REQUEST);
 		}
 
 		const ticket = new Ticket(req.body);
+		ticket.userId = getUserIdByToken(req);
 
 		this.ticketService
 			.save(ticket)
-			.then(data => responseApi(res, data, data.staus))
+			.then(data => this.setTicketResponse(res, data, data.staus))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
@@ -33,7 +36,7 @@ export class TicketController extends Controller {
 
 		this.ticketService
 			.save(ticket)
-			.then(data => responseApi(res, data, data.status))
+			.then(data => this.setTicketResponse(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
@@ -44,7 +47,7 @@ export class TicketController extends Controller {
 
 		this.ticketService
 			.read(options)
-			.then(data => responseApi(res, data, data.status))
+			.then(data => this.setTicketResponse(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
@@ -53,7 +56,7 @@ export class TicketController extends Controller {
 
 		this.ticketService
 			.delete(id)
-			.then(data => responseApi(res, data, data.status))
+			.then(data => this.setTicketResponse(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
@@ -63,7 +66,7 @@ export class TicketController extends Controller {
 
 		this.ticketService
 			.findTicketsWhere(by, value)
-			.then(data => responseApi(res, data, data.status))
+			.then(data => this.setTicketResponse(res, data, data.status))
 			.catch(err => responseApiError({ res, err, message: err.message }));
 	}
 
@@ -72,5 +75,13 @@ export class TicketController extends Controller {
 		if (req.query.place) return 'place';
 		if (req.query.theater) return 'theater';
 		if (req.query.duration) return 'duration';
+	}
+
+	private setTicketResponse(res: Response, value: any, status?: number) {
+		if (value instanceof ResponseException || value instanceof DatabaseException) return responseApi(res, value);
+		if (!isEmpty(value)) deleteField(value, 'userId');
+		if ('data' in value) deleteField(value?.data, 'userId');
+
+		return responseApi(res, value, status);
 	}
 }

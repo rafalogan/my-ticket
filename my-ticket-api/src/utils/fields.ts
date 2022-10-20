@@ -66,6 +66,7 @@ export const ticketFields = [
 	'place_id as placeId',
 	'theater_id as theaterId',
 	'duration_id as durationId',
+	'user_id as userId',
 ];
 
 export const ticketOtherTableFields = {

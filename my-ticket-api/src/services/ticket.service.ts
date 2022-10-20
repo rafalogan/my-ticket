@@ -1,12 +1,11 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, FindTicketOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
 import {
 	DatabaseException,
 	existsOrError,
 	messages,
 	responseDataBaseCreate,
 	responseDataBaseUpdate,
-	ResponseException,
 	ticketOtherTableFields,
 } from 'src/utils';
 import { Ticket } from 'src/repositories/entities';

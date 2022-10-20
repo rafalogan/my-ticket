@@ -9,6 +9,7 @@ export class Ticket {
 	placeId: number;
 	theaterId: number;
 	durationId: number;
+	userId: number;
 
 	constructor(data: ITicket | TicketModel, id?: number) {
 		this.id = Number(id || data.id) || undefined;
@@ -18,5 +19,6 @@ export class Ticket {
 		this.placeId = 'place' in data ? Number(data.place.id) : Number(data.placeId);
 		this.theaterId = 'theater' in data ? Number(data.theater.id) : Number(data.theaterId);
 		this.durationId = 'duration' in data ? Number(data.duration.id) : Number(data.durationId);
+		this.userId = Number(data.userId);
 	}
 }
