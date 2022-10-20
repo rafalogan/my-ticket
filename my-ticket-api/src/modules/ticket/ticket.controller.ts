@@ -5,9 +5,7 @@ import { Controller } from 'src/core/abstracts';
 import { DatabaseException, deleteField, responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { TicketService } from 'src/services';
 import { Ticket } from 'src/repositories/entities';
-import { getIdByReq, getUserIdByToken } from 'src/core/handlers';
-import { TicketModel } from 'src/repositories/models';
-import isEmpty from 'is-empty';
+import { getIdByReq, getUserIdByToken, onLog } from 'src/core/handlers';
 
 export class TicketController extends Controller {
 	constructor(private ticketService: TicketService) {
@@ -79,9 +77,15 @@ export class TicketController extends Controller {
 
 	private setTicketResponse(res: Response, value: any, status?: number) {
 		if (value instanceof ResponseException || value instanceof DatabaseException) return responseApi(res, value);
-		if (!isEmpty(value)) deleteField(value, 'userId');
-		if ('data' in value) deleteField(value?.data, 'userId');
+		if ('data' in value) value.data = value.data.map(this.noUserIdArray);
+		if (Array.isArray(value)) value.map(this.noUserIdArray);
 
+		deleteField(value, 'userId');
 		return responseApi(res, value, status);
+	}
+
+	private noUserIdArray(value: any) {
+		deleteField(value, 'userId');
+		return value;
 	}
 }

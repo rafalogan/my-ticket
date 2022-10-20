@@ -13,3 +13,4 @@ export * from './sale.service';
 export * from './category.service';
 export * from './pay.service';
 export * from './payment.service';
+export * from './contact.service';

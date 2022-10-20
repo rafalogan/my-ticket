@@ -19,8 +19,6 @@ export abstract class BaseService extends CacheBaseService {
 	}
 
 	save(data: any) {
-		onLog('data service', data);
-
 		return data.id ? this.update(data.id, data) : this.create(data);
 	}
 
