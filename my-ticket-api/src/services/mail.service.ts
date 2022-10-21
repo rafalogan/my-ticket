@@ -4,7 +4,6 @@ import { MailerConfig } from 'src/config';
 import { onLog } from 'src/core/handlers';
 import { SendEmailOptions } from 'src/repositories/types';
 import { ResponseException } from 'src/utils';
-import { info } from 'winston';
 
 export class MailService {
 	constructor(private config: MailerConfig) {}
