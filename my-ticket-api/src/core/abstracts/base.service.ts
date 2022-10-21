@@ -78,7 +78,7 @@ export abstract class BaseService extends CacheBaseService {
 		}
 
 		return this.conn(this.table)
-			.select(...this.fields)
+			.select(...(options?.fields || this.fields))
 			.where(column, value)
 			.first()
 			.then(result => {
@@ -130,7 +130,7 @@ export abstract class BaseService extends CacheBaseService {
 			.where({ id })
 			.first()
 			.then(item => {
-				if (!item) return item;
+				if (!item) return {};
 				if (item.severity === 'ERROR') return new DatabaseException(messages.noRead, item);
 				return item;
 			})

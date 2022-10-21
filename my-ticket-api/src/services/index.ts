@@ -15,3 +15,4 @@ export * from './pay.service';
 export * from './payment.service';
 export * from './contact.service';
 export * from './mail.service';
+export * from './newsletter.service';
