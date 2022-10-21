@@ -2,6 +2,7 @@ import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, INewsletter, List, ReadNewsletterOptions, ReadOptions } from 'src/repositories/types';
 import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 import { Newsletter } from 'src/repositories/entities';
+import { onLog } from 'src/core/handlers';
 
 export class NewsletterService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -13,6 +14,8 @@ export class NewsletterService extends BaseService {
 	}
 
 	create(item: Newsletter) {
+		if (!item.active) item.active = true;
+
 		return super
 			.create(item)
 			.then(res => responseDataBaseCreate(res, item))
@@ -42,7 +45,11 @@ export class NewsletterService extends BaseService {
 	findOneById(id: number, options?: ReadOptions) {
 		return super
 			.findOneById(id, options)
-			.then(res => (res instanceof DatabaseException ? res : new Newsletter(res)))
+			.then(res => {
+				onLog('response newsletter', res);
+
+				return res instanceof DatabaseException ? res : new Newsletter(res);
+			})
 			.catch(err => err);
 	}
 
