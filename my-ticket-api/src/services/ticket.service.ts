@@ -1,5 +1,5 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, FindTicketOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, ITicket, List, ReadOptions } from 'src/repositories/types';
 import {
 	DatabaseException,
 	existsOrError,
@@ -39,7 +39,9 @@ export class TicketService extends BaseService {
 			.catch(err => err);
 	}
 
-	findTicketsByEvent(id: number) {
+	async findTicketsWhere(by: string, id: number) {
+		const where = `${by}_id`;
+
 		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
 			.select(
 				...this.fields.map(i => `t.${i}`),
@@ -48,7 +50,8 @@ export class TicketService extends BaseService {
 				ticketOtherTableFields.theater,
 				ticketOtherTableFields.duration
 			)
-			.whereRaw('e.id = ?', [id])
+			.whereRaw(`t.${where} = ?`, [id])
+			.andWhereRaw('e.id = t.event_id')
 			.andWhereRaw('p.id = t.place_id')
 			.andWhereRaw('th.id = t.theater_id')
 			.andWhereRaw('d.id = t.duration_id')
@@ -116,5 +119,70 @@ export class TicketService extends BaseService {
 	private setTickets(value: List<ITicket>) {
 		value.data = value.data.map(t => new Ticket(t));
 		return value;
+	}
+
+	private getByEvent(id: number) {}
+
+	private getByPlace(id: number) {
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.whereRaw('p.id = ?', [id])
+			.andWhereRaw('e.id = t.event_id')
+			.andWhereRaw('th.id = t.theater_id')
+			.andWhereRaw('d.id = t.duration_id')
+			.then(res => {
+				if (!res) return res;
+				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+				return res.map(t => new TicketModel(t));
+			})
+			.catch(err => err);
+	}
+
+	private getByTheater(id: number) {
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.whereRaw('th.id = ?', [id])
+			.andWhereRaw('e.id = t.event_id')
+			.andWhereRaw('p.id = t.place_id')
+			.andWhereRaw('d.id = t.duration_id')
+			.then(res => {
+				if (!res) return res;
+				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+				return res.map(t => new TicketModel(t));
+			})
+			.catch(err => err);
+	}
+
+	private getByDuration(id: number) {
+		return this.conn({ t: this.table, e: 'events', p: 'places', th: 'theaters', d: 'durations' })
+			.select(
+				...this.fields.map(i => `t.${i}`),
+				ticketOtherTableFields.event,
+				ticketOtherTableFields.place,
+				ticketOtherTableFields.theater,
+				ticketOtherTableFields.duration
+			)
+			.whereRaw('d.id = ?', [id])
+			.andWhereRaw('e.id = t.event_id')
+			.andWhereRaw('p.id = t.place_id')
+			.andWhereRaw('th.id = t.theater_id')
+			.then(res => {
+				if (!res) return res;
+				if (!Array.isArray(res)) return new DatabaseException(messages.notFoundRegister, res);
+				return res.map(t => new TicketModel(t));
+			})
+			.catch(err => err);
 	}
 }

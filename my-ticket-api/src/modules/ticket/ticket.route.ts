@@ -11,18 +11,16 @@ export class TicketRoute extends Routes {
 	exec() {
 		this.app
 			.route('/tickets')
-			.all(this.auth?.exec().authenticate())
 			.get(this.ticketController.list.bind(this.ticketController))
+			.all(this.auth?.exec().authenticate())
 			.post(this.ticketController.save.bind(this.ticketController))
 			.all(methodNotAllowed);
-
-		this.app.route('/tickets/event/:id').get(this.ticketController.listTickesByEvent.bind(this.ticketController)).all(methodNotAllowed);
 
 		this.app
 			.route('/tickets/:id')
 			.get(this.ticketController.list.bind(this.ticketController))
 			.all(this.auth?.exec().authenticate())
-			.put(this.ticketController.save.bind(this.ticketController))
+			.put(this.ticketController.edit.bind(this.ticketController))
 			.delete(this.ticketController.remove.bind(this.ticketController))
 			.all(methodNotAllowed);
 	}

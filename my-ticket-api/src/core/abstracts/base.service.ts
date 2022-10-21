@@ -4,6 +4,7 @@ import { CacheBaseService } from 'src/core/abstracts/cache-base.service';
 import { BaseServiceOptions, ReadOptions } from 'src/repositories/types';
 import { convertDataValues, deleteField, existsOrError, messages, DatabaseException, camelToSnake } from 'src/utils';
 import { Pagination } from 'src/repositories/models';
+import { onLog } from '../handlers';
 
 export abstract class BaseService extends CacheBaseService {
 	protected conn: Knex;
@@ -43,9 +44,7 @@ export abstract class BaseService extends CacheBaseService {
 		return this.conn(this.table)
 			.update(data)
 			.where({ id })
-			.then((result: any) =>
-				result === 'ERROR' ? new DatabaseException(messages.noEdit, result) : { id, edit: result === 1, message: messages.successEdit }
-			)
+			.then(result => result)
 			.catch(err => err);
 	}
 
@@ -64,7 +63,7 @@ export abstract class BaseService extends CacheBaseService {
 			.where({ id })
 			.del()
 			.then(result =>
-				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel)
+				result > 0 ? { id, deleted: result > 0, message: messages.successDel, element } : new DatabaseException(messages.noDel, result)
 			)
 			.catch(err => err);
 	}
@@ -79,7 +78,7 @@ export abstract class BaseService extends CacheBaseService {
 		}
 
 		return this.conn(this.table)
-			.select(...this.fields)
+			.select(...(options?.fields || this.fields))
 			.where(column, value)
 			.first()
 			.then(result => {
@@ -103,31 +102,35 @@ export abstract class BaseService extends CacheBaseService {
 		return this.deleteCache(['GET:allContent', this.read.name]);
 	}
 
-	protected findAllByWhere(column: string, value: any, fields = this.fields): Promise<any> {
+	protected findAllByWhere(column: string, value: any, options?: ReadOptions): Promise<any> {
 		column = camelToSnake(column);
 
 		if (this.activeCache) {
 			return this.findCache(
 				['GET:allContent', this.findAllByWhere.name, column, value],
-				() => this.findAllByWhere(column, value, fields),
+				() => this.findAllByWhere(column, value, options),
 				this.defaultTime
 			);
 		}
 
+		if (options?.paginate) {
+			return this.findAllByWhereWithPages(column, value, options);
+		}
+
 		return this.conn(this.table)
-			.select(...fields)
+			.select(...(options?.fields || this.fields))
 			.where(column, value)
 			.then(result => result)
 			.catch(err => err);
 	}
 
-	findOneById(id: number, options?: ReadOptions) {
+	findOneById(id: number, options?: ReadOptions): Promise<DatabaseException | any> {
 		return this.conn(this.table)
 			.select(...(options?.fields ?? this.fields))
 			.where({ id })
 			.first()
 			.then(item => {
-				if (!item) return item;
+				if (!item) return {};
 				if (item.severity === 'ERROR') return new DatabaseException(messages.noRead, item);
 				return item;
 			})
@@ -146,12 +149,16 @@ export abstract class BaseService extends CacheBaseService {
 			.offset(page * limit - limit)
 			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
 			.then(data => {
-				if (!data) return data;
-				if (!Array.isArray(data)) return new DatabaseException(messages.notFoundRegister, data);
+				if (!data) return {};
+				if ('severity' in data) return new DatabaseException(messages.notFoundRegister, data);
 
 				return { data, pagination };
 			})
 			.catch(err => err);
+	}
+
+	protected findAllByUser(userid: number, options?: ReadOptions) {
+		return options?.paginate ? this.findAllByUserWithPagination(userid, options) : this.findAllByUserDefault(userid, options);
 	}
 
 	protected checkCache(options?: ReadOptions) {
@@ -164,5 +171,54 @@ export abstract class BaseService extends CacheBaseService {
 					options?.cacheTime || this.defaultTime
 			  )
 			: this.findCache(['GET:allContent', this.read.name], () => this.findAll(options), options?.cacheTime || this.defaultTime);
+	}
+
+	private async findAllByWhereWithPages(column: string, value: any, options?: ReadOptions) {
+		const page = options?.page || 1;
+		const limit = options?.limit || 10;
+		const count = await this.countById();
+		const pagination = new Pagination({ page, count, limit });
+
+		return this.conn(this.table)
+			.select(...this.fields)
+			.where(column, value)
+			.limit(limit)
+			.offset(page * limit - limit)
+			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
+			.then((result: any) => {
+				if (!result) return result;
+				if (result.severity === 'ERROR' || !Array.isArray(result)) return new DatabaseException(messages.notFoundRegister, result);
+				return { data: result, pagination };
+			})
+			.catch(err => err);
+	}
+
+	private findAllByUserDefault(userid: number, options?: ReadOptions) {
+		return this.conn(this.table)
+			.select(...(options?.fields || this.fields))
+			.where({ user_id: userid })
+			.then(result => result)
+			.catch(err => err);
+	}
+
+	private async findAllByUserWithPagination(userid: number, options?: ReadOptions) {
+		const page = options?.page || 1;
+		const limit = options?.limit || 10;
+		const count = await this.countById();
+		const pagination = new Pagination({ page, count, limit });
+
+		return this.conn(this.table)
+			.select(...(options?.fields || this.fields))
+			.where({ user_id: userid })
+			.limit(limit)
+			.offset(page * limit - limit)
+			.orderBy(options?.order?.by || 'id', options?.order?.type || 'asc')
+			.then((result: any) => {
+				if (!result) return result;
+				if (result?.severity === 'ERROR' || !Array.isArray(result)) return new DatabaseException(messages.notFoundRegister, result);
+
+				return { data: result, pagination };
+			})
+			.catch(err => err);
 	}
 }

@@ -4,22 +4,8 @@ export const userFields = [
 	'last_name as lastName',
 	'cpf',
 	'email',
+	'phone',
 	'password',
-	'profile_id as profileId',
-	'deleted_at as deletedAt',
-];
-
-export const profileFields = ['id', 'name', 'description', 'active'];
-
-export const categoryFields = ['id', 'name', 'description', 'url', 'status', 'parent_id as parentId', 'user_id as userId'];
-
-export const eventFields = ['id', 'title', 'subtitle', 'content', 'type', 'category_id as categoryId', 'user_id as userId'];
-
-export const placeFields = ['id', 'name', 'description', 'user_id as  userId'];
-
-export const addressFields = [
-	'id',
-	'main',
 	'zip_code as zipCode',
 	'street',
 	'number',
@@ -27,16 +13,48 @@ export const addressFields = [
 	'district',
 	'city',
 	'state',
-	'url_maps as  urlMaps',
-	'place_id as placeId',
-	'user_id as userId',
+	'profile_id as profileId',
+	'deleted_at as deletedAt',
 ];
 
-export const phoneFields = ['id', 'type', 'number', 'user_id as userId', 'place_id as placeId'];
+export const userOtherTablesFiled = {
+	profile: { profileName: 'p.name', profileDescription: 'p.description' },
+	photo: { photoTitle: 'f.title', PhotoAlt: 'f.alt', photoName: 'f.name', photoUrl: 'f.url', photoLocation: 'f.location' },
+};
 
-export const theaterFields = ['id', 'name', 'description', 'place_id as placeId'];
+export const profileFields = ['id', 'name', 'description', 'active'];
 
-export const capacityFields = ['id', 'section', 'row', 'places', 'theater_id as theaterId'];
+export const categoryFields = ['id', 'name', 'description', 'url', 'active', 'parent_id as parentId', 'user_id as userId'];
+
+export const eventFields = ['id', 'title', 'subtitle', 'content', 'type', 'category_id as categoryId', 'user_id as userId'];
+
+export const placeFields = [
+	'id',
+	'name',
+	'description',
+	'phone',
+	'zip_code as zipCode',
+	'street',
+	'number',
+	'complement',
+	'district',
+	'city',
+	'state',
+	'url_maps as urlMaps',
+	'user_id as  userId',
+];
+
+export const theaterFields = [
+	'name',
+	'description',
+	'sections_number as sectionsNumber',
+	'sections_type as sectionsType',
+	'raws_per_section as rawsPerSection',
+	'rows_type as rowsType',
+	'capacity',
+	'addressed_seats as addressedSeats',
+	'place_id as placeId',
+];
 
 export const durationFields = ['id', 'start', 'end', 'theater_id as theaterId'];
 
@@ -48,6 +66,7 @@ export const ticketFields = [
 	'place_id as placeId',
 	'theater_id as theaterId',
 	'duration_id as durationId',
+	'user_id as userId',
 ];
 
 export const ticketOtherTableFields = {
@@ -57,4 +76,45 @@ export const ticketOtherTableFields = {
 	duration: { durationStart: 'd.start', durationEnd: 'd.end' },
 };
 
-export const fileFields = ['id', 'title', 'alt', 'name', 'type', 'url', 'event_id as eventId', 'category_id as categoryId'];
+export const fileFields = [
+	'id',
+	'title',
+	'alt',
+	'name',
+	'filename',
+	'type',
+	'url',
+	'location',
+	'event_id as eventId',
+	'category_id as categoryId',
+	'user_id  as userId',
+];
+
+export const paymentFields = [
+	'id',
+	'forma',
+	'numero',
+	'instituicao',
+	'expiracao',
+	'codigo_seguranca as codigoSeguranca',
+	'nome',
+	'cpf',
+	'active',
+	'user_id as userId',
+];
+
+export const saleFields = [
+	'id',
+	'code',
+	'discount',
+	'amount',
+	'unitary_value as unitaryValue',
+	'total',
+	'payment_status as paymentStatus',
+	'payment_id as paymentId',
+	'user_id as userId',
+	'ticket_id as ticketId',
+];
+
+export const contactFields = ['id', 'name', 'email', 'phone', 'subject', 'message', 'created_at as createdAt', 'sale_id as saleId'];
+export const newsletterFields = ['id', 'name', 'email', 'active'];

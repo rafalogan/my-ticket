@@ -10,15 +10,17 @@ import { ProfileModule } from 'src/modules/profile';
 import { CategoryModule } from 'src/modules/categoey';
 import { EventModule } from 'src/modules/event';
 import { PlaceModule } from 'src/modules/place';
-import { AddressModule } from 'src/modules/address';
 import { PhoneModule } from 'src/modules/phone';
 import { TheaterModule } from 'src/modules/theater';
-import { CapacityModule } from 'src/modules/capacity';
 import { DurationModule } from 'src/modules/duration';
 import { TicketModule } from 'src/modules/ticket';
 import { FileModule } from 'src/modules/file';
 import { RouteOptions } from 'src/repositories/types';
 import { notfoundRoute } from 'src/core/routes/notfound.route';
+import { SaleModule } from 'src/modules/sale';
+import { PaymentModule } from 'src/modules/payment';
+import { ContactModule } from 'src/modules/contact';
+import { NewsletterModule } from 'src/modules/newsletter';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -27,13 +29,15 @@ export class ModulesFactory {
 	private categoryModule: CategoryModule;
 	private eventModule: EventModule;
 	private placeModule: PlaceModule;
-	private addressModule: AddressModule;
 	private phoneModule: PhoneModule;
 	private theaterModule: TheaterModule;
-	private capacityModule: CapacityModule;
 	private durationModule: DurationModule;
 	private ticketModule: TicketModule;
 	private fileModule: FileModule;
+	private paymentModule: PaymentModule;
+	private saleModule: SaleModule;
+	private contactModule: ContactModule;
+	private newsletterModule: NewsletterModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory, upload: Multer) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -42,13 +46,15 @@ export class ModulesFactory {
 		this.categoryModule = new CategoryModule({ service: services.categoryService, ...this.getRouteOptions() });
 		this.eventModule = new EventModule({ service: services.eventService, ...this.getRouteOptions() });
 		this.placeModule = new PlaceModule({ service: services.placeService, ...this.getRouteOptions() });
-		this.addressModule = new AddressModule({ service: services.addressService, ...this.getRouteOptions() });
 		this.phoneModule = new PhoneModule({ service: services.phoneService, ...this.getRouteOptions() });
 		this.theaterModule = new TheaterModule({ service: services.theaterService, ...this.getRouteOptions() });
-		this.capacityModule = new CapacityModule({ service: services.capacityService, ...this.getRouteOptions() });
 		this.durationModule = new DurationModule({ service: services.durationService, ...this.getRouteOptions() });
 		this.ticketModule = new TicketModule({ service: services.ticketService, ...this.getRouteOptions() });
 		this.fileModule = new FileModule({ service: services.fileService, ...this.getRouteOptions() }, upload);
+		this.paymentModule = new PaymentModule({ service: services.paymentService, ...this.getRouteOptions() });
+		this.saleModule = new SaleModule({ service: services.saleService, ...this.getRouteOptions() });
+		this.contactModule = new ContactModule({ service: services.contactService, ...this.getRouteOptions() });
+		this.newsletterModule = new NewsletterModule({ service: services.newsletterService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -58,13 +64,15 @@ export class ModulesFactory {
 		this.categoryModule.exec();
 		this.eventModule.exec();
 		this.placeModule.exec();
-		this.addressModule.exec();
 		this.phoneModule.exec();
 		this.theaterModule.exec();
-		this.capacityModule.exec();
 		this.durationModule.exec();
 		this.ticketModule.exec();
 		this.fileModule.exec();
+		this.paymentModule.exec();
+		this.saleModule.exec();
+		this.contactModule.exec();
+		this.newsletterModule.exec();
 		this.app.use('/media', express.static(resolve(__dirname, '../..', 'tmp', 'uploads')));
 		this.app.use(notfoundRoute);
 	}

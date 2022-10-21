@@ -1,4 +1,4 @@
-import { User } from 'src/repositories/entities';
+import { Contact, User } from 'src/repositories/entities';
 import { upperCaseFirstLetter } from 'src/utils/convert-date';
 
 const alreadyExists = 'já existe';
@@ -12,8 +12,11 @@ const successEdit = `Registro Editado com sucesso.`;
 const successDel = `Registro Apagado com sucesso.`;
 const notFoundRegister = 'Registo Não encontrado';
 const notFound = 'Não encontrado.';
+const ticketSoldOut = 'Ingressos esgotados!';
 const categoryWithChildrenNoDelete = (name: string) =>
 	`Não foi possivel apagar a categoria ${name.toUpperCase()}.\n Pois ela tem subcategorias, por favor mova ou apague as subcategorias antes de apagar essa categoria.`;
+const saleNoCancel = (id: string | number) => `Venda - ${id} - Não cancelada.`;
+const canceledSaleSuccess = `Venda cancelada com sucesso!`;
 
 const user = {
 	alreadyExists: (email: string) => `${upperCaseFirstLetter(alreadyExists)} usuário resistrado com eses e-mail: ${email}`,
@@ -68,6 +71,17 @@ const auth = {
 	},
 };
 
+const mailTemplate = (data: Contact) => `
+<div>
+	<p>
+		<strong>E-mail de:</strong> ${data.email} <strong>Telefone:</strong> ${data.phone || ''}<br />
+		<strong>Assunto:</strong> ${data.subject}
+	</p>
+</div>
+<div>
+	${data.message}
+</div>`;
+
 export const messages = {
 	alreadyExists,
 	noSave,
@@ -84,4 +98,8 @@ export const messages = {
 	notFoundRegister,
 	notFound,
 	categoryWithChildrenNoDelete,
+	ticketSoldOut,
+	saleNoCancel,
+	canceledSaleSuccess,
+	mailTemplate,
 };

@@ -5,7 +5,7 @@ import { Controller } from 'src/core/abstracts';
 import { responseApi, responseApiError, ResponseException, setReadOptions } from 'src/utils';
 import { DurationService } from 'src/services';
 import { Duration } from 'src/repositories/entities';
-import { getIdByReq } from 'src/core/handlers';
+import { getIdByReq, onLog } from 'src/core/handlers';
 
 export class DurationController extends Controller {
 	constructor(private durationService: DurationService) {
@@ -20,6 +20,7 @@ export class DurationController extends Controller {
 		}
 
 		const duration = new Duration(req.body);
+		onLog('duration', duration);
 
 		this.durationService
 			.save(duration)
@@ -38,7 +39,7 @@ export class DurationController extends Controller {
 	}
 
 	list(req: Request, res: Response) {
-		const id = getIdByReq(req);
+		const id = Number(req.query.theater);
 
 		this.durationService
 			.findAllByWhere('theaterId', id)

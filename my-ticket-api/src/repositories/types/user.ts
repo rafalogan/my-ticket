@@ -4,15 +4,24 @@ import { RouteOptions } from './route';
 import { UserService } from 'src/services';
 import { User } from '../entities';
 import { Pagination } from 'src/repositories/models';
+import { IID } from 'src/repositories/types/shared';
+import { IAddress } from 'src/repositories/types/adress';
 
-export interface IUser {
-	id?: number;
+export interface IUser extends IID {
 	firstName: string;
 	lastName: string;
 	cpf: string;
+	phone?: string;
 	email: string;
 	password: string;
 	confirmPassword?: string;
+	zipCode: string;
+	street: string;
+	number: string;
+	complement?: string;
+	district: string;
+	city: string;
+	state: string;
 	profileId: number;
 	deletedAt?: Date;
 }
@@ -22,7 +31,9 @@ export interface UserServiceOptions extends BaseServiceOptions {
 }
 
 export interface IUserModel extends IUser {
-	profile: CustomProfile;
+	profileName: string;
+	profileDescription: string;
+	profileActive?: boolean;
 }
 
 export interface UpdatePasswordOptions {
@@ -30,19 +41,6 @@ export interface UpdatePasswordOptions {
 	oldPassword: string;
 	password: string;
 	confirmPassword: string;
-}
-
-export interface CustomUserModel {
-	id: number;
-	firstName: string;
-	lastName: string;
-	cpf: string;
-	email: string;
-	password: string;
-	profileId: number;
-	deletedAt?: Date;
-	profileName: string;
-	profileDescription: string;
 }
 
 export interface UserModuleOptions extends RouteOptions {

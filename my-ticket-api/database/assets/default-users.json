@@ -4,7 +4,15 @@
 		"last_name": "Root",
 		"cpf": "00000000000",
 		"email": "root@root.com",
+		"phone": "00000000000",
 		"password": "@Root#1000",
+		"zip_code": "72220262",
+		"street": "Quad. 00, Cnj. F",
+		"number": "00",
+		"complement": "Casa",
+		"district": "Gama Nordeste",
+		"city": "Brasilia",
+		"state": "DF",
 		"profile_id": 1
 	},
 	{
@@ -12,7 +20,15 @@
 		"last_name": "admin",
 		"cpf": "111111111111",
 		"email": "admin@admin.com",
+		"phone": "00000000000",
 		"password": "@Admin#4dm",
+		"zip_code": "72220262",
+		"street": "Quad. 00, Cnj. F",
+		"number": "00",
+		"complement": "Casa",
+		"district": "Gama Nordeste",
+		"city": "Brasilia",
+		"state": "DF",
 		"profile_id": 2
 	},
 	{
@@ -20,7 +36,15 @@
 		"last_name": "Vendedor",
 		"cpf": "222222222222",
 		"email": "vend@vend.com",
+		"phone": "00000000000",
 		"password": "@Ven#5vm",
+		"zip_code": "72220262",
+		"street": "Quad. 00, Cnj. F",
+		"number": "00",
+		"complement": "Casa",
+		"district": "Gama Nordeste",
+		"city": "Brasilia",
+		"state": "DF",
 		"profile_id": 3
 	},
 	{
@@ -28,7 +52,15 @@
 		"last_name": "Cliente",
 		"cpf": "33333333333",
 		"email": "client@c.com",
+		"phone": "00000000000",
 		"password": "@client#5CL",
+		"zip_code": "72220262",
+		"street": "Quad. 00, Cnj. F",
+		"number": "00",
+		"complement": "Casa",
+		"district": "Gama Nordeste",
+		"city": "Brasilia",
+		"state": "DF",
 		"profile_id": 4
 	}
 ]

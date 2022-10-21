@@ -12,10 +12,9 @@ export class DurationRoute extends Routes {
 		this.app
 			.route('/durations')
 			.all(this.auth?.exec().authenticate())
+			.get(this.durationController.list.bind(this.durationController))
 			.post(this.durationController.save.bind(this.durationController))
 			.all(methodNotAllowed);
-
-		this.app.route('/durations/theater/:id').get(this.durationController.list.bind(this.durationController)).all(methodNotAllowed);
 
 		this.app
 			.route('/durations/:id')

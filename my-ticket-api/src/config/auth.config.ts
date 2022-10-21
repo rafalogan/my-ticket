@@ -1,12 +1,11 @@
 import { ExtractJwt, Strategy, StrategyOptions, VerifiedCallback } from 'passport-jwt';
 import passport from 'passport';
 
-import { User } from 'src/repositories/entities';
 import { deleteField } from 'src/utils';
 import { UserService } from 'src/services';
 import { IAuthConfig } from 'src/repositories/types';
 import { Payload, UserModel } from 'src/repositories/models';
-import { onLog } from 'src/core/handlers';
+import { User } from 'src/repositories/entities';
 
 export class AuthConfig {
 	auth: IAuthConfig;
@@ -31,11 +30,13 @@ export class AuthConfig {
 		const id = Number(payload.id);
 		this.userService
 			.read({ id })
-			.then(data => done(null, data instanceof UserModel ? this.setUserNoPass(data) : false))
+			.then(data => {
+				return done(null, data instanceof UserModel ? this.setUserNoPass(data) : false);
+			})
 			.catch(error => done(error, false));
 	}
 
-	private setUserNoPass(user: UserModel) {
+	private setUserNoPass(user: UserModel | User) {
 		deleteField(user, 'password');
 		return user;
 	}

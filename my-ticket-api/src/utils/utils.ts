@@ -1,3 +1,6 @@
+import { existsSync } from 'fs';
+import { mkdir } from 'fs/promises';
+import { join, resolve } from 'path';
 import dotenv from 'dotenv';
 import httpStatus from 'http-status';
 import { Response } from 'express';
@@ -11,6 +14,14 @@ import { messages } from 'src/utils/messages';
 const isValid = !process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 
 export const execDotenv = () => (isValid ? dotenv.config({ path: process.env.NODE_ENV === 'test' ? './.env.testing' : './.env' }) : null);
+export const createUploadsDir = () => {
+	const path = resolve(__dirname, '..', '..', 'tmp', 'uploads');
+	const exists = existsSync(path);
+
+	if (process.env.STORAGE_TYPE === 'local' && !exists) return mkdir(path, { recursive: true });
+	return;
+};
+
 export const getKnexProps = (env: Environment, props?: Knexfile) => {
 	const { client, host, database, password, port, user } = env.database;
 	const connection = { database, host, user, password, port };
@@ -20,15 +31,6 @@ export const getKnexProps = (env: Environment, props?: Knexfile) => {
 };
 
 export const responseApi = (res: Response, data: any, status?: number) => {
-	if (!data) {
-		return responseApiError({
-			res,
-			err: responseNotFoundRegisters.error,
-			message: responseNotFoundRegisters.message,
-			status: responseNotFoundRegisters.error.status,
-		});
-	}
-
 	if (data instanceof ResponseException || data instanceof DatabaseException) {
 		return responseApiError({ res, message: data.message, err: data.error, status: status || httpStatus.FORBIDDEN });
 	}

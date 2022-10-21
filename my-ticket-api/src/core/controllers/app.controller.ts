@@ -2,6 +2,7 @@ import { ServerController } from 'src/core/controllers/server.controller';
 
 import { onError } from 'src/core/handlers';
 import { CacheService, DatabaseService } from 'src/core/service';
+import { createUploadsDir } from 'src/utils';
 
 export class App {
 	constructor(private server: ServerController, private databaseService: DatabaseService, private cacheService: CacheService) {}

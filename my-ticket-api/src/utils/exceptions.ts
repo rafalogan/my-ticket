@@ -9,6 +9,19 @@ export class DatabaseException extends Error {
 	}
 }
 
+export class PaymentException extends Error {
+	name = 'PaymentException';
+	error: any;
+	code?: number;
+
+	constructor(message: string, error?: any, code?: number) {
+		super(message);
+
+		this.error = error;
+		this.code = code;
+	}
+}
+
 export class ResponseException extends Error {
 	name = 'ResponseException';
 	error: any;

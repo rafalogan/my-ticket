@@ -23,6 +23,8 @@ export interface ReadOptions {
 	order?: OrderOptions;
 	cacheTime?: number;
 	fields?: string[];
+	userId?: number;
+	paginate?: boolean;
 }
 
 export interface OrderOptions {

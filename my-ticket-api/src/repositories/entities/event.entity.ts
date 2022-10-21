@@ -10,12 +10,12 @@ export class EventEntity {
 	userId?: number;
 
 	constructor(data: IEvent, id?: number) {
-		this.id = Number(id || data.id);
+		this.id = Number(id || data.id) || undefined;
 		this.title = data.title;
 		this.subtitle = data.subtitle;
 		this.content = data.content.toString();
 		this.type = data.type;
 		this.categoryId = Number(data.categoryId);
-		this.userId = Number(data.userId);
+		this.userId = Number(data.userId) || undefined;
 	}
 }

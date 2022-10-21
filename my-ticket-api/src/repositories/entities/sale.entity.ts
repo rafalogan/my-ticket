@@ -1,42 +1,43 @@
 import { ISale } from '../types';
+import { v4 } from 'uuid';
+import { onLog } from 'src/core/handlers';
+import { convertToDate } from 'src/utils';
 
 export class Sale {
-	private _id: number;
-	private _ticketId: number;
-	private _userId: number;
-	private _palce: string;
+	id?: number;
+	code: string;
+	discount?: number;
+	amount: number;
+	unitaryValue: number;
+	total: number;
+	paymentStatus: string;
+	canceledAt?: Date;
+	paymentId?: number;
+	userId: number;
+	ticketId: number;
 
 	constructor(data: ISale, id?: number) {
-		Object.assign(this, data);
-
-		if (id) this.id = id;
+		this.id = Number(id || data.id) || undefined;
+		this.code = data.code || v4();
+		this.discount = Number(data.discount) || undefined;
+		this.amount = Number(data.amount);
+		this.unitaryValue = Math.round(Number(data.unitaryValue) * 100);
+		this.total = Number(data.total) || this.setTotal();
+		this.paymentStatus = data.paymentStatus;
+		this.canceledAt = data.canceledAt ? convertToDate(data.canceledAt) : undefined;
+		this.paymentId = Number(data.paymentId) || undefined;
+		this.userId = Number(data.userId);
+		this.ticketId = Number(data.ticketId);
 	}
 
-	get id() {
-		return this._id;
-	}
-	set id(value: number) {
-		this._id = Number(value);
-	}
+	private setTotal() {
+		const percent = this.discount ? this.discount / 100 : 0;
+		const value = this.unitaryValue / 100;
+		const discount = value * percent;
+		const total = Number((value * this.amount - discount).toFixed(2));
+		onLog('total raw', total);
+		onLog('total parser', Math.round(total * 100));
 
-	get ticketId() {
-		return this._ticketId;
-	}
-	set ticketId(value: number) {
-		this._ticketId = Number(value);
-	}
-
-	get userId() {
-		return this._userId;
-	}
-	set userId(value: number) {
-		this._userId = Number(value);
-	}
-
-	get palce() {
-		return this._palce;
-	}
-	set palce(value: string) {
-		this._palce = value;
+		return Math.round(total * 100);
 	}
 }

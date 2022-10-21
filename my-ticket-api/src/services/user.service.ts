@@ -1,12 +1,4 @@
-import {
-	CustomUserModel,
-	IUser,
-	ReadOptions,
-	ResultUpdate,
-	UpdatePasswordOptions,
-	Users,
-	UserServiceOptions,
-} from 'src/repositories/types';
+import { IUser, List, ReadOptions, ResultUpdate, UpdatePasswordOptions, UserServiceOptions } from 'src/repositories/types';
 import { User } from 'src/repositories/entities';
 import { Credentials, UserModel } from 'src/repositories/models';
 import {
@@ -19,12 +11,14 @@ import {
 	notExistisOrError,
 	responseDataBaseCreate,
 	DatabaseException,
+	userOtherTablesFiled,
 } from 'src/utils';
 import { BaseService } from 'src/core/abstracts';
 import { onLog } from 'src/core/handlers';
 
 export class UserService extends BaseService {
 	salt: number;
+
 	constructor(data: UserServiceOptions) {
 		super(data);
 		this.salt = data.salt;
@@ -51,26 +45,22 @@ export class UserService extends BaseService {
 			.catch(err => err);
 	}
 
-	read(options?: ReadOptions) {
-		const id = Number(options?.id);
-
-		if (this.activeCache) return this.checkUserCache(options);
-		return id
-			? this.findUserById(id)
-			: this.findAll(options)
-					.then((value: Users | DatabaseException) => (value instanceof DatabaseException ? value : this.setUsers(value)))
-					.catch(err => err);
+	findAll(options?: ReadOptions) {
+		return super
+			.findAll(options)
+			.then(res => (!res || res instanceof DatabaseException ? res : this.setUsers(res)))
+			.catch(err => err);
 	}
 
-	findUserById(id: number) {
+	findOneById(id: number, options?: ReadOptions): Promise<any> {
+		const fields = options?.fields ? options.fields.map(i => `u.${i}`) : this.fields.map(i => `u.${i}`);
+
 		return this.conn({ u: this.table, p: 'profiles' })
-			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+			.select(...fields, userOtherTablesFiled.profile)
 			.whereRaw('u.id = ?', [id])
 			.andWhereRaw('p.id = u.profile_id')
 			.first()
-			.then((user: CustomUserModel | any) =>
-				!('id' in user) ? new DatabaseException(messages.user.error.notFound, user) : new UserModel(user)
-			)
+			.then(res => this.responseFindUser(res))
 			.catch(err => err);
 	}
 
@@ -97,11 +87,11 @@ export class UserService extends BaseService {
 
 	findUserByEmail(email: string) {
 		return this.conn({ u: this.table, p: 'profiles' })
-			.select(...this.fields.map(i => `u.${i}`), { profileName: 'p.name', profileDescription: 'p.description' })
+			.select(...this.fields.map(i => `u.${i}`), userOtherTablesFiled.profile)
 			.whereRaw('u.email = ?', [email])
 			.andWhereRaw('p.id = u.profile_id')
 			.first()
-			.then((user: CustomUserModel) => new UserModel(user))
+			.then(res => this.responseFindUser(res))
 			.catch(err => err);
 	}
 
@@ -144,33 +134,28 @@ export class UserService extends BaseService {
 		notExistisOrError(userFromDB, messages.user.alreadyExists(data.email));
 	}
 
-	private userNoPassword(user: User) {
+	private userNoPassword(user: User | UserModel) {
 		deleteField(user, 'password');
-
 		return user;
 	}
 
-	private checkUserCache(options?: ReadOptions) {
-		const id = Number(options?.id);
-
-		return id
-			? this.findCache([`GET:content`, this.read.name, `${id}`], () => this.findUserById(id), options?.cacheTime || this.defaultTime)
-					.then((value: CustomUserModel) => new UserModel(value))
-					.catch(err => err)
-			: this.findCache(['GET:allContent', this.read.name], () => this.findAll(options), options?.cacheTime || this.defaultTime)
-					.then((value: IUser[]) =>
-						value
-							.map(u => new User(u))
-							.map(u => {
-								deleteField(u, 'password');
-								return u;
-							})
-					)
-					.catch(err => err);
+	private setUsers(users: List<IUser>): List<User> {
+		const data = users.data
+			.map(user => new User(user))
+			.map(this.userNoPassword)
+			.map(this.shortUser) as User[];
+		return { ...users, data };
 	}
 
-	private setUsers(users: Users) {
-		users.data = users.data.map(user => new User(user)).map(this.userNoPassword);
-		return users;
+	private shortUser(user: IUser | User | UserModel) {
+		const fields = ['zipCode', 'street', 'number', 'complement', 'district', 'city', 'state', 'profileId', 'deletedAt'];
+		fields.forEach(field => deleteField(user, field));
+		return user;
+	}
+
+	private responseFindUser(res: any) {
+		if (!res) return {};
+		if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.user.error.notFound, res);
+		return new UserModel(res);
 	}
 }

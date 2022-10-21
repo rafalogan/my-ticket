@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import { Controller } from 'src/core/abstracts';
 import { UserService } from 'src/services';
-import { deleteField, messages, responseApi, responseApiError, setReadOptions } from 'src/utils';
+import { deleteField, filterUpdatePasswordOptions, messages, responseApi, responseApiError, setReadOptions } from 'src/utils';
 
 export class UserController extends Controller {
 	constructor(private userService: UserService) {
@@ -34,6 +34,15 @@ export class UserController extends Controller {
 			.catch(err => responseApiError({ res, message: messages.user.error.noSave, err }));
 	}
 
+	updatePassword(req: Request, res: Response) {
+		const data = filterUpdatePasswordOptions(req.body);
+
+		this.userService
+			.updatePassword(data)
+			.then(result => this.response(res, result))
+			.catch(err => responseApiError({ res, message: err.message, err }));
+	}
+
 	list(req: Request, res: Response) {
 		const options = setReadOptions(req);
 
@@ -52,7 +61,7 @@ export class UserController extends Controller {
 			.catch(err => responseApiError({ res, message: messages.user.error.noDelete(id), err }));
 	}
 
-	private response(res: Response, data: any, status = httpStatus.INTERNAL_SERVER_ERROR) {
+	private response(res: Response, data: any, status?: number) {
 		if (data.password) deleteField(data, 'password');
 		return responseApi(res, data, status);
 	}

@@ -1,4 +1,5 @@
-import crypto, { randomBytes } from 'crypto';
+import { resolve } from 'path';
+import { randomBytes } from 'crypto';
 import multer, { diskStorage, Multer } from 'multer';
 import { S3Client } from '@aws-sdk/client-s3';
 import multerS3 from 'multer-s3';
@@ -10,7 +11,7 @@ export class MulterConfig {
 	private readonly _upload: Multer;
 
 	constructor(private awsCon: IAWS) {
-		this.dest = './tmp/uploads';
+		this.dest = resolve(__dirname, '..', '..', 'tmp', 'uploads');
 		this._upload = this.awsCon.storage === 's3' ? this.setS3Storage() : this.setLocalStorage();
 	}
 

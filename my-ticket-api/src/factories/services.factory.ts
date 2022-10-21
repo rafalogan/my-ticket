@@ -2,69 +2,85 @@ import { Knex } from 'knex';
 import { RedisClientType } from 'redis';
 
 import {
-	AddressService,
 	AuthService,
-	CapacityService,
 	CategoryService,
+	ContactService,
 	DurationService,
 	EventService,
 	FileService,
 	InitService,
+	MailService,
+	NewsletterService,
+	PaymentService,
+	PayService,
 	PhoneService,
 	PlaceService,
 	ProfileService,
+	SaleService,
 	TheaterService,
 	TicketService,
 	UserService,
 } from 'src/services';
-import { Environment } from 'src/config';
+import { Environment, MailerConfig } from 'src/config';
 import {
-	addressFields,
-	capacityFields,
 	categoryFields,
+	contactFields,
 	durationFields,
 	eventFields,
 	fileFields,
-	phoneFields,
+	newsletterFields,
+	paymentFields,
 	placeFields,
 	profileFields,
+	saleFields,
 	theaterFields,
 	ticketFields,
 	userFields,
 } from 'src/utils';
-import { Multer } from 'multer';
 
 export class ServicesFactory {
 	initService: InitService;
 	userService: UserService;
 	profileService: ProfileService;
 	authService: AuthService;
-	categoryService: CategoryService;
 	eventService: EventService;
+	categoryService: CategoryService;
 	placeService: PlaceService;
-	addressService: AddressService;
 	phoneService: PhoneService;
 	theaterService: TheaterService;
-	capacityService: CapacityService;
 	durationService: DurationService;
 	ticketService: TicketService;
 	fileService: FileService;
+	paymentService: PaymentService;
+	saleService: SaleService;
+	payService: PayService;
+	mailService: MailService;
+	contactService: ContactService;
+	newsletterService: NewsletterService;
 
-	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
+	constructor(private env: Environment, private conn: Knex, private client: RedisClientType, private mailConfig: MailerConfig) {
 		this.initService = new InitService();
 		this.userService = new UserService({ ...this.setServiceOptions('users', userFields) });
 		this.profileService = new ProfileService({ ...this.setServiceOptions('profiles', profileFields) }, this.userService);
 		this.authService = new AuthService(this.env.security.authsecret, this.userService, this.profileService);
-		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.eventService = new EventService(this.setServiceOptions('events', eventFields));
+		this.categoryService = new CategoryService(this.setServiceOptions('categories', categoryFields));
 		this.placeService = new PlaceService(this.setServiceOptions('places', placeFields));
-		this.addressService = new AddressService(this.setServiceOptions('address', addressFields));
-		this.phoneService = new PhoneService(this.setServiceOptions('phones', phoneFields));
 		this.theaterService = new TheaterService(this.setServiceOptions('theaters', theaterFields));
-		this.capacityService = new CapacityService(this.setServiceOptions('capacity', capacityFields));
 		this.durationService = new DurationService(this.setServiceOptions('durations', durationFields));
 		this.ticketService = new TicketService(this.setServiceOptions('tickets', ticketFields));
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
+		this.paymentService = new PaymentService(this.setServiceOptions('payment_methods', paymentFields));
+		this.payService = new PayService();
+		this.mailService = new MailService(this.mailConfig);
+		this.saleService = new SaleService(
+			this.setServiceOptions('sales', saleFields),
+			this.payService,
+			this.ticketService,
+			this.paymentService
+		);
+		this.contactService = new ContactService(this.setServiceOptions('contacts', contactFields), this.mailService);
+		this.newsletterService = new NewsletterService(this.setServiceOptions('newsletter', newsletterFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

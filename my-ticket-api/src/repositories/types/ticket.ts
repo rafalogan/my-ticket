@@ -7,6 +7,7 @@ export interface ITicket extends IID {
 	placeId: number;
 	theaterId: number;
 	durationId: number;
+	userId: number;
 }
 
 export interface FindTicketOptions {
@@ -27,6 +28,11 @@ export interface ITicketModel extends ITicket {
 	theaterDescription: string;
 	durationStart: Date | string;
 	durationEnd: Date | string;
+}
+
+export interface TicketTheater extends IID {
+	name: string;
+	description: string;
 }
 
 export interface TicketEvent extends IID {

@@ -17,6 +17,12 @@ export class UserRoute extends Routes {
 			.all(methodNotAllowed);
 
 		this.app
+			.route('/user/update-password')
+			.all(this.auth?.exec().authenticate())
+			.post(this.userController.updatePassword.bind(this.userController))
+			.all(methodNotAllowed);
+
+		this.app
 			.route('/users/:id')
 			.all(this.auth?.exec().authenticate())
 			.get(this.userController.list.bind(this.userController))
