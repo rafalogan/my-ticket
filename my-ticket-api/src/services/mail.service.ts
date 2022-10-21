@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
 import { MailerConfig } from 'src/config';
-import { onLog } from 'src/core/handlers';
+import { onError, onLog } from 'src/core/handlers';
 import { SendEmailOptions } from 'src/repositories/types';
 import { ResponseException } from 'src/utils';
 
@@ -9,8 +9,10 @@ export class MailService {
 	constructor(private config: MailerConfig) {}
 
 	send(options: SendEmailOptions) {
+		const from = (options.to !== process.env.EMAIL_DEFAULT ? options.from : 'no-replay@my-ticket.com') as string;
+
 		const mailOptions = {
-			from: 'no-replay@my-ticket.com',
+			from,
 			to: options.to,
 			subject: options.subject,
 			html: options.message,
@@ -30,8 +32,15 @@ export class MailService {
 
 		onLog('mail options', mailOptions);
 
-		return transporter.sendMail(mailOptions, (err, info) =>
-			err ? new ResponseException('Error on send e-mail', err) : { message: 'e-mail enviado com sucesso!', info }
-		);
+		return transporter.sendMail(mailOptions, (err, info) => {
+			if (err) {
+				onError('error to send', err);
+				return new ResponseException('Error on send e-mail', err);
+			}
+
+			onLog('response to send', info);
+
+			return { message: 'e-mail enviado com sucesso!', info };
+		});
 	}
 }

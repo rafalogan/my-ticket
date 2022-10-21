@@ -15,6 +15,13 @@ export interface ReadContactOptions extends ReadOptions {
 
 export interface SendEmailOptions {
 	to?: string;
+	from?: string;
 	subject?: string;
 	message?: string;
+}
+
+export interface IContactToSale {
+	saleId: number;
+	userId: number;
+	email: string;
 }

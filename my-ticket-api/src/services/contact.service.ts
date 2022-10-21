@@ -1,5 +1,5 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, IContact, ReadContactOptions, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, IContact, IContactToSale, ReadContactOptions, ReadOptions } from 'src/repositories/types';
 import {
 	DatabaseException,
 	existsOrError,
@@ -13,6 +13,8 @@ import {
 import { Contact, Sale, User } from 'src/repositories/entities';
 import { MailService } from './mail.service';
 import { TicketService } from 'src/services/ticket.service';
+import { onLog } from 'src/core/handlers';
+import { response } from 'express';
 
 export class ContactService extends BaseService {
 	constructor(options: BaseServiceOptions, private mailService: MailService) {
@@ -28,6 +30,8 @@ export class ContactService extends BaseService {
 
 	async create(item: Contact) {
 		const send = item.saleId ? await this.sendEmailWhenSaleId(item) : this.sendMailDefault(item);
+
+		onLog('send response', send);
 
 		try {
 			verifyData(send);
@@ -64,35 +68,18 @@ export class ContactService extends BaseService {
 	}
 
 	async sendEmailWhenSaleId(data: Contact) {
-		const sale = await this.findSaleOfContact(Number(data.saleId));
-
-		try {
-			verifyData(sale);
-		} catch (err) {
-			return err;
-		}
-
-		const ticket = await this.findTicketOfSale(sale.ticketId);
-
-		try {
-			verifyData(ticket);
-		} catch (err) {
-			return err;
-		}
-
-		const user = await this.findUserOfTicket(ticket.userId);
-
-		try {
-			verifyData(user);
-		} catch (err) {
-			return err;
-		}
-
-		return this.mailService.send({
-			to: user.email,
-			subject: data.subject,
-			message: messages.mailTemplate(data),
-		});
+		return this.findSaleOfContact(Number(data.saleId))
+			.then(res =>
+				res instanceof DatabaseException
+					? res
+					: this.mailService.send({
+							to: res.email,
+							from: data.email,
+							subject: data.subject,
+							message: messages.mailTemplate(data),
+					  })
+			)
+			.catch(err => err);
 	}
 
 	private setAllContacts(value?: any) {
@@ -108,36 +95,24 @@ export class ContactService extends BaseService {
 	}
 
 	private findSaleOfContact(id: number) {
-		return this.conn('sales')
-			.select(...saleFields)
-			.where({ id })
+		onLog('id', id);
+
+		return this.conn({ s: 'sales', t: 'tickets', u: 'users' })
+			.select({ saleId: 's.id' }, { userId: 't.user_id' }, { email: 'u.email' })
+			.whereRaw('s.id = ?', id)
+			.andWhereRaw('t.id = s.ticket_id')
+			.andWhereRaw('u.id = s.user_id')
 			.first()
-			.then(res => this.setData(res, 'sale'))
+			.then(res => this.setData(res))
 			.catch(err => err);
 	}
 
-	private findTicketOfSale(id: number) {
-		return this.conn('tickets')
-			.select(...ticketFields)
-			.where({ id })
-			.first()
-			.then(res => this.setData(res, 'ticket'))
-			.catch(err => err);
-	}
-
-	private findUserOfTicket(id: number) {
-		return this.conn('users')
-			.select(...userFields)
-			.where({ id })
-			.first()
-			.then(res => this.setData(res, 'user'))
-			.catch(err => err);
-	}
-
-	private setData(data: any, to: string) {
+	private setData(data: any) {
+		onLog('response data', data);
 		if (!data) return {};
 		if (data.severity === 'ERROR') return new DatabaseException(data.detail || data.hint || messages.notFoundRegister, data);
 
-		return to === 'sale' ? new Sale(data) : to === 'ticket' ? new TicketService(data) : new User(data);
+		data.email = data.email === 'root@root.com' && process.env.NODE_ENV !== 'production' ? process.env.EMAIL_DEFAULT : data.email;
+		return data as IContactToSale;
 	}
 }

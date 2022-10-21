@@ -73,8 +73,10 @@ const auth = {
 
 const mailTemplate = (data: Contact) => `
 <div>
-	<p>E-mail de: ${data.email} Telefone: ${data.phone}</p>
-	<p>Assunto: ${data.subject}</p>
+	<p>
+		<strong>E-mail de:</strong> ${data.email} <strong>Telefone:</strong> ${data.phone || ''}<br />
+		<strong>Assunto:</strong> ${data.subject}
+	</p>
 </div>
 <div>
 	${data.message}
