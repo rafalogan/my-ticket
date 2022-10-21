@@ -10,6 +10,7 @@ import {
 	FileService,
 	InitService,
 	MailService,
+	NewsletterService,
 	PaymentService,
 	PayService,
 	PhoneService,
@@ -27,6 +28,7 @@ import {
 	durationFields,
 	eventFields,
 	fileFields,
+	newsletterFields,
 	paymentFields,
 	placeFields,
 	profileFields,
@@ -54,6 +56,7 @@ export class ServicesFactory {
 	payService: PayService;
 	mailService: MailService;
 	contactService: ContactService;
+	newsletterService: NewsletterService;
 
 	constructor(private env: Environment, private conn: Knex, private client: RedisClientType, private mailConfig: MailerConfig) {
 		this.initService = new InitService();
@@ -77,6 +80,7 @@ export class ServicesFactory {
 			this.paymentService
 		);
 		this.contactService = new ContactService(this.setServiceOptions('contacts', contactFields), this.mailService);
+		this.newsletterService = new NewsletterService(this.setServiceOptions('newsletter', newsletterFields));
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

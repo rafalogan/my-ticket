@@ -117,3 +117,4 @@ export const saleFields = [
 ];
 
 export const contactFields = ['id', 'name', 'email', 'phone', 'subject', 'message', 'created_at as createdAt', 'sale_id as saleId'];
+export const newsletterFields = ['id', 'name', 'email', 'active'];
