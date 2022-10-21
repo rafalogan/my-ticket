@@ -1,4 +1,4 @@
-import { User } from 'src/repositories/entities';
+import { Contact, User } from 'src/repositories/entities';
 import { upperCaseFirstLetter } from 'src/utils/convert-date';
 
 const alreadyExists = 'já existe';
@@ -71,6 +71,15 @@ const auth = {
 	},
 };
 
+const mailTemplate = (data: Contact) => `
+<div>
+	<p>E-mail de: ${data.email} Telefone: ${data.phone}</p>
+	<p>Assunto: ${data.subject}</p>
+</div>
+<div>
+	${data.message}
+</div>`;
+
 export const messages = {
 	alreadyExists,
 	noSave,
@@ -90,4 +99,5 @@ export const messages = {
 	ticketSoldOut,
 	saleNoCancel,
 	canceledSaleSuccess,
+	mailTemplate,
 };

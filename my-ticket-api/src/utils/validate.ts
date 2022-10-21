@@ -46,6 +46,10 @@ export const isMatchOrError = (data: IsMachValidateOptions) => {
 
 export const isMatch = (credentials: Credentials, user: UserModel | User) => bcrypt.compareSync(credentials.password, user.password);
 
+export const verifyData = (data: any) => {
+	if (data instanceof DatabaseException || data instanceof ResponseException) throw data;
+};
+
 export const saleVerify = (data: any): void | DatabaseException => {
 	if (data instanceof DatabaseException) throw data;
 	if (data instanceof ResponseException) throw data;

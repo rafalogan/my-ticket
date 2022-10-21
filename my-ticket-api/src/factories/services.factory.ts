@@ -4,10 +4,12 @@ import { RedisClientType } from 'redis';
 import {
 	AuthService,
 	CategoryService,
+	ContactService,
 	DurationService,
 	EventService,
 	FileService,
 	InitService,
+	MailService,
 	PaymentService,
 	PayService,
 	PhoneService,
@@ -18,9 +20,10 @@ import {
 	TicketService,
 	UserService,
 } from 'src/services';
-import { Environment } from 'src/config';
+import { Environment, MailerConfig } from 'src/config';
 import {
 	categoryFields,
+	contactFields,
 	durationFields,
 	eventFields,
 	fileFields,
@@ -49,8 +52,10 @@ export class ServicesFactory {
 	paymentService: PaymentService;
 	saleService: SaleService;
 	payService: PayService;
+	mailService: MailService;
+	contactService: ContactService;
 
-	constructor(private env: Environment, private conn: Knex, private client: RedisClientType) {
+	constructor(private env: Environment, private conn: Knex, private client: RedisClientType, private mailConfig: MailerConfig) {
 		this.initService = new InitService();
 		this.userService = new UserService({ ...this.setServiceOptions('users', userFields) });
 		this.profileService = new ProfileService({ ...this.setServiceOptions('profiles', profileFields) }, this.userService);
@@ -64,12 +69,14 @@ export class ServicesFactory {
 		this.fileService = new FileService(this.setServiceOptions('files', fileFields));
 		this.paymentService = new PaymentService(this.setServiceOptions('payment_methods', paymentFields));
 		this.payService = new PayService();
+		this.mailService = new MailService(this.mailConfig);
 		this.saleService = new SaleService(
 			this.setServiceOptions('sales', saleFields),
 			this.payService,
 			this.ticketService,
 			this.paymentService
 		);
+		this.contactService = new ContactService(this.setServiceOptions('contacts', contactFields), this.mailService);
 	}
 
 	private setServiceOptions(table: string, fields: string[]) {

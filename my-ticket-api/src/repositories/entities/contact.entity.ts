@@ -15,7 +15,7 @@ export class Contact {
 		this.email = data.email;
 		this.subject = data.subject;
 		this.phone = data.phone;
-		this.message = data.message;
+		this.message = data.message.toString();
 		this.saleId = Number(data.saleId) || undefined;
 	}
 }

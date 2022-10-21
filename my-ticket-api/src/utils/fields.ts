@@ -115,3 +115,5 @@ export const saleFields = [
 	'user_id as userId',
 	'ticket_id as ticketId',
 ];
+
+export const contactFields = ['id', 'name', 'email', 'phone', 'subject', 'message', 'created_at as createdAt', 'sale_id as saleId'];

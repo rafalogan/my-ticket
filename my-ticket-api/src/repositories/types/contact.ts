@@ -12,3 +12,9 @@ export interface IContact extends IID {
 export interface ReadContactOptions extends ReadOptions {
 	saleId?: number;
 }
+
+export interface SendEmailOptions {
+	to?: string;
+	subject?: string;
+	message?: string;
+}
