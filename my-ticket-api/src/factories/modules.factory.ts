@@ -20,6 +20,7 @@ import { notfoundRoute } from 'src/core/routes/notfound.route';
 import { SaleModule } from 'src/modules/sale';
 import { PaymentModule } from 'src/modules/payment';
 import { ContactModule } from 'src/modules/contact';
+import { NewsletterModule } from 'src/modules/newsletter';
 
 export class ModulesFactory {
 	private authModule: AuthModule;
@@ -36,6 +37,7 @@ export class ModulesFactory {
 	private paymentModule: PaymentModule;
 	private saleModule: SaleModule;
 	private contactModule: ContactModule;
+	private newsletterModule: NewsletterModule;
 
 	constructor(private app: Application, private auth: AuthConfig, services: ServicesFactory, upload: Multer) {
 		this.authModule = new AuthModule({ service: services.authService, ...this.getRouteOptions() });
@@ -52,6 +54,7 @@ export class ModulesFactory {
 		this.paymentModule = new PaymentModule({ service: services.paymentService, ...this.getRouteOptions() });
 		this.saleModule = new SaleModule({ service: services.saleService, ...this.getRouteOptions() });
 		this.contactModule = new ContactModule({ service: services.contactService, ...this.getRouteOptions() });
+		this.newsletterModule = new NewsletterModule({ service: services.newsletterService, ...this.getRouteOptions() });
 	}
 
 	exec() {
@@ -69,6 +72,7 @@ export class ModulesFactory {
 		this.paymentModule.exec();
 		this.saleModule.exec();
 		this.contactModule.exec();
+		this.newsletterModule.exec();
 		this.app.use('/media', express.static(resolve(__dirname, '../..', 'tmp', 'uploads')));
 		this.app.use(notfoundRoute);
 	}

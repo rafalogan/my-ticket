@@ -1,5 +1,5 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, INewsletter, List, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, INewsletter, List, ReadNewsletterOptions, ReadOptions } from 'src/repositories/types';
 import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
 import { Newsletter } from 'src/repositories/entities';
 
@@ -33,6 +33,12 @@ export class NewsletterService extends BaseService {
 			.catch(err => err);
 	}
 
+	read(options?: ReadNewsletterOptions): Promise<any> {
+		if (options?.email) return this.findOneByEmail(options.email, options);
+
+		return super.read(options);
+	}
+
 	findOneById(id: number, options?: ReadOptions) {
 		return super
 			.findOneById(id, options)
@@ -41,6 +47,12 @@ export class NewsletterService extends BaseService {
 	}
 
 	findOneByEmail(email: string, options?: ReadOptions) {
+		if (this.activeCache) {
+			return this.checkCache(options)
+				.then(res => this.setSingleResponse(res))
+				.catch(err => err);
+		}
+
 		return super
 			.findOneByWhere('email', email)
 			.then(res => this.setSingleResponse(res))
@@ -79,5 +91,17 @@ export class NewsletterService extends BaseService {
 		if (value.severity === 'ERROR') return new DatabaseException(value.detail || value.hint || messages.notFoundRegister, value);
 
 		return { id: data.id, deleted: value > 0, message: messages.successDel, element: data };
+	}
+
+	checkCache(options?: ReadNewsletterOptions): Promise<any> {
+		if (options?.email) {
+			return this.findCache(
+				[`GET:content`, this.findOneByEmail.name, options.email],
+				() => this.findOneByEmail(options.email as string, options),
+				options?.cacheTime || this.defaultTime
+			);
+		}
+
+		return super.checkCache(options);
 	}
 }
