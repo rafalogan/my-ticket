@@ -2,7 +2,7 @@
 	{
 		"name": "Kinoplex Pátio Brasil",
 		"description": "Cadeia de cinemas com sala stadium e VIP de poltronas reclináveis e numeradas, com ingressos online.",
-		"zipCode": "70307902",
+		"zip_code": "70307902",
 		"phone": "0000000000",
 		"street": " Bloco A - Quadra 07",
 		"number": null,
@@ -10,12 +10,13 @@
 		"district": "St. Comercial Sul",
 		"city": "Brasília",
 		"state": "DF",
-		"urlMaps": "https://goo.gl/maps/rYDrwRP2uJ82RuRK8"
+		"url_maps": "https://goo.gl/maps/rYDrwRP2uJ82RuRK8",
+		"user_id": 1
 	},
 	{
 		"name": "Kinoplex Pátio Brasil",
 		"description": "Rede de cinemas com poltronas em estilo stadium e VIP, salas 3D e IMAX, além de venda de ingressos on-line.",
-		"zipCode": "71219900",
+		"zip_code": "71219900",
 		"phone": "0000000000",
 		"street": "SAI/SUDO área, 6580",
 		"number": null,
@@ -23,6 +24,7 @@
 		"district": "Guará",
 		"city": "Brasília",
 		"state": "DF",
-		"urlMaps": "https://goo.gl/maps/rYDrwRP2uJ82RuRK8"
+		"url_maps": "https://goo.gl/maps/rYDrwRP2uJ82RuRK8",
+		"user_id": 1
 	}
 ]
