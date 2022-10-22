@@ -6,6 +6,10 @@ export interface IEvent {
 	title: string;
 	subtitle?: string;
 	content: string | Blob;
+	popularity?: number;
+	releaseDate?: Date | string;
+	voteAverage?: number;
+	voteCount?: number;
 	type: string;
 	categoryId: number;
 	userId?: number;

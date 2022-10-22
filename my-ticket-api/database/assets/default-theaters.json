@@ -1,0 +1,79 @@
+ [
+		{
+			"name": "Sala Premium",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 50,
+			"addressed_seats": false,
+			"place_id": 1
+		},
+		{
+			"name": "Sala 1",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 72,
+			"addressed_seats": false,
+			"place_id": 1
+		},
+		{
+			"name": "Sala 3",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 72,
+			"addressed_seats": false,
+			"place_id": 1
+		},
+		{
+			"name": "Sala 3",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 65,
+			"addressed_seats": false,
+			"place_id": 1
+		},
+		{
+			"name": "Sala 1",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 60,
+			"addressed_seats": false,
+			"place_id": 2
+		},
+		{
+			"name": "Sala 2",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 60,
+			"addressed_seats": false,
+			"place_id": 2
+		},
+		{
+			"name": "Sala 3",
+			"description": "Sala IMAX Digital Sound",
+			"sections_number": null,
+			"sections_type": null,
+			"raws_per_section": null,
+			"rows_type": null,
+			"capacity": 45,
+			"addressed_seats": false,
+			"place_id": 2
+		}
+	]
