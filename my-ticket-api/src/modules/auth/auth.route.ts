@@ -11,6 +11,6 @@ export class AuthRoute extends Routes {
 	exec() {
 		this.app.route('/signin').post(this.authController.signin.bind(this.authController)).all(methodNotAllowed);
 		this.app.route('/signup').post(this.authController.signup.bind(this.authController)).all(methodNotAllowed);
-		this.app.route('/validate-token').post(this.authController.validateToken.bind(this.authController)).all(methodNotAllowed);
+		this.app.route('/validate-token').get(this.authController.validateToken.bind(this.authController)).all(methodNotAllowed);
 	}
 }
