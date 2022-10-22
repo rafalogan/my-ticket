@@ -1,5 +1,5 @@
 import { IEvent } from '../types';
-import { convertToDate } from 'src/utils';
+import { convertToDate, setTimestampFields } from 'src/utils';
 
 export class EventEntity {
 	id?: number;
@@ -20,7 +20,7 @@ export class EventEntity {
 		this.subtitle = data.subtitle;
 		this.content = data.content.toString();
 		this.popularity = Number(data.popularity) || undefined;
-		this.releaseDate = data.releaseDate ? convertToDate(data.releaseDate) : undefined;
+		this.releaseDate = setTimestampFields(data.releaseDate);
 		this.voteAverage = Number(data.voteAverage) || undefined;
 		this.voteCount = Number(data.voteCount) || undefined;
 		this.type = data.type;

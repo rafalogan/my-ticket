@@ -49,13 +49,6 @@ export const stringifyObject = (data: any) => JSON.stringify(data);
 
 export const convertToJson = (data: string) => JSON.parse(data);
 
-export const clearTimestampFields = (data: any) => {
-	Reflect.deleteProperty(data, 'createdAt');
-	Reflect.deleteProperty(data, 'updatedAt');
-
-	return data;
-};
-
 export const setParamsOrder = (req: Request) => {
 	const value = Number(req.params.id);
 	let where;
@@ -85,14 +78,20 @@ export const filterRawFile = (req: Request) => {
 	return {
 		title: req.body.title,
 		alt: req.body.alt,
-		name: req.file?.originalname,
-		filename: process.env.STORAGE_TYPE === 's3' ? file.key : req.file?.filename,
-		type: req.file?.mimetype,
-		url: process.env.STORAGE_TYPE === 's3' ? file.location : `${baseUrl()}/media/${req.file?.filename}`,
+		name: req.file?.originalname || req.body.videoId,
+		filename: process.env.STORAGE_TYPE === 's3' ? file.key : req.file?.filename || req.body.videoId,
+		type: req.file?.mimetype || req.body.type,
+		url: setUrlToFile(req, file),
+		location: req.body.location,
 		eventId: req.body.eventId,
 		categoryId: req.body.categoryId,
 		userId: req.body.userId,
 	};
+};
+
+const setUrlToFile = (req: Request, file: CustomFile): string => {
+	if (req.body.videoId) return `https://www.youtube.com/watch?v=${req.body.videoId}`;
+	return process.env.STORAGE_TYPE === 's3' ? file.location : `${baseUrl()}/media/${req.file?.filename}`;
 };
 
 export const filterCategoryModelInterface = (value: any): ICategoryModel => ({
