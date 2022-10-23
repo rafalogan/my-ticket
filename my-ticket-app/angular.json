@@ -61,20 +61,6 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-            },
-            "homologation": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.hom.ts"
-                }
-              ]
             }
           },
           "defaultConfiguration": "production"
@@ -87,9 +73,6 @@
             },
             "development": {
               "browserTarget": "my-ticket-app:build:development"
-            },
-            "hom": {
-              "browserTarget": "my-ticket-app:build:homologation"
             }
           },
           "defaultConfiguration": "development"

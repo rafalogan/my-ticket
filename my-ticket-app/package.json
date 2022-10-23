@@ -1,9 +1,9 @@
 {
   "name": "my-ticket-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
-    "start": "npx ng serve -c homologation",
+    "start": "ng serve",
     "dev": "npx ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -14,9 +14,9 @@
     "add:patch": "npm version patch && git status && git add --all  &&  git commit -m  \" Add new Patch in Version\" && git push",
     "add:minor": "npm version minor && git status && git add --all  &&  git commit -m  \" Add new Minor in Version\" && git push",
     "add:major": "npm version major && git status && git add --all  &&  git commit -m  \" Add new Major in Version\" && git push",
+    "up:tags": "git push --follow-tags",
     "release:start": "VERSION=$(node -p \"require('./package').version\") && git flow release start $VERSION",
-    "release:finish": "BRANCH=$(node -p \"require('./package').version\") && git flow release finish $BRANCH",
-    "up:tags": "git push --follow-tags"
+    "release:finish": "BRANCH=$(node -p \"require('./package').version\") && git flow release finish $BRANCH"
   },
   "private": true,
   "dependencies": {
