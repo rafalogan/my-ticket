@@ -58,6 +58,17 @@
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
+    },
+    {
+      "files": [
+        "*.scss"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/style/recommended"
+      ],
+      "rules": {
+
+      }
     }
   ]
 }

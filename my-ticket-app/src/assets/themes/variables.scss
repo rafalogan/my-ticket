@@ -1,0 +1,9 @@
+@import 'src/assets/themes/components/variables';
+
+:root {
+  --assistant-color: #{$assistant-color};
+
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --tertiary-color: #{$tertiary-color};
+}
