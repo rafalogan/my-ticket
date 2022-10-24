@@ -2,21 +2,43 @@
 @import 'assets/themes/components/variables';
 @import 'assets/themes/variables';
 
+// SCSS components
+@import 'assets/themes/components/fonts';
+@import 'assets/themes/components/icons';
+@import 'assets/themes/components/buttons';
+
+
+
 * {
   margin: 0;
   padding: 0;
 
-  font-family: 'Futura Lt Bt', 'Futura Hv Bt', sans-serif;
+  font-family: 'Futura Lt Bt', 'Futura Hv Bt', 'Bariol', sans-serif;
   letter-spacing: -1px;
 
   &::before,
   &::after {
     box-sizing: border-box;
   }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html {
+  font-size: 10px;
+
+  @media only screen and (max-width: 320px) {
+    font-size: 12px;
+  }
+
+  @media only screen and (min-width: 321px) and (max-width: 920px) {
+    font-size: 10.5px;
+  }
 }
 
 html, body {
   min-height: 100vh;
-
 }
 
