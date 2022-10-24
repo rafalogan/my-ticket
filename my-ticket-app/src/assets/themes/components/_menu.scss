@@ -1,0 +1,95 @@
+.shared-link-menu {
+  text-decoration: none;
+
+  font-family: 'Futura Lt Bt';
+
+  padding: .5rem .7rem;
+
+  font-size: 1.4rem;
+  font-weight: normal;
+  line-height: 1.4;
+
+  color: var(--tertiary-color);
+
+  display: inline-block;
+
+  vertical-align: middle;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.shared-link-menu-hover {
+  background-color: var(--assistant-color);
+}
+
+.dropdown-menu {
+  width: 100%;
+  display: flex;
+  list-style: none;
+  box-sizing: border-box;
+
+  padding: 0;
+  margin: 0;
+
+  .dropdown-menu-item {
+    position: relative;
+    box-sizing: border-box;
+
+    margin: 0 1rem;
+
+    .dropdown-menu-link {
+      @extend .shared-link-menu;
+    }
+
+    span {
+      white-space: nowrap;
+    }
+
+    .dropdown-submenu {
+      position: absolute;
+      background-color: var(--white-color);
+
+      list-style: none;
+
+      margin: 0;
+      padding: 10px 16px;
+
+      border: 1px solid var(--card-border-collor);
+      box-shadow: 0 2px 4px var(--card-box-shadow-collor);
+
+      left: 50%;
+      transform: translateX(-50%) scale(0, 0);
+      top: calc(100% + 3px);
+      transition: all .3s ease;
+
+      z-index: 1;
+
+
+      .dropdown-submenu-item {
+        padding: 5px 10px;
+        white-space: nowrap;
+
+        &:not(:last-child) {
+          margin-bottom: 2rem;
+        }
+
+        .dropdown-submenu-link {
+          @extend .shared-link-menu;
+        }
+
+        &:hover {
+          @extend .shared-link-menu-hover;
+        }
+      }
+    }
+
+    &:hover {
+      .dropdown-submenu {
+        opacity: 1;
+        transform: translateX(-50%) scale(1, 1);
+        transiton-timing-function: ease-in-out;
+      }
+    }
+  }
+}

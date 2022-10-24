@@ -1,5 +1,9 @@
 {
   "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "ignorePatterns": [
     "projects/**/*"
   ],
@@ -38,16 +42,9 @@
             "style": "kebab-case"
           }
         ],
-        "sort-imports": [
-          "error",
-          {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": false
-          }
-        ]
+        "sort-imports": "off",
+        "no-unused-vars": "off",
+        "no-console": "off"
       }
     },
     {
@@ -58,17 +55,6 @@
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
-    },
-    {
-      "files": [
-        "*.scss"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/style/recommended"
-      ],
-      "rules": {
-
-      }
     }
   ]
 }

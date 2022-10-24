@@ -1,0 +1,24 @@
+<nav>
+  <div class="nav-bar container">
+    <div class="nav-container">
+      <div class="logo">
+        <i class="icon-logo"></i>
+        <h1><span>My</span>Ticket</h1>
+      </div>
+      <div>
+        <ul class="nav-menu">
+          <li class="menu-item" *ngFor="let menu of categoriesMenu">
+            <a href="{{ menu.route }}">{{ menu.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="nav-container">
+      <ul class="nav-menu">
+        <li class="menu-item"><a href="/users">Usuários</a></li>
+        <li class="menu-item" title="Buscar"><i class="icon-search"></i></li>
+        <li class="menu-item" title="Perfil"><i class="icon-user"></i></li>
+      </ul>
+    </div>
+  </div>
+</nav>

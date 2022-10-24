@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  env: 'production',
+  production: true,
+  debug: false,
+  api: '',
+  categories: '/categories'
 };

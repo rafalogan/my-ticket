@@ -1,0 +1,19 @@
+import { ICategory } from 'app/types';
+
+export class Menu {
+  name: string;
+  route: string;
+  submenu: Menu[];
+  category: ICategory;
+
+  constructor(data: ICategory) {
+    this.name = data.name;
+    this.route = `/${data.name}`;
+    this.submenu = this.setSubmenu(data.subCategories);
+    this.category = data;
+  }
+
+  private setSubmenu(data: ICategory[]) {
+    return data.map(i => new Menu(i));
+  }
+}

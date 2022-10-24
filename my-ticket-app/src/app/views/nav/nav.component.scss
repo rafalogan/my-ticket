@@ -1,0 +1,97 @@
+.shared-display {
+  align-items: start;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+nav {
+  width: 100%;
+  max-height: 52px;
+
+  .nav-bar {
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .nav-container {
+      @extend .shared-display;
+      .logo {
+        @extend .shared-display;
+
+        i {
+          color: var(--secondary-color);
+          font-size: 48px;
+
+          padding: .2rem 1rem;
+          vertical-align: middle;
+        }
+
+        h1 {
+          font-family: "Bariol";
+          font-size: 2.6rem;
+          font-style: normal;
+          font-weight: 700;
+
+          line-height: 1.4;
+          vertical-align: middle;
+          margin: 0 auto;
+          padding: .5rem 1rem;
+
+          color: var(--secondary-color);
+          span{
+           color: var(--tertiary-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+ul {
+  list-style: none;
+}
+
+
+.nav-menu {
+  @extend .shared-display;
+
+  .menu-item {
+    font-family: "Futura Lt Bt";
+    font-size: 2.4rem;
+    font-style: normal;
+    text-align: center;
+    font-weight: 400;
+
+    line-height: 1.4;
+    vertical-align: middle;
+
+    cursor: pointer;
+
+    span, a{
+      padding: .5rem 1rem;
+      display: inline-block;
+
+      text-decoration: none;
+      color: var(--tertiary-color);
+
+      &:hover {
+        color: var(--secondary-color);
+      }
+    }
+
+    i {
+      display: inline-block;
+
+      vertical-align: middle;
+      font-size: 2.6rem;
+      padding: .5rem 1.6rem;
+    }
+
+    &:hover {
+      background-color: var(--assistant-color);
+      color: var(--secondary-color);
+    }
+  }
+}
