@@ -1,13 +1,11 @@
-import httpStatus from 'http-status';
 import isEmpty from 'is-empty';
 import bcrypt from 'bcrypt';
 
 import { DatabaseException, PaymentException, ResponseException } from 'src/utils/exceptions';
 import { Credentials, UserModel } from 'src/repositories/models';
 import { IsMachValidateOptions } from 'src/repositories/types';
-import { Sale, User } from 'src/repositories/entities';
+import { User } from 'src/repositories/entities';
 
-export const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV || process.env.NODE_ENV !== 'production';
 export const storage = process.env.STORAGE_TYPE;
 export const baseUrl = () => {
 	const prefix = process.env.ENABLE_HTTPS === 'true' ? 'https://' : 'http://';

@@ -4,6 +4,7 @@
   "semi": true,
   "arrowParens": "avoid",
   "trailingComma": "none",
+  "printWidth": 120,
   "bracketSameLine": true,
   "preserve": "never",
   "editorconfig": true,

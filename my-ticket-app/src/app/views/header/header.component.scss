@@ -1,7 +1,10 @@
 header {
   max-height: 55rem;
 
-
+  background-color: var(--assistant-color);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   @media only screen and (min-width: 1200px) {
     height: 55rem;
