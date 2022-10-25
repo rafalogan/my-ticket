@@ -1,0 +1,123 @@
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+
+  background: var(--tertiary-color);
+  color: var(--assistant-color);
+
+  box-shadow: 0 2px 1px var(--button-box-shadow);
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+
+  letter-spacing: .1rem;
+  white-space: nowrap;
+
+  font-family: 'Futura Lt Bt';
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.4;
+
+  i {
+    line-height: inherit;
+    vertical-align: middle;
+  }
+
+  &.disabled, &:disabled {
+    background: var(--button-disable-background);
+    color: var(--button-disable-color);
+    cursor: not-allowed;
+
+    &:hover {
+      background: var(--button-disable-background);
+      color: var(--button-disable-color);
+    }
+  }
+
+  &:hover {
+    background: var(--secondary-color);
+    color: var(--tertiary-color);
+  }
+}
+
+
+.btn-outline {
+  background-color: transparent;
+  border: solid 1px var(--tertiary-color);
+  line-height: 1.4;
+  color: var(--tertiary-color);
+
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+  }
+}
+
+.btn-add {
+  background-color: var(--secondary-color);
+  color: var(--tertiary-color);
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+  }
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: var(--tertiary-color);
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--success-color);
+  }
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: var(--tertiary-color);
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--danger-color);
+  }
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  color: var(--tertiary-color);
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--warning-color);
+  }
+}
+
+.btn-info {
+  background-color: var(--info-color);
+  color: var(--tertiary-color);
+
+  &:hover {
+    background-color: var(--tertiary-color);
+    color: var(--info-color);
+  }
+}
+
+.buttons-bar {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: start;
+  justify-content: start;
+
+  .btn {
+    &:not(first-child), &:not(last-child) {
+      margin: auto .5%;
+    }
+  }
+}

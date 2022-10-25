@@ -3,7 +3,13 @@
 $primary-color: #141414;
 $secondary-color: #d32f27;
 $tertiary-color: #fff;
+$disable-color: #E0E0E0;
+$success-color: #22bb33;
+$danger-color: #bb2124;
+$warning-color: #f0ad4e;
+$info-color: #5bc0de;
 
 $assistant-color: #000;
 
-$menu-hover-color: lighten($assistant-color, 10%)
+$menu-hover-color: lighten($assistant-color, 10%);
+$disable-background-color: rgba(230, 230, 230, 0.16);

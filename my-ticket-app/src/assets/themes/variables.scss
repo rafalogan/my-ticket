@@ -6,6 +6,12 @@
   --primary-color: #{$primary-color};
   --secondary-color: #{$secondary-color};
   --tertiary-color: #{$tertiary-color};
+  --disable-color: #{$disable-color};
+  --success-color: #{$success-color};
+  --danger-color: #{$danger-color};
+  --warning-color: #{$warning-color};
+  --info-color: #{$info-color};
 
   --menu-hover-color: #{$menu-hover-color};
+  --disable-background-color: #{$disable-background-color};
 }
