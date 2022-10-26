@@ -1,0 +1,64 @@
+.card   {
+  position: relative;
+  outline: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+
+  padding: 2.4rem;
+
+  min-width: auto;
+  word-wrap: break-word;
+
+  background-color: var(--assistant-color);
+  background-clip: border-box;
+
+  border: .05rem solid var(--tertiary-color);
+  border-radius: 0.8rem;
+  margin: 1.5rem /3 auto;
+  box-shadow: 0 .4rem .8rem var(--assistant-color);
+
+  .card-header {
+    width: 100%;
+
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto
+    }
+    small {
+      font-family: 'Futura Lt Bt';
+      font-size: 1.2rem;
+      font-weight: normal;
+      line-height: 1.4;
+    }
+    .card-title {
+      h3 {
+        font-family: 'Futura Hv Bt';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.6rem;
+        white-space: nowrap;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .card-content {
+    width: 100%;
+
+    font-family: "Futura Lt Bt";
+    font-style: normal;
+    font-weight: 200;
+    font-size: 1.4rem;
+    line-height: 1.4;
+  }
+
+  .card-actions {
+    width: 100%;
+
+  }
+;
+}

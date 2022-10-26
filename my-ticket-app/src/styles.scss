@@ -7,6 +7,9 @@
 @import 'assets/themes/components/icons';
 @import 'assets/themes/components/buttons';
 @import 'assets/themes/components/menu';
+@import 'assets/themes/components/grid';
+@import 'assets/themes/components/section';
+@import 'assets/themes/components/card';
 
 
 
@@ -47,6 +50,10 @@ html, body {
   color: var(--tertiary-color)
 }
 
+
+ul {
+  list-style: none;
+}
 
 .container {
   width: 98%;

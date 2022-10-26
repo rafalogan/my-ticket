@@ -1,0 +1,21 @@
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+}
+
+.section-header {
+  h2 {
+    font-family: 'Futura Hv Bt';
+    font-style: normal;
+    font-size: 2.2rem;
+    line-height: 1.4;
+
+    padding: 1.3rem 0;
+  }
+}
+
+.section-body {
+  width: 100%;
+}

@@ -1,0 +1,78 @@
+.seciton-col {
+  max-width: 18%;
+}
+
+.card {
+  padding: 0;
+  border: none;
+
+  .card-content {
+    h4 {
+      font-family: 'Futura Hv Bt';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.8rem;
+
+      line-height: 1.4;
+
+      padding: 1.7rem 0;
+
+      i {
+        color: var(--secondary-color)
+      }
+    }
+  }
+
+  .card-actions {
+    .row {
+      justify-content: space-between;
+    }
+  }
+}
+
+.btn-shop {
+  margin-right: .5rem !important;
+}
+
+.btn-info-event {
+  margin-left: .5rem !important;
+}
+
+
+.event-rate {
+  padding: 1rem;
+  background-color: var(--tertiary-color);
+
+  border-radius: .4rem;
+  color: var(--assistant-color);
+
+  text-align: center;
+  line-height: 1.4;
+
+  .col {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  small {
+    font-family: 'Futura Hv Bt';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.4rem;
+    i {
+      color: var(--secondary-color);
+    }
+  }
+
+  p {
+    width: 100%;
+    color: var(--secondary-assistant-color);
+
+    font-family: 'Futura Hv Bt';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}

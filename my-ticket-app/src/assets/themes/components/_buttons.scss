@@ -110,6 +110,18 @@
   }
 }
 
+.btn-disabled {
+  background-color: var(--disable-background-color);
+  color: var(--disable-color);
+
+  cursor: not-allowed;
+
+  &:hover {
+    background-color: var(--disable-background-color);
+    color: var(--disable-color);
+  }
+}
+
 .btn-info {
   background-color: var(--info-color);
   color: var(--tertiary-color);
