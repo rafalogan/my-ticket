@@ -26,7 +26,40 @@ export const profileFields = ['id', 'name', 'description', 'active'];
 
 export const categoryFields = ['id', 'name', 'description', 'url', 'active', 'parent_id as parentId', 'user_id as userId'];
 
-export const eventFields = ['id', 'title', 'subtitle', 'content', 'type', 'category_id as categoryId', 'user_id as userId'];
+export const eventFields = [
+	'id',
+	'title',
+	'subtitle',
+	'content',
+	'popularity',
+	'release_date as releaseDate',
+	'vote_average as voteAverage',
+	'vote_count as voteCount',
+	'type',
+	'category_id as categoryId',
+	'user_id as userId',
+];
+
+export const eventFieldsJoin = [
+	'e.id as id',
+	'e.title as title',
+	'e.subtitle as subtitle',
+	'e.content as content',
+	'e.type as type',
+	'popularity',
+	'release_date as releaseDate',
+	'vote_average as voteAverage',
+	'vote_count as voteCount',
+	'e.category_id as categoryId',
+	'e.user_id as userId',
+	'f.id as fileId',
+	'f.title as fileTitle',
+	'f.alt as fileAlt',
+	'f.name as fileName',
+	'f.type as fileType',
+	'f.url as fileUlr',
+	'location as fileLocation',
+];
 
 export const placeFields = [
 	'id',

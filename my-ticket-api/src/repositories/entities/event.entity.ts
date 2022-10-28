@@ -1,4 +1,4 @@
-import { IEvent } from '../types';
+import { EventFiles, IEvent } from '../types';
 import { convertToDate, setTimestampFields } from 'src/utils';
 
 export class EventEntity {
@@ -11,6 +11,7 @@ export class EventEntity {
 	voteAverage?: number;
 	voteCount?: number;
 	type: string;
+	files?: EventFiles;
 	categoryId: number;
 	userId?: number;
 
@@ -24,6 +25,7 @@ export class EventEntity {
 		this.voteAverage = Number(data.voteAverage) || undefined;
 		this.voteCount = Number(data.voteCount) || undefined;
 		this.type = data.type;
+		this.files = data.files || undefined;
 		this.categoryId = Number(data.categoryId);
 		this.userId = Number(data.userId) || undefined;
 	}

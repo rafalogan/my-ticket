@@ -6,7 +6,7 @@
 		"filename": "poster-halloween-ends-01.jpg",
 		"type": "image/jpeg",
 		"url": "/poster-halloween-ends-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 1,
 		"category_id": null,
 		"user_id": null
@@ -156,18 +156,6 @@
 		"user_id": null
 	},
 	{
-		"title": "Blue Ray 01",
-		"alt": null,
-		"name": "a-orfa-2-blu-ray-cover-01.jpg",
-		"filename": "a-orfa-2-blu-ray-cover-01.jpg",
-		"type": "image/jpeg",
-		"url": "/a-orfa-2-blu-ray-cover-01.jpg",
-		"location": "gallery",
-		"event_id": 2,
-		"category_id": null,
-		"user_id": null
-	},
-	{
 		"title": "Cover 01",
 		"alt": null,
 		"name": "a-orfa-2-cover-01.jpg",
@@ -186,7 +174,7 @@
 		"filename": "a-orfa-2-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/a-orfa-2-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 2,
 		"category_id": null,
 		"user_id": null
@@ -378,7 +366,7 @@
 		"filename": "adao-negro-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/adao-negro-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 3,
 		"category_id": null,
 		"user_id": null
@@ -402,7 +390,7 @@
 		"filename": "adao-negro-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/adao-negro-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 3,
 		"category_id": null,
 		"user_id": null
@@ -510,7 +498,7 @@
 		"filename": "gemini-planeta-sombrio-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/gemini-planeta-sombrio-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 4,
 		"category_id": null,
 		"user_id": null
@@ -630,7 +618,7 @@
 		"filename": "olhos-famintos-4-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/olhos-famintos-4-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 5,
 		"category_id": null,
 		"user_id": null
@@ -690,7 +678,7 @@
 		"filename": "olhos-famintos-4-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/olhos-famintos-4-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 5,
 		"category_id": null,
 		"user_id": null
@@ -774,7 +762,7 @@
 		"filename": "a-queda-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/a-queda-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 6,
 		"category_id": null,
 		"user_id": null
@@ -810,7 +798,7 @@
 		"filename": "a-queda-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/a-queda-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 6,
 		"category_id": null,
 		"user_id": null
@@ -894,7 +882,7 @@
 		"filename": "trem-bala-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/trem-bala-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 7,
 		"category_id": null,
 		"user_id": null
@@ -966,7 +954,7 @@
 		"filename": "fullmetal-alchimist-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/fullmetal-alchimist-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 8,
 		"category_id": null,
 		"user_id": null
@@ -990,7 +978,7 @@
 		"filename": "fullmetal-alchimist-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/fullmetal-alchimist-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 8,
 		"category_id": null,
 		"user_id": null
@@ -1038,7 +1026,7 @@
 		"filename": "abracadabra-2-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/abracadabra-2-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 9,
 		"category_id": null,
 		"user_id": null
@@ -1122,7 +1110,7 @@
 		"filename": "abracadabra-2-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/abracadabra-2-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 9,
 		"category_id": null,
 		"user_id": null
@@ -1206,7 +1194,7 @@
 		"filename": "Athena-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/Athena-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 10,
 		"category_id": null,
 		"user_id": null
@@ -1218,7 +1206,7 @@
 		"filename": "athena-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/athena-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 10,
 		"category_id": null,
 		"user_id": null
@@ -1242,7 +1230,7 @@
 		"filename": "esquadrao-secreto-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/esquadrao-secreto-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 11,
 		"category_id": null,
 		"user_id": null
@@ -1254,7 +1242,7 @@
 		"filename": "esquadrao-secreto-scene-03.jpg",
 		"type": "image/jpeg",
 		"url": "/esquadrao-secreto-scene-03.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 11,
 		"category_id": null,
 		"user_id": null
@@ -1302,7 +1290,7 @@
 		"filename": "maquina-infernal-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/maquina-infernal-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 12,
 		"category_id": null,
 		"user_id": null
@@ -1314,7 +1302,7 @@
 		"filename": "maquina-infernal-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/maquina-infernal-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 12,
 		"category_id": null,
 		"user_id": null
@@ -1350,7 +1338,7 @@
 		"filename": "batma-superman-batalha-filhos-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/batma-superman-batalha-filhos-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 13,
 		"category_id": null,
 		"user_id": null
@@ -1374,7 +1362,7 @@
 		"filename": "meme-do-mal-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/meme-do-mal-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 14,
 		"category_id": null,
 		"user_id": null
@@ -1386,7 +1374,7 @@
 		"filename": "meme-do-mal-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/meme-do-mal-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 14,
 		"category_id": null,
 		"user_id": null
@@ -1434,7 +1422,19 @@
 		"filename": "restart-the-earth-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/restart-the-earth-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
+		"event_id": 15,
+		"category_id": null,
+		"user_id": null
+	},
+	{
+		"title": "Cena",
+		"alt": null,
+		"name": "restart-the-earth-scene-01.jpg",
+		"filename": "restart-the-earth-scene-01.jpg",
+		"type": "image/jpeg",
+		"url": "/restart-the-earth-scene-01.jpg",
+		"location": "cover",
 		"event_id": 15,
 		"category_id": null,
 		"user_id": null
@@ -1458,7 +1458,7 @@
 		"filename": "lou-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/lou-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 16,
 		"category_id": null,
 		"user_id": null
@@ -1470,7 +1470,7 @@
 		"filename": "lou-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/lou-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 16,
 		"category_id": null,
 		"user_id": null
@@ -1518,7 +1518,7 @@
 		"filename": "togo-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/togo-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 17,
 		"category_id": null,
 		"user_id": null
@@ -1530,7 +1530,7 @@
 		"filename": "togo-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/togo-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 17,
 		"category_id": null,
 		"user_id": null
@@ -1578,7 +1578,7 @@
 		"filename": "pinoquio-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/pinoquio-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 18,
 		"category_id": null,
 		"user_id": null
@@ -1590,7 +1590,7 @@
 		"filename": "pinoquio-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/pinoquio-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 18,
 		"category_id": null,
 		"user_id": null
@@ -1638,7 +1638,7 @@
 		"filename": "a-fera-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/a-fera-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 19,
 		"category_id": null,
 		"user_id": null
@@ -1650,7 +1650,7 @@
 		"filename": "a-fera-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/a-fera-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 19,
 		"category_id": null,
 		"user_id": null
@@ -1698,7 +1698,7 @@
 		"filename": "mosnter-high-poster-01.jpg",
 		"type": "image/jpeg",
 		"url": "/mosnter-high-poster-01.jpg",
-		"location": "gallery",
+		"location": "poster",
 		"event_id": 20,
 		"category_id": null,
 		"user_id": null
@@ -1710,7 +1710,7 @@
 		"filename": "mosnter-high-scene-01.jpg",
 		"type": "image/jpeg",
 		"url": "/mosnter-high-scene-01.jpg",
-		"location": "gallery",
+		"location": "cover",
 		"event_id": 20,
 		"category_id": null,
 		"user_id": null

@@ -13,8 +13,7 @@ import {
 	ResponseException,
 } from 'src/utils';
 import { Category } from 'src/repositories/entities';
-import { CategoryModel, Pagination } from 'src/repositories/models';
-import { onLog } from 'src/core/handlers';
+import { CategoryModel } from 'src/repositories/models';
 
 export class CategoryService extends BaseService {
 	constructor(options: BaseServiceOptions) {

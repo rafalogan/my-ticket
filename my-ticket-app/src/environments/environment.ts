@@ -7,7 +7,8 @@ export const environment = {
   production: false,
   debug: true,
   api: 'https://localhost:3000',
-  categories: '/categories'
+  categories: '/categories',
+  events: '/events'
 };
 
 /*

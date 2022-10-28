@@ -18,10 +18,15 @@ WHERE parent_id = subcategories.id
 )
 SELECT ${parserFieldsCategory(fields)} FROM subcategories`;
 
-export const rulesByUser = (userId: number) => `SELECT r.*
-FROM rules as r
-INNER JOIN ( SELECT rule_id FROM users_rules WHERE user_id = ${userId})
-    AS ur ON r.id = ur.rule_id`;
+export const eventsQuery = (fields: string[], limit: number, page: number, orderBy?: string, sequence?: string) => `SELECT ${fields.join(
+	', '
+)}
+FROM events as e
+LEFt OUTER JOIN ( SELECT * FROM files)
+    AS f ON f.event_id = e.id AND f.location = 'poster'
+    ORDER BY ${orderBy || 'e.id'} ${sequence || 'ASC'}
+    LIMIT ${limit}
+    OFFSET ${page * limit - limit}`;
 
 export const rulesByProfiles = (profileId: number) => `SELECT  r.id, r.name, r.description
   FROM rules as r

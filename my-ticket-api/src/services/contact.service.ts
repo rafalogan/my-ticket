@@ -1,20 +1,9 @@
 import { BaseService } from 'src/core/abstracts';
 import { BaseServiceOptions, IContact, IContactToSale, ReadContactOptions, ReadOptions } from 'src/repositories/types';
-import {
-	DatabaseException,
-	existsOrError,
-	messages,
-	responseDataBaseCreate,
-	saleFields,
-	ticketFields,
-	userFields,
-	verifyData,
-} from 'src/utils';
+import { DatabaseException, existsOrError, messages, responseDataBaseCreate, verifyData } from 'src/utils';
 import { Contact, Sale, User } from 'src/repositories/entities';
 import { MailService } from './mail.service';
-import { TicketService } from 'src/services/ticket.service';
 import { onLog } from 'src/core/handlers';
-import { response } from 'express';
 
 export class ContactService extends BaseService {
 	constructor(options: BaseServiceOptions, private mailService: MailService) {

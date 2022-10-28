@@ -1,0 +1,47 @@
+.card {
+  &.card-solid {
+    padding: 1.6rem;
+    border: none;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .card-header {
+
+      font-style: normal;
+      font-weight: bold;
+      font-size: 4rem;
+      line-height: 1.4;
+      h2 {
+        width: 60%;
+        margin-top: 7%;
+        font-family: 'Futura Hv Bt';
+        span {
+          color: var(--secondary-color);
+          font-family: 'Futura Hv Bt';
+        }
+      }
+    }
+  }
+}
+
+.highlight-section {
+  margin: 2% 0;
+}
+
+.col {
+  max-width: 33%;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  @media only screen and (max-width: 500px) {
+    min-width: 100%;
+  }
+}

@@ -12,10 +12,16 @@
   justify-content: flex-start;
 
   flex-wrap: wrap;
+  overflow: hidden;
 
   .col {
     min-width: 12%;
     margin: .5rem auto;
     padding: .1rem;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
   }
 }

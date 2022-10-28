@@ -6,10 +6,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ViewsModule } from 'app/views/views.module';
 import { InicioComponent } from './pages/inicio/inicio.component';
+import { ComponentsModule } from 'app/components/components.module';
 
 @NgModule({
   declarations: [AppComponent, InicioComponent],
-  imports: [BrowserModule, AppRoutingModule, ViewsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, ViewsModule, HttpClientModule, ComponentsModule],
   providers: [],
   bootstrap: [AppComponent]
 })

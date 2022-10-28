@@ -1,7 +1,19 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, Events, IEvent, ReadOptions } from 'src/repositories/types';
-import { DatabaseException, existsOrError, messages, responseDataBaseCreate, responseDataBaseUpdate } from 'src/utils';
+import { BaseServiceOptions, EventRaw, Events, IEvent, ReadOptions } from 'src/repositories/types';
+import {
+	DatabaseException,
+	deleteField,
+	eventFieldsJoin,
+	eventsQuery,
+	existsOrError,
+	filterEventToList,
+	messages,
+	responseDataBaseCreate,
+	responseDataBaseUpdate,
+} from 'src/utils';
 import { EventEntity } from 'src/repositories/entities';
+import { Pagination } from 'src/repositories/models';
+import { onLog } from 'src/core/handlers';
 
 export class EventService extends BaseService {
 	constructor(options: BaseServiceOptions) {
@@ -36,12 +48,37 @@ export class EventService extends BaseService {
 			.catch(err => err);
 	}
 
-	findAll(options: ReadOptions) {
-		return super.findAll(options).then(res => (res instanceof DatabaseException ? res : this.setEvents(res)));
+	async findAll(options: ReadOptions) {
+		const page = options?.page || 1;
+		const limit = options?.limit || 10;
+		const count = await this.countById();
+		const pagination = new Pagination({ page, count, limit });
+
+		if (options.userId) {
+			return super
+				.findAllByUser(options.userId, { ...options, paginate: true })
+				.then(res => (!res || res instanceof DatabaseException ? res : this.setEvents(res)))
+				.catch(err => err);
+		}
+
+		return this.conn
+			.raw(eventsQuery(eventFieldsJoin, limit, page))
+			.then(res => {
+				if (!res) return [];
+				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+
+				return this.setEvents({ data: res.rows.map(filterEventToList), pagination }, true);
+			})
+			.catch(err => err);
 	}
 
-	private setEvents(value: Events) {
-		value.data = value.data.map(e => new EventEntity(e));
+	private setEvents(value: Events, noUser = false) {
+		value.data = noUser ? value.data.map(e => new EventEntity(e)).map(this.deleteUser) : value.data.map(e => new EventEntity(e));
 		return value;
+	}
+
+	private deleteUser(item: EventEntity) {
+		deleteField(item, 'userId');
+		return item;
 	}
 }

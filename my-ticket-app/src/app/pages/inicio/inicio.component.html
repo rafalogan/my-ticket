@@ -1,10 +1,10 @@
-<section class="container">
+<section class="container" *ngIf="movies.length">
   <div class="section-header">
-    <h2>Titlulo Sessão</h2>
+    <h2>Filmes</h2>
   </div>
   <div class="section-body">
     <ul class="row">
-      <li class="col seciton-col" *ngFor="let i of sectionData">
+      <li class="col seciton-col" *ngFor="let filme of movies.slice(0, 5)">
         <div class="card">
           <div class="card-header">
             <img src="https://localhost:3000/media/trem-bala-poster-01.jpg" alt="">
@@ -12,6 +12,7 @@
           <div class="card-content">
             <div class="row">
               <div class="col">
+                <h5>{{ filme.title }}</h5>
                 <h4><i class="icon-calendar"></i>  Data de release</h4>
               </div>
             </div>
@@ -46,20 +47,22 @@
   </div>
 </section>
 
+<app-highlights></app-highlights>
+
 <section class="container">
   <div class="section-header">
-    <h2>Titlulo Sessão</h2>
+    <h2>Filmes</h2>
   </div>
   <div class="section-body">
     <ul class="row">
-      <li class="col seciton-col" *ngFor="let i of sectionData">
+      <li class="col seciton-col">
         <div class="card">
           <div class="card-header">
             <img src="https://localhost:3000/media/trem-bala-poster-01.jpg" alt="">
           </div>
           <div class="card-content">
             <div class="row">
-              <div class="col">
+              <div class="col event-release">
                 <h4><i class="icon-calendar"></i>  Data de release</h4>
               </div>
             </div>

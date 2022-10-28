@@ -19,9 +19,11 @@
   border-radius: 0.8rem;
   margin: 1.5rem /3 auto;
   box-shadow: 0 .4rem .8rem var(--assistant-color);
+  box-sizing: border-box;
 
   .card-header {
     width: 100%;
+    box-sizing: border-box;
 
     overflow: hidden;
     img {
@@ -35,6 +37,7 @@
       line-height: 1.4;
     }
     .card-title {
+      box-sizing: border-box;
       h3 {
         font-family: 'Futura Hv Bt';
         font-style: normal;
@@ -54,11 +57,16 @@
     font-weight: 200;
     font-size: 1.4rem;
     line-height: 1.4;
+    box-sizing: border-box;
   }
 
   .card-actions {
     width: 100%;
-
+    box-sizing: border-box;
   }
-;
+}
+
+.card-solid {
+  background: var(--card-solid-background);
+  box-sizing: border-box;
 }

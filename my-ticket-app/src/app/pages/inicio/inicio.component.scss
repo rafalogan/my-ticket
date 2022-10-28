@@ -1,22 +1,40 @@
 .seciton-col {
   max-width: 18%;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .card {
   padding: 0;
   border: none;
 
+
   .card-content {
-    h4 {
+    padding: .1rem 1.6rem;
+    h5 {
+      margin: 0;
+
       font-family: 'Futura Hv Bt';
       font-style: normal;
       font-weight: 400;
       font-size: 1.8rem;
+      padding: 0;
+    }
+    h4 {
+      font-family: 'Futura Hv Bt';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.6rem;
 
       line-height: 1.4;
 
-      padding: 1.7rem 0;
-
+      padding: .7rem 0;
       i {
         color: var(--secondary-color)
       }
@@ -24,8 +42,15 @@
   }
 
   .card-actions {
+    box-sizing: border-box;
+    padding: .5rem 1.6rem;
+    display: block;
+
     .row {
       justify-content: space-between;
+      .col {
+        margin: 0;
+      }
     }
   }
 }
@@ -34,13 +59,8 @@
   margin-right: .5rem !important;
 }
 
-.btn-info-event {
-  margin-left: .5rem !important;
-}
-
-
 .event-rate {
-  padding: 1rem;
+  padding: .5rem;
   background-color: var(--tertiary-color);
 
   border-radius: .4rem;

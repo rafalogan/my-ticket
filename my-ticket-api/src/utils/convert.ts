@@ -2,7 +2,11 @@ import bcrypt from 'bcrypt';
 import { Request } from 'express';
 import {
 	CustomFile,
+	EventFiles,
+	EventRaw,
 	ICategoryModel,
+	IEvent,
+	IFile,
 	IPayCard,
 	IPayment,
 	IPayPortador,
@@ -12,6 +16,7 @@ import {
 } from 'src/repositories/types';
 import { baseUrl, storage } from 'src/utils/validate';
 import { Payment } from 'src/repositories/entities';
+import { onLog } from 'src/core/handlers';
 
 export const snakeToCamel = (field: string): string => {
 	let toArray = field.split('_');
@@ -116,6 +121,39 @@ export const setCard = (data: IPayment | Payment): IPayCard => ({
 	expiracao: data.expiracao,
 	codigoSeguranca: data.codigoSeguranca,
 	portador: setPortador(data),
+});
+
+export const filterEventToList = (item: EventRaw): IEvent => ({
+	id: item.id,
+	title: item.title,
+	subtitle: item.subtitle || undefined,
+	content: item.content.toString(),
+	popularity: item.popularity,
+	releaseDate: item.releasedate,
+	voteAverage: item.voteaverage,
+	voteCount: item.votecount,
+	type: item.type,
+	categoryId: item.categoryid,
+	userId: item.userid || undefined,
+	files: {
+		poster: setFileEvent(item),
+	},
+});
+
+const setFilesToEvent = (items: EventRaw[]): EventFiles => ({
+	poster: setFileEvent(items.find(item => item.filelocation === 'poster') as EventRaw),
+	cover: setFileEvent(items.find(item => item.filelocation === 'cover') as EventRaw),
+	videos: items.filter(item => item.type.includes('video')).map(setFileEvent),
+	gallery: items.filter(i => i.type.includes('image')).map(setFileEvent),
+});
+
+const setFileEvent = (item: EventRaw) => ({
+	title: item.filetitle,
+	alt: item.filealt ? item.filealt.toString() : undefined,
+	name: item.filename,
+	type: item.filetype,
+	url: item.fileulr,
+	location: item.filelocation,
 });
 
 const setPortador = (data: IPayment | Payment): IPayPortador => ({
