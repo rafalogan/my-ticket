@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { EventEntity } from 'app/entities/event.entity';
+import { ButtonOptions } from 'app/types';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @Input() event: EventEntity;
+  @Input() buttons: ButtonOptions[] = [];
+  constructor() {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
+  setBackgroundImage() {
+    return `background-image: url('${this.event?.files?.cover?.url}')`;
   }
-
 }

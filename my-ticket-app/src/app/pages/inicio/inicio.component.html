@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [event]="headerData" [buttons]="headerButtons"></app-header>
 <main>
   <section class="container" *ngIf="movies?.length">
     <div class="section-header">

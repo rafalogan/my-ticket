@@ -18,3 +18,10 @@ export interface OrderOptions {
   by?: string;
   type?: string;
 }
+
+export interface ButtonOptions {
+  text: string;
+  cssClass?: string;
+  icon?: string;
+  action?(): any;
+}
