@@ -140,11 +140,26 @@ export const filterEventToList = (item: EventRaw): IEvent => ({
 	},
 });
 
+export const filterEventComplete = (items: EventRaw[]) => ({
+	id: items[0].id,
+	title: items[0].title,
+	subtitle: items[0].subtitle || undefined,
+	content: items[0].content.toString(),
+	popularity: items[0].popularity,
+	releaseDate: items[0].releasedate,
+	voteAverage: items[0].voteaverage,
+	voteCount: items[0].votecount,
+	type: items[0].type,
+	files: setFilesToEvent(items),
+	categoryId: items[0].categoryid,
+	userId: items[0].userid || undefined,
+});
+
 const setFilesToEvent = (items: EventRaw[]): EventFiles => ({
 	poster: setFileEvent(items.find(item => item.filelocation === 'poster') as EventRaw),
 	cover: setFileEvent(items.find(item => item.filelocation === 'cover') as EventRaw),
-	videos: items.filter(item => item.type.includes('video')).map(setFileEvent),
-	gallery: items.filter(i => i.type.includes('image')).map(setFileEvent),
+	videos: items.filter(item => item.filetype.includes('video')).map(setFileEvent),
+	gallery: items.filter(i => i.filetype.includes('image')).map(setFileEvent),
 });
 
 const setFileEvent = (item: EventRaw) => ({

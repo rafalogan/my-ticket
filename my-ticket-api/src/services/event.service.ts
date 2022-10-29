@@ -4,8 +4,10 @@ import {
 	DatabaseException,
 	deleteField,
 	eventFieldsJoin,
+	eventQuery,
 	eventsQuery,
 	existsOrError,
+	filterEventComplete,
 	filterEventToList,
 	messages,
 	responseDataBaseCreate,
@@ -42,9 +44,13 @@ export class EventService extends BaseService {
 	}
 
 	findOneById(id: number, options?: ReadOptions) {
-		return super
-			.findOneById(id, options)
-			.then(res => (res instanceof DatabaseException ? res : new EventEntity(res)))
+		return this.conn
+			.raw(eventQuery(eventFieldsJoin, id))
+			.then(res => {
+				if (!res) return {};
+				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);
+				return new EventEntity(filterEventComplete(res.rows));
+			})
 			.catch(err => err);
 	}
 

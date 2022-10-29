@@ -28,6 +28,8 @@ LEFt OUTER JOIN ( SELECT * FROM files)
     LIMIT ${limit}
     OFFSET ${page * limit - limit}`;
 
-export const rulesByProfiles = (profileId: number) => `SELECT  r.id, r.name, r.description
-  FROM rules as r
- INNER JOIN (SELECT rule_id FROM profiles_rules WHERE profile_id = ${profileId}) AS pr ON pr.rule_id = r.id`;
+export const eventQuery = (fields: string[], id: number) => `SELECT ${fields.join(', ')}
+FROM events as e
+LEFT OUTER JOIN ( SELECT * FROM files)
+AS f ON f.event_id = ${id}
+WHERE e.id = ${id}`;
