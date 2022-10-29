@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { Events, IEvent, ListOptions } from 'app/types';
+import { Events, EventsOptions, IEvent, ListOptions } from 'app/types';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,17 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
-  getEvents(options?: ListOptions): Observable<Events> {
+  getEvents(options?: EventsOptions): Observable<Events> {
+    const keys = options ? Object.keys(options) : undefined;
     const page = options?.page ? `page=${options.page}` : '';
     const limit = options?.limit ? `limit=${options.limit}` : '';
     const params = page && limit ? `?${page}&${limit}` : page || limit ? `?${page || limit}` : '';
 
     return this.http.get<Events>(`${this.url}${params}`);
+  }
+
+  getEventsByType(page: number, type: string, limit: number): Observable<Events> {
+    return this.http.get<Events>(`${this.url}?page=${page}&type=${type}&limit=${limit}`);
   }
 
   getEvent(id: number): Observable<IEvent> {

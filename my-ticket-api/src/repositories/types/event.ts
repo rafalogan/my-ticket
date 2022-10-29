@@ -1,6 +1,7 @@
 import { EventEntity } from 'src/repositories/entities';
 import { Pagination } from 'src/repositories/models';
 import { IFile } from 'src/repositories/types/file';
+import { ReadOptions } from 'src/repositories/types/base';
 
 export interface IEvent {
 	id?: number;
@@ -57,4 +58,8 @@ export interface EventRaw {
 	filetype: string;
 	fileulr: string;
 	filelocation: string;
+}
+
+export interface ReadEventsOptions extends ReadOptions {
+	type?: string;
 }

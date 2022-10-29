@@ -1,98 +1,151 @@
-<section class="container" *ngIf="movies.length">
-  <div class="section-header">
-    <h2>Filmes</h2>
-  </div>
-  <div class="section-body">
-    <ul class="row">
-      <li class="col seciton-col" *ngFor="let filme of movies.slice(0, 5)">
-        <div class="card">
-          <div class="card-header">
-            <img src="https://localhost:3000/media/trem-bala-poster-01.jpg" alt="">
-          </div>
-          <div class="card-content">
-            <div class="row">
-              <div class="col">
-                <h5>{{ filme.title }}</h5>
-                <h4><i class="icon-calendar"></i>  Data de release</h4>
+<app-header></app-header>
+<main>
+  <section class="container" *ngIf="movies?.length">
+    <div class="section-header">
+      <h2>Filmes</h2>
+    </div>
+    <div class="section-body">
+      <ul class="row">
+        <li class="col seciton-col" *ngFor="let filme of movies">
+          <div class="card">
+            <div class="card-header" >
+              <img *ngIf="filme.files && filme.files.poster" src="{{ filme.files.poster.url }}" alt="{{ filme.files.poster.alt }}" title="{{ filme.files.poster.title }}" />
+            </div>
+            <div class="card-content">
+              <div class="row">
+                <div class="col">
+                  <h5>{{ filme.title }}</h5>
+                  <h4><i class="icon-calendar"></i> {{ filme.releaseDate | date: 'dd/MM/yyyy' }}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="row">
+                <div class="col">
+                  <div class="buttons-bar">
+                    <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
+                    <button class="btn btn-outline btn-info-event"><i class="icon-info"></i></button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="event-rate">
+                    <div class="row">
+                      <div class="col">
+                        <small><i class="icon-like"></i> {{ filme.voteAverage }}%</small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <p>{{filme.voteCount}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="card-actions">
-            <div class="row">
-              <div class="col">
-                <div class="buttons-bar">
-                  <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
-                  <button class="btn btn-outline btn-info-event"><i class="icon-info"></i></button>
-                </div>
-              </div>
-              <div class="col">
-                <div class="event-rate">
-                  <div class="row">
-                    <div class="col">
-                      <small><i class="icon-like"></i> 88%</small>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <p>23,44</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </div>
-            </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-<app-highlights></app-highlights>
+  <app-highlights></app-highlights>
 
-<section class="container">
-  <div class="section-header">
-    <h2>Filmes</h2>
-  </div>
-  <div class="section-body">
-    <ul class="row">
-      <li class="col seciton-col">
-        <div class="card">
-          <div class="card-header">
-            <img src="https://localhost:3000/media/trem-bala-poster-01.jpg" alt="">
-          </div>
-          <div class="card-content">
-            <div class="row">
-              <div class="col event-release">
-                <h4><i class="icon-calendar"></i>  Data de release</h4>
-              </div>
+  <section class="container" *ngIf="events?.length">
+    <div class="section-header">
+      <h2>Eventos</h2>
+    </div>
+    <div class="section-body">
+      <ul class="row">
+        <li class="col seciton-col" *ngFor="let event of events">
+          <div class="card">
+            <div class="card-header" >
+              <img *ngIf="event.files && event.files.poster" src="{{ event.files.poster.url }}" alt="{{ event.files.poster.alt }}" title="{{ event.files.poster.title }}" />
             </div>
-          </div>
-          <div class="card-actions">
-            <div class="row">
-              <div class="col">
-                <div class="buttons-bar">
-                  <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
-                  <button class="btn btn-outline btn-info-event"><i class="icon-info"></i></button>
-                </div>
-              </div>
-              <div class="col">
-                <div class="event-rate">
-                  <div class="row">
-                    <div class="col">
-                      <small><i class="icon-like"></i> 88%</small>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <p>23,44</p>
-                    </div>
-                  </div>
+            <div class="card-content">
+              <div class="row">
+                <div class="col">
+                  <h5>{{ event.title }}</h5>
+                  <h4><i class="icon-calendar"></i> {{ event.releaseDate | date: 'dd/MM/yyyy' }}</h4>
                 </div>
               </div>
             </div>
+            <div class="card-actions">
+              <div class="row">
+                <div class="col">
+                  <div class="buttons-bar">
+                    <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
+                    <button class="btn btn-outline btn-info-event"><i class="icon-info"></i></button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="event-rate">
+                    <div class="row">
+                      <div class="col">
+                        <small><i class="icon-like"></i> {{ event.voteAverage }}%</small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <p>{{event.voteCount}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="container" *ngIf="sports?.length">
+    <div class="section-header">
+      <h2>Esportes</h2>
+    </div>
+    <div class="section-body">
+      <ul class="row">
+        <li class="col seciton-col" *ngFor="let sport of sports">
+          <div class="card">
+            <div class="card-header" >
+              <img *ngIf="sport.files && sport.files.poster" src="{{ sport.files.poster.url }}" alt="{{ sport.files.poster.alt }}" title="{{ sport.files.poster.title }}" />
+            </div>
+            <div class="card-content">
+              <div class="row">
+                <div class="col">
+                  <h5>{{ sport.title }}</h5>
+                  <h4><i class="icon-calendar"></i> {{ sport.releaseDate | date: 'dd/MM/yyyy' }}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <div class="row">
+                <div class="col">
+                  <div class="buttons-bar">
+                    <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
+                    <button class="btn btn-outline btn-info-event"><i class="icon-info"></i></button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="event-rate">
+                    <div class="row">
+                      <div class="col">
+                        <small><i class="icon-like"></i> {{ sport.voteAverage }}%</small>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <p>{{sport.voteCount}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>

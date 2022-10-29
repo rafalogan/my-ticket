@@ -1,5 +1,5 @@
 import { BaseService } from 'src/core/abstracts';
-import { BaseServiceOptions, EventRaw, Events, IEvent, ReadOptions } from 'src/repositories/types';
+import { BaseServiceOptions, EventRaw, Events, IEvent, ReadEventsOptions, ReadOptions } from 'src/repositories/types';
 import {
 	DatabaseException,
 	deleteField,
@@ -54,11 +54,14 @@ export class EventService extends BaseService {
 			.catch(err => err);
 	}
 
-	async findAll(options: ReadOptions) {
+	async findAll(options: ReadEventsOptions) {
 		const page = options?.page || 1;
 		const limit = options?.limit || 10;
 		const count = await this.countById();
 		const pagination = new Pagination({ page, count, limit });
+
+		onLog('query', eventsQuery(eventFieldsJoin, { ...options, limit, page }));
+		onLog('options', options);
 
 		if (options.userId) {
 			return super
@@ -68,7 +71,7 @@ export class EventService extends BaseService {
 		}
 
 		return this.conn
-			.raw(eventsQuery(eventFieldsJoin, limit, page))
+			.raw(eventsQuery(eventFieldsJoin, { ...options, limit, page }))
 			.then(res => {
 				if (!res) return [];
 				if (res.severity === 'ERROR') return new DatabaseException(res.detail || res.hint || messages.notFoundRegister, res);

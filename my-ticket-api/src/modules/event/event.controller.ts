@@ -5,6 +5,7 @@ import { EventService } from 'src/services';
 import { responseApi, responseApiError, setReadOptions } from 'src/utils';
 import { EventEntity } from 'src/repositories/entities';
 import { getUserIdByToken } from 'src/core/handlers';
+import { ReadEventsOptions } from 'src/repositories/types';
 
 export class EventController extends Controller {
 	constructor(private eventService: EventService) {
@@ -38,7 +39,8 @@ export class EventController extends Controller {
 	}
 
 	list(req: Request, res: Response) {
-		const options = setReadOptions(req);
+		const options: ReadEventsOptions = { ...setReadOptions(req) };
+		options.type = req.query.type as string;
 
 		this.eventService
 			.read(options)
