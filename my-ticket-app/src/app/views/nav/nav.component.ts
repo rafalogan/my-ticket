@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Menu } from 'app/entities/menu.entity';
 import { map, take } from 'rxjs';
 import { CategoryService } from 'src/app/services';
@@ -12,7 +13,7 @@ import { onLog } from 'src/app/utils';
 export class NavComponent implements OnInit {
   categoriesMenu: Menu[];
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private router: Router) {}
 
   ngOnInit(): void {
     this.findMenus();
@@ -31,5 +32,9 @@ export class NavComponent implements OnInit {
         },
         error: err => err
       });
+  }
+
+  goToHome() {
+    return this.router.navigate(['/']);
   }
 }

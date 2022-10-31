@@ -1,7 +1,7 @@
 <header [style]="setBackgroundImage()">
   <div class="header-mask">
   <app-nav></app-nav>
-  <div class="container header-info">
+  <div class="container header-info" *ngIf="event">
     <div class="header-row event-title" *ngIf="event?.title">
       <h1>{{event.title}}</h1>
     </div>
@@ -9,7 +9,7 @@
       <div class="event-descriptions" *ngIf="event?.content">
         <p>{{ event.content.slice(0, 145) }}...</p>
       </div>
-      <div class="buttons-bar">
+      <div class="buttons-bar" *ngIf="event">
         <button *ngFor="let button of buttons"  [class]="button.cssClass"
                 (click)="button?.action()">
           <i *ngIf="button.icon"  [class]="button.icon"></i> {{ button.text }}

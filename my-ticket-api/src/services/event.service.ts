@@ -60,9 +60,6 @@ export class EventService extends BaseService {
 		const count = await this.countById();
 		const pagination = new Pagination({ page, count, limit });
 
-		onLog('query', eventsQuery(eventFieldsJoin, { ...options, limit, page }));
-		onLog('options', options);
-
 		if (options.userId) {
 			return super
 				.findAllByUser(options.userId, { ...options, paginate: true })

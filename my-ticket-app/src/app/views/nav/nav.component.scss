@@ -19,6 +19,7 @@ nav {
       @extend .shared-display;
       .logo {
         @extend .shared-display;
+        cursor: pointer;
 
         i {
           color: var(--secondary-color);
