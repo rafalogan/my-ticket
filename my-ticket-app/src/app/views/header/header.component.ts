@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EventEntity } from 'app/entities/event.entity';
 import { ButtonOptions } from 'app/types';
+import { getBackgroundImage } from 'src/app/utils';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   setBackgroundImage() {
-    return `background-image: url('${this.event?.files?.cover?.url}')`;
+    return getBackgroundImage(this.event.files.cover?.url as string);
   }
 }

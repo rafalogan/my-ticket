@@ -1,4 +1,5 @@
 import { IPagination, ListOptions } from 'app/types/i-shared';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 export interface IEvent {
   id: number;
@@ -27,6 +28,7 @@ export interface FileEvent {
   type: string;
   url: string;
   location: string;
+  src?: SafeResourceUrl;
 }
 
 export interface Events extends IPagination {

@@ -4,6 +4,7 @@ import { EventService } from 'src/app/services/event.service';
 import { take } from 'rxjs';
 import { onError, onLog } from 'src/app/utils';
 import { ButtonOptions, Events } from 'app/types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -17,7 +18,7 @@ export class InicioComponent implements OnInit {
   headerData: EventEntity;
   headerButtons: ButtonOptions[];
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventService: EventService, private router: Router) {}
 
   ngOnInit() {
     this.findData();
@@ -28,6 +29,10 @@ export class InicioComponent implements OnInit {
     this.findEvents();
     this.findSports();
     this.getHeader();
+  }
+
+  goToInfo(event: EventEntity) {
+    return this.router.navigate(['/event'], { queryParams: { 'event-id': event.id } });
   }
 
   findMovies() {
@@ -61,7 +66,7 @@ export class InicioComponent implements OnInit {
               text: 'Mais Informações',
               cssClass: 'btn btn-outline',
               icon: 'icon-info',
-              action: () => onLog('infos')
+              action: () => this.router.navigate(['/event'], { queryParams: { 'event-id': this.headerData.id } })
             }
           ];
           onLog('data to header', this.headerData);

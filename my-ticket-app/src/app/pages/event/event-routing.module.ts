@@ -6,7 +6,7 @@ import { EventComponent } from 'app/pages/event/event.component';
 const routes: Routes = [{ path: '', component: EventComponent, runGuardsAndResolvers: 'always' }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class EventRoutingModule {}

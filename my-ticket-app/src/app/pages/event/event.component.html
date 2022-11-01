@@ -1,3 +1,48 @@
-<app-header [event]="event"></app-header>
-<main>
+<main [style]="setBackgroundImage()">
+  <div class="event-container">
+  <app-nav></app-nav>
+    <section class="grid">
+      <div class="row">
+        <div class="col">
+          <div class="event-poster">
+            <img src="{{ event.files.poster?.url }}" alt="{{ event.files.poster?.alt }}" title="{{ event.title }}">
+          </div>
+        </div>
+        <div class="col text-content">
+          <div class="row">
+            <div class="col">
+              <h2>{{ event.title }} <span> ({{ event.releaseDate | date: 'yyyy' }})</span></h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="vote-average">
+                <span>{{event.voteAverage | number: '1.1-1'}}</span>
+              </div>
+            </div>
+              <div class="col">
+                <p class="info">Avaliação do publico</p>
+              </div>
+            <div class="col">
+              <p class="info">Total de votos: <span> {{ event.voteCount }}</span></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-col">
+              <p>{{ event.content }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col buttons-bar">
+              <button class="btn"><i class="icon-shop"></i> Comprar</button>
+              <button class="btn btn-outline"><i class="icon-play"></i> Videos</button>
+              <button class="btn btn-outline"><i class="icon-image"></i> imagens</button>
+              <button class="btn btn-info"><i class="icon-edit"></i> Editar</button>
+              <button class="btn btn-add"><i class="icon-add"></i> Adicionar Ingresso</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
