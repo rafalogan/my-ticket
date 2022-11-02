@@ -15,7 +15,6 @@ export class EventService {
   constructor(private http: HttpClient) {}
 
   getEvents(options?: EventsOptions): Observable<Events> {
-    const keys = options ? Object.keys(options) : undefined;
     const page = options?.page ? `page=${options.page}` : '';
     const limit = options?.limit ? `limit=${options.limit}` : '';
     const params = page && limit ? `?${page}&${limit}` : page || limit ? `?${page || limit}` : '';
@@ -23,8 +22,8 @@ export class EventService {
     return this.http.get<Events>(`${this.url}${params}`);
   }
 
-  getEventsByType(page: number, type: string, limit: number): Observable<Events> {
-    return this.http.get<Events>(`${this.url}?page=${page}&type=${type}&limit=${limit}`);
+  getEventsByType(page: number, type: string, limit: number, order?: string): Observable<Events> {
+    return this.http.get<Events>(`${this.url}?page=${page}&type=${type}&limit=${limit}&odderType=${order || 'ASC'}`);
   }
 
   getEvent(id: number): Observable<IEvent> {

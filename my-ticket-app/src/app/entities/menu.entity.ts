@@ -8,7 +8,7 @@ export class Menu {
 
   constructor(data: ICategory) {
     this.name = data.name;
-    this.route = `/${data.name}`;
+    this.route = `/events?type=${data.name}`;
     this.submenu = this.setSubmenu(data.subCategories);
     this.category = data;
   }
