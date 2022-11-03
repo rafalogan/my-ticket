@@ -56,6 +56,39 @@
   }
 }
 
+.btn-radius {
+  border-radius: 2rem;
+  padding: .6rem 2.5rem;
+  background-color: var(--assistant-color);
+  color: var(--tertiary-color);
+  line-height: inherit;
+
+  i {
+    font-size: 1.6rem;
+    vertical-align: none;
+  }
+
+  &.success {
+    background-color: var(--success-color);
+  }
+
+  &.danger {
+    background-color: var(--danger-color);
+
+    &:hover {
+      background-color: var(--tertiary-color);
+      color: var(--assistant-color);
+    };
+  }
+
+  &.warning {
+    background-color: var(--warning-color);
+  }
+
+  &:hover {
+    background-color: var(--secondary-color);
+  }
+}
 
 .btn-outline {
   padding: .4rem 1.4rem;
@@ -63,10 +96,29 @@
   border: solid .1rem var(--tertiary-color);
   color: var(--tertiary-color);
 
+  &.success {
+    border: solid .1rem var(--success-color);
+    color: var(--success-color);
+
+    &:hover {
+      background-color: var(--success-color);
+    };
+  }
+
+  &.danger {
+    border: solid .1rem var(--danger-color);
+    color: var(--danger-color);
+
+    &:hover {
+      background-color: var(--danger-color);
+    };
+  }
+
 
   &:hover {
     background-color: var(--tertiary-color);
     color: var(--primary-color);
+    border: none;
   }
 }
 
@@ -142,8 +194,14 @@
   justify-content: start;
 
   .btn {
-    &:not(first-child), &:not(last-child) {
-      margin: auto .5%;
+    margin: auto .3rem;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &last-child {
+      margin-right: 0;
     }
   }
 }

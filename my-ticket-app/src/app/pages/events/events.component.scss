@@ -1,5 +1,9 @@
 @import '../inicio/inicio.component';
 
+.btn-edit-event {
+  margin: auto .5rem !important;
+}
+
 .section-col {
   max-width: 18%;
 
@@ -8,5 +12,15 @@
   &:first-child, &:last-child {
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+.event-btns-bar {
+  margin: 3rem auto;
+
+  flex-wrap: wrap;
+
+  button {
+    margin: .7rem .5rem;
   }
 }

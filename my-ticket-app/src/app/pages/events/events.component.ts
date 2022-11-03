@@ -7,6 +7,8 @@ import { EventEntity } from 'app/entities/event.entity';
 import { EventService } from 'src/app/services/event.service';
 import { onError, onLog } from 'src/app/utils';
 import { ButtonOptions } from 'app/types';
+import { CategoryService } from 'app/services';
+import { Category } from 'app/entities/category.entity';
 
 @Component({
   selector: 'app-events',
@@ -16,24 +18,50 @@ import { ButtonOptions } from 'app/types';
 export class EventsComponent implements OnInit {
   events: EventEntity[];
   event: EventEntity;
+  category: Category;
+  subCategories: Category[];
 
   buttons: ButtonOptions[];
 
+  categoryId: number;
   title: string;
   type: string;
   page: number;
   limit: number;
   order: string;
 
-  constructor(private eventService: EventService, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private eventService: EventService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
     this.setParams();
   }
 
+  getCategoriesByCode() {
+    return this.categoryService
+      .getCategory(this.categoryId)
+      .pipe(take(1))
+      .subscribe({
+        next: category => {
+          this.category = new Category(category);
+          this.spreadSubCategories(this.category.subCategories);
+
+          return this.category;
+        },
+        error: err => onError('Erro ao buscar Categorria', err)
+      });
+  }
+
   getHeaderEvent() {
     const ids = this.events.map(e => e.id);
+    onLog('ids length', ids.length);
+
     const id = ids[Math.floor(Math.random() * ids.length)];
+    onLog('id selected', id);
 
     return this.eventService
       .getEvent(id)
@@ -84,11 +112,27 @@ export class EventsComponent implements OnInit {
         this.page = Number(params['page'] || 1);
         this.limit = Number(params['limit'] || 10);
         this.order = params['order'] || 'DESC';
+        this.categoryId = Number(params['code']);
 
+        this.getCategoriesByCode();
         this.getEvents();
       },
       error: err => onError('Error ao buscar', err)
     });
+  }
+
+  spreadSubCategories(items?: Category[]) {
+    this.subCategories = this.subCategories || [];
+    if (items)
+      items.forEach(c => {
+        this.subCategories.push(c);
+        if (c.subCategories.length) return this.spreadSubCategories(c.subCategories);
+        return;
+      });
+
+    onLog('sbucat', this.subCategories);
+
+    return this.subCategories;
   }
 
   goToInfo(event: EventEntity) {

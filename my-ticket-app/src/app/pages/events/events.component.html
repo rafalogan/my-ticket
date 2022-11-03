@@ -1,12 +1,13 @@
 <app-header [event]="event" [buttons]="buttons"></app-header>
 
 <main>
-  <div class="buttons-bar">
-
-  </div>
   <section class="container" *ngIf="events && events?.length">
     <div class="section-header">
       <h2>{{ title }}</h2>
+    </div>
+    <div class="buttons-bar event-btns-bar">
+      <button class="btn btn-radius" *ngFor="let item of subCategories">{{ item.name }}</button>
+      <button class="btn btn-radius success"><i class="icon-add"></i> Novo Evento</button>
     </div>
     <div class="section-body">
       <ul class="row">
@@ -29,6 +30,8 @@
                   <div class="buttons-bar">
                     <button class="btn btn-outline btn-shop"><i class="icon-shop"></i></button>
                     <button class="btn btn-outline btn-info-event" (click)="goToInfo(event)"><i class="icon-info"></i></button>
+                    <button class="btn btn-outline success"><i class="icon-edit"></i></button>
+                    <button class="btn btn-outline danger"><i class="icon-delete"></i></button>
                   </div>
                 </div>
                 <div class="col">

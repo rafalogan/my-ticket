@@ -6,7 +6,7 @@
     </div>
     <div class="section-body">
       <ul class="row">
-        <li class="col seciton-col" *ngFor="let filme of movies">
+        <li class="col section-col" *ngFor="let filme of movies">
           <div class="card">
             <div class="card-header" >
               <img *ngIf="filme.files && filme.files.poster" src="{{ filme.files.poster.url }}" alt="{{ filme.files.poster.alt }}" title="{{ filme.files.poster.title }}" />
@@ -57,7 +57,7 @@
     </div>
     <div class="section-body">
       <ul class="row">
-        <li class="col seciton-col" *ngFor="let event of events">
+        <li class="col section-col" *ngFor="let event of events">
           <div class="card">
             <div class="card-header" >
               <img *ngIf="event.files && event.files.poster" src="{{ event.files.poster.url }}" alt="{{ event.files.poster.alt }}" title="{{ event.files.poster.title }}" />
@@ -106,7 +106,7 @@
     </div>
     <div class="section-body">
       <ul class="row">
-        <li class="col seciton-col" *ngFor="let sport of sports">
+        <li class="col section-col" *ngFor="let sport of sports">
           <div class="card">
             <div class="card-header" >
               <img *ngIf="sport.files && sport.files.poster" src="{{ sport.files.poster.url }}" alt="{{ sport.files.poster.alt }}" title="{{ sport.files.poster.title }}" />
